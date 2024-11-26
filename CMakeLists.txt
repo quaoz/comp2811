@@ -21,3 +21,5 @@ set_target_properties(quaketool PROPERTIES
     WIN32_EXECUTABLE ON
     MACOSX_BUNDLE OFF
 )
+
+install(TARGETS quaketool DESTINATION bin)
