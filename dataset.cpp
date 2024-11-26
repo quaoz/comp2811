@@ -1,22 +1,22 @@
 // COMP2811 Coursework 1 sample solution: QuakeDataset class
 
-#include <stdexcept>
+#include "dataset.hpp"
+
 #include <algorithm>
 #include <numeric>
-#include "dataset.hpp"
+#include <stdexcept>
+
 #include "csv.hpp"
 #include "sample.hpp"
 
 using namespace std;
 
-
-void QuakeDataset::loadData(const string& filename)
-{
+void QuakeDataset::loadData(const string& filename) {
   csv::CSVReader reader(filename);
 
   data.clear();
 
-  for (const auto& row: reader) {
+  for (const auto& row : reader) {
     SamplingPoint samplingPoint{
       row["sample.samplingPoint"].get<string>(),
       row["sample.samplingPoint.notation"].get<string>(),
@@ -48,9 +48,6 @@ void QuakeDataset::loadData(const string& filename)
   }
 }
 
-void QuakeDataset::checkDataExists() const
-{
-  if (size() == 0) {
-    throw std::runtime_error("Dataset is empty!");
-  }
+void QuakeDataset::checkDataExists() const {
+  if (size() == 0) { throw std::runtime_error("Dataset is empty!"); }
 }

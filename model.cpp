@@ -1,23 +1,18 @@
 // COMP2811 Coursework 2: data model
 
 #include "model.hpp"
+
 #include "sample.hpp"
 #include "window.hpp"
 
-
-void QuakeModel::updateFromFile(const QString& filename)
-{
+void QuakeModel::updateFromFile(const QString& filename) {
   beginResetModel();
   dataset.loadData(filename.toStdString());
   endResetModel();
 }
 
-
-QVariant QuakeModel::data(const QModelIndex& index, int role) const
-{
-  if (!index.isValid()) {
-    return QVariant();
-  }
+QVariant QuakeModel::data(const QModelIndex& index, int role) const {
+  if (!index.isValid()) { return QVariant(); }
 
   if (role == Qt::TextAlignmentRole) {
     return int(Qt::AlignRight | Qt::AlignVCenter);
@@ -48,35 +43,30 @@ QVariant QuakeModel::data(const QModelIndex& index, int role) const
   return QVariant();
 }
 
+QVariant QuakeModel::headerData(int section, Qt::Orientation orientation,
+                                int role) const {
+  if (role != Qt::DisplayRole) { return QVariant(); }
 
-QVariant QuakeModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-  if (role != Qt::DisplayRole) {
-    return QVariant();
-  }
-
-  if (orientation == Qt::Vertical) {
-    return QVariant(section + 1);
-  }
+  if (orientation == Qt::Vertical) { return QVariant(section + 1); }
 
   switch (section) {
-      case 0: return QString("ID");
-      case 1: return QString("Sampling Point");
-      case 2: return QString("Sampling Point Notation");
-      case 3: return QString("Sampling Point Label");
-      case 4: return QString("Sample Date Time");
-      case 5: return QString("Determinand Label");
-      case 6: return QString("Determinand Definition");
-      case 7: return QString("Determinand Notation");
-      case 8: return QString("Result Qualifier");
-      case 9: return QString("Result");
-      case 10: return QString("Result Interpretation");
-      case 11: return QString("Determinand Unit Label");
-      case 12: return QString("Sampled Material Type");
-      case 13: return QString("Compliance Sample");
-      case 14: return QString("Sample Purpose");
-      case 15: return QString("Sampling Point Easting");
-      case 16: return QString("Sampling Point Northing");
-      default: return QVariant();
+    case 0: return QString("ID");
+    case 1: return QString("Sampling Point");
+    case 2: return QString("Sampling Point Notation");
+    case 3: return QString("Sampling Point Label");
+    case 4: return QString("Sample Date Time");
+    case 5: return QString("Determinand Label");
+    case 6: return QString("Determinand Definition");
+    case 7: return QString("Determinand Notation");
+    case 8: return QString("Result Qualifier");
+    case 9: return QString("Result");
+    case 10: return QString("Result Interpretation");
+    case 11: return QString("Determinand Unit Label");
+    case 12: return QString("Sampled Material Type");
+    case 13: return QString("Compliance Sample");
+    case 14: return QString("Sample Purpose");
+    case 15: return QString("Sampling Point Easting");
+    case 16: return QString("Sampling Point Northing");
+    default: return QVariant();
   }
 }

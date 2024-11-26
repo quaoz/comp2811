@@ -6,8 +6,13 @@
 
 class SamplingPoint {
  public:
-  SamplingPoint(const std::string &id, const std::string &notation, const std::string &label, int easting, int northing)
-    : id(id), notation(notation), label(label), easting(easting), northing(northing){};
+  SamplingPoint(const std::string &id, const std::string &notation,
+                const std::string &label, int easting, int northing)
+    : id(id),
+      notation(notation),
+      label(label),
+      easting(easting),
+      northing(northing){};
   std::string getID() const { return id; };
   std::string getNotation() const { return notation; };
   std::string getLabel() const { return label; };
@@ -68,7 +73,9 @@ class Sample {
   double getResult() const { return result; };
   std::string getResultInterpretation() const { return resultInterpretation; };
   std::string getSampledMaterialType() const { return sampledMaterialType; };
-  std::string isComplianceSample() const { return compliant; }; // TODO: should be bool
+  std::string isComplianceSample() const {
+    return compliant;
+  };  // TODO: should be bool
   std::string getPurpose() const { return purpose; };
 
  private:
