@@ -4,12 +4,11 @@
 #include <stdexcept>
 #include <iostream>
 #include "window.hpp"
-#include "stats.hpp"
 
 static const int MIN_WIDTH = 620;
 
 
-QuakeWindow::QuakeWindow(): QMainWindow(), statsDialog(nullptr)
+QuakeWindow::QuakeWindow(): QMainWindow()
 {
   createMainWidget();
   createFileSelectors();
@@ -20,7 +19,7 @@ QuakeWindow::QuakeWindow(): QMainWindow(), statsDialog(nullptr)
   addHelpMenu();
 
   setMinimumWidth(MIN_WIDTH);
-  setWindowTitle("Quake Tool");
+  setWindowTitle("Water Quality Tool");
 }
 
 
@@ -32,19 +31,14 @@ void QuakeWindow::createMainWidget()
   QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
   table->setFont(tableFont);
 
-  setCentralWidget(table); 
+  setCentralWidget(table);
 }
 
 
 void QuakeWindow::createFileSelectors()
 {
-  QStringList significanceOptions;
-  significanceOptions << "significant" << "4.5" << "2.5" << "1.0" << "all";
-  significance = new QComboBox();
-  significance->addItems(significanceOptions);
-
   QStringList periodOptions;
-  periodOptions << "hour" << "day" << "week" << "month";
+  periodOptions << "2024" << "2023" << "2023" << "2022" << "2021" << "2020" << "2019" << "2018" << "2017" << "2016" << "2015" << "2014" << "2013" << "2012" << "2011" << "2010" << "2009" << "2008" << "2007" << "2006" << "2005" << "2004" << "2003" << "2002" << "2001" << "2000";
   period = new QComboBox();
   period->addItems(periodOptions);
 }
@@ -53,22 +47,13 @@ void QuakeWindow::createFileSelectors()
 void QuakeWindow::createButtons()
 {
   loadButton = new QPushButton("Load");
-  statsButton = new QPushButton("Stats");
-
   connect(loadButton, SIGNAL(clicked()), this, SLOT(openCSV()));
-  connect(statsButton, SIGNAL(clicked()), this, SLOT(displayStats()));
 }
 
 
 void QuakeWindow::createToolBar()
 {
   QToolBar* toolBar = new QToolBar();
-
-  QLabel* significanceLabel = new QLabel("Significance");
-  significanceLabel->setAlignment(Qt::AlignVCenter);
-  toolBar->addWidget(significanceLabel);
-  toolBar->addWidget(significance);
-
   QLabel* periodLabel = new QLabel("Period");
   periodLabel->setAlignment(Qt::AlignVCenter);
   toolBar->addWidget(periodLabel);
@@ -77,7 +62,6 @@ void QuakeWindow::createToolBar()
   toolBar->addSeparator();
 
   toolBar->addWidget(loadButton);
-  toolBar->addWidget(statsButton);
 
   addToolBar(Qt::LeftToolBarArea, toolBar);
 }
@@ -143,8 +127,7 @@ void QuakeWindow::openCSV()
     return;
   }
 
-  auto filename = QString("%1_%2.csv")
-    .arg(significance->currentText()).arg(period->currentText());
+  auto filename = QString("Y-%1.csv").arg(period->currentText());
 
   auto path = dataLocation + "/" + filename;
 
@@ -158,33 +141,12 @@ void QuakeWindow::openCSV()
 
   fileInfo->setText(QString("Current file: <kbd>%1</kbd>").arg(filename));
   table->resizeColumnsToContents();
-
-  if (statsDialog != nullptr && statsDialog->isVisible()) {
-    statsDialog->update(model.meanDepth(), model.meanMagnitude());
-  }
 }
-
-
-void QuakeWindow::displayStats()
-{
-  if (model.hasData()) {
-    if (statsDialog == nullptr) {
-      statsDialog = new StatsDialog(this);
-    }
-
-    statsDialog->update(model.meanDepth(), model.meanMagnitude());
-
-    statsDialog->show();
-    statsDialog->raise();
-    statsDialog->activateWindow();
-  }
-}
-
 
 void QuakeWindow::about()
 {
-  QMessageBox::about(this, "About Quake Tool",
-    "Quake Tool displays and analyzes earthquake data loaded from"
-    "a CSV file produced by the USGS Earthquake Hazards Program.\n\n"
-    "(c) 2024 Nick Efford");
+  QMessageBox::about(this, "About Water Quality Tool",
+    "Quake Tool displays and analyzes water quality data loaded from"
+    "a CSV file produced by the Environment Agency Water Quality "
+    "Archive.\n\n");
 }

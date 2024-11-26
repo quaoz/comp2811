@@ -5,6 +5,7 @@
 #include <numeric>
 #include "dataset.hpp"
 #include "csv.hpp"
+#include "sample.hpp"
 
 using namespace std;
 
@@ -16,61 +17,36 @@ void QuakeDataset::loadData(const string& filename)
   data.clear();
 
   for (const auto& row: reader) {
-    Quake quake{
-      row["time"].get<>(),
-      row["latitude"].get<double>(),
-      row["longitude"].get<double>(),
-      row["depth"].get<double>(),
-      row["mag"].get<double>()
+    SamplingPoint samplingPoint{
+      row["sample.samplingPoint"].get<string>(),
+      row["sample.samplingPoint.notation"].get<string>(),
+      row["sample.samplingPoint.label"].get<string>(),
+      row["sample.samplingPoint.easting"].get<int>(),
+      row["sample.samplingPoint.northing"].get<int>(),
     };
-    data.push_back(quake);
+
+    Determinand determinand{
+      row["determinand.label"].get<string>(),
+      row["determinand.definition"].get<string>(),
+      row["determinand.notation"].get<int>(),
+      row["determinand.unit.label"].get<string>(),
+    };
+
+    Sample sample{
+      row["@id"].get<string>(),
+      samplingPoint,
+      row["sample.sampleDateTime"].get<string>(),
+      determinand,
+      row["resultQualifier.notation"].get<string>(),
+      row["result"].get<double>(),
+      row["codedResultInterpretation.interpretation"].get<string>(),
+      row["sample.sampledMaterialType.label"].get<string>(),
+      row["sample.isComplianceSample"].get<string>(),
+      row["sample.purpose.label"].get<string>(),
+    };
+    data.push_back(sample);
   }
 }
-
-
-Quake QuakeDataset::strongest() const
-{
-  checkDataExists();
-
-  auto quake = max_element(data.begin(), data.end(),
-    [](Quake a, Quake b) { return a.getMagnitude() < b.getMagnitude(); });
-
-  return *quake;
-}
-
-
-Quake QuakeDataset::shallowest() const
-{
-  checkDataExists();
-
-  auto quake = min_element(data.begin(), data.end(),
-    [](Quake a, Quake b) { return a.getDepth() < b.getDepth(); });
-
-  return *quake;
-}
-
-
-double QuakeDataset::meanDepth() const
-{
-  checkDataExists();
-
-  auto sum = accumulate(data.begin(), data.end(), 0.0,
-    [](double total, Quake q) { return total + q.getDepth(); });
-
-  return sum / data.size();
-}
-
-
-double QuakeDataset::meanMagnitude() const
-{
-  checkDataExists();
-
-  auto sum = accumulate(data.begin(), data.end(), 0.0,
-    [](double total, Quake q) { return total + q.getMagnitude(); });
-
-  return sum / data.size();
-}
-
 
 void QuakeDataset::checkDataExists() const
 {
