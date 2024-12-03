@@ -4,6 +4,7 @@
 
 #include <QMainWindow>
 #include <QTabWidget>
+#include <QTCharts>
 
 #include "model.hpp"
 
