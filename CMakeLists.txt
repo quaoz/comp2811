@@ -9,10 +9,10 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Charts)
 qt_standard_project_setup()
 
 qt_add_executable(quaketool
-    main.cpp
-    dataset.cpp
-    model.cpp
-    window.cpp
+    src/main.cpp
+    src/dataset.cpp
+    src/model.cpp
+    src/window.cpp
 )
 
 target_link_libraries(quaketool PRIVATE Qt6::Widgets Qt6::Charts)
