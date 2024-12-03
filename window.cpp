@@ -6,7 +6,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "sample.hpp"
 
 static const int MIN_WIDTH = 620;
 
