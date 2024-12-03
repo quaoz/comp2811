@@ -17,6 +17,8 @@ class QuakeModel : public QAbstractTableModel {
   QVariant data(const QModelIndex&, int) const;
   QVariant headerData(int, Qt::Orientation, int) const;
 
+  Sample getSample(int index) const { return dataset[index]; }
+
  private:
   QuakeDataset dataset;
 };

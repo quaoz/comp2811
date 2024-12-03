@@ -6,6 +6,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "sample.hpp"
+
 static const int MIN_WIDTH = 620;
 
 QuakeWindow::QuakeWindow() : QMainWindow() {
@@ -16,19 +18,24 @@ QuakeWindow::QuakeWindow() : QMainWindow() {
   createStatusBar();
   addFileMenu();
   addHelpMenu();
+  createTabBar();
 
   setMinimumWidth(MIN_WIDTH);
   setWindowTitle("Water Quality Tool");
 }
 
 void QuakeWindow::createMainWidget() {
-  table = new QTableView();
-  table->setModel(&model);
+  // tabWidget = new QTabWidget();
 
-  QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-  table->setFont(tableFont);
+  // table = new QTableView();
+  // table->setModel(&model);
 
-  setCentralWidget(table);
+  // QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+  // table->setFont(tableFont);
+
+  // tabWidget->addTab(table, "Table");
+
+  // setCentralWidget(tabWidget);
 }
 
 void QuakeWindow::createFileSelectors() {
@@ -114,6 +121,53 @@ void QuakeWindow::addHelpMenu() {
   helpMenu->addAction(aboutQtAction);
 }
 
+void QuakeWindow::createTabBar() {
+  tabWidget = new QTabWidget();
+
+  table1 = new QTableView();
+  table1->setModel(&model);
+  QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+  table1->setFont(tableFont);
+
+  tabWidget->addTab(table1, "Tab 1");
+
+  createPieChart();
+
+  setCentralWidget(tabWidget);
+}
+
+void QuakeWindow::createPieChart() {
+  series = new QPieSeries();
+
+  QChart* chart = new QChart();
+  chart->addSeries(series);
+  chart->setTitle("Litter Samples per Location");
+  chart->legend()->setAlignment(Qt::AlignLeft);
+
+  chartView = new QChartView(chart);
+  chartView->setRenderHint(QPainter::Antialiasing);
+
+  tabWidget->addTab(chartView, "Pie Chart");
+}
+
+void QuakeWindow::updatePieChart() {
+  series->clear();
+
+  // Count the number of litter samples per location
+  std::map<std::string, int> litterCount;
+  for (int i = 0; i < model.rowCount(QModelIndex()); ++i) {
+    Sample sample = model.getSample(i);
+    if (sample.getDeterminand().getLabel() == "BWP - O.L.") {
+      litterCount[sample.getSamplingPoint().getLabel()]++;
+    }
+  }
+
+  // Add data to the pie series
+  for (const auto& entry : litterCount) {
+    series->append(entry.first.c_str(), entry.second);
+  }
+}
+
 void QuakeWindow::setDataLocation() {
   QString directory = QFileDialog::getExistingDirectory(
     this, "Data Location", ".",
@@ -142,7 +196,9 @@ void QuakeWindow::openCSV() {
   }
 
   fileInfo->setText(QString("Current file: <kbd>%1</kbd>").arg(filename));
-  table->resizeColumnsToContents();
+  table1->resizeColumnsToContents();
+
+  updatePieChart();
 }
 
 void QuakeWindow::about() {

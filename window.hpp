@@ -3,6 +3,8 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QTCharts>
+#include <QTabWidget>
 
 #include "model.hpp"
 
@@ -27,13 +29,19 @@ class QuakeWindow : public QMainWindow {
   void createStatusBar();
   void addFileMenu();
   void addHelpMenu();
+  void createTabBar();
+  void createPieChart();
+  void updatePieChart();
 
   QuakeModel model;         // data model used by table
   QString dataLocation;     // location of CSV data files
   QComboBox* period;        // selector for quake feed time period
   QPushButton* loadButton;  // button to load a new CSV file
-  QTableView* table;        // table of quake data
+  QTableView* table1;
   QLabel* fileInfo;         // status bar info on current file
+  QTabWidget* tabWidget;
+  QChartView* chartView;
+  QPieSeries* series;  // series for the pie chart
 
  private slots:
   void setDataLocation();

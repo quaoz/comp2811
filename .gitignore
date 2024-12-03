@@ -1,3 +1,4 @@
-.direnv/
-build/
 .DS_Store
+.direnv/
+result
+build/
