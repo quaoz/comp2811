@@ -1,5 +1,3 @@
-// COMP2811 Coursework 2 sample solution: main window
-
 #include "window.hpp"
 
 #include <QtWidgets>
@@ -17,6 +15,30 @@ QuakeWindow::QuakeWindow() : QMainWindow() {
 
   setMinimumWidth(MIN_WIDTH);
   setWindowTitle("Water Quality Tool");
+}
+
+void QuakeWindow::update() {
+  table->update(&model);
+  litterPage->update(&model);
+  pollutantPage->update(&model);
+}
+
+void QuakeWindow::createTabBar() {
+  tabWidget = new QTabWidget();
+
+  table = new WaterTable(this);
+  table->update(&model);
+  tabWidget->addTab(table, "Table");
+
+  litterPage = new LitterPage(this);
+  litterPage->update(&model);
+  tabWidget->addTab(litterPage, "Litter");
+
+  pollutantPage = new PollutantPage(this);
+  pollutantPage->update(&model);
+  tabWidget->addTab(pollutantPage, "Polutants");
+
+  setCentralWidget(tabWidget);
 }
 
 void QuakeWindow::createFileSelectors() {
@@ -102,20 +124,6 @@ void QuakeWindow::addHelpMenu() {
   helpMenu->addAction(aboutQtAction);
 }
 
-void QuakeWindow::createTabBar() {
-  tabWidget = new QTabWidget();
-
-  table = new WaterTable(this);
-  table->update(&model);
-  tabWidget->addTab(table, "Table");
-
-  litterPage = new LitterPage(this);
-  litterPage->update(&model);
-  tabWidget->addTab(litterPage, "Litter");
-
-  setCentralWidget(tabWidget);
-}
-
 void QuakeWindow::setDataLocation() {
   QString directory = QFileDialog::getExistingDirectory(
     this, "Data Location", ".",
@@ -144,8 +152,7 @@ void QuakeWindow::openCSV() {
   }
 
   fileInfo->setText(QString("Current file: <kbd>%1</kbd>").arg(filename));
-  table->update(&model);
-  litterPage->update(&model);
+  update();
 }
 
 void QuakeWindow::about() {

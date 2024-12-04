@@ -7,6 +7,7 @@
 
 #include "data/model.hpp"
 #include "pages/litter.hpp"
+#include "pages/pollutants.hpp"
 #include "pages/table.hpp"
 
 class QString;
@@ -28,6 +29,7 @@ class QuakeWindow : public QMainWindow {
   void addFileMenu();
   void addHelpMenu();
   void createTabBar();
+  void update();
 
   QuakeModel model;         // data model used by table
   QString dataLocation;     // location of CSV data files
@@ -37,6 +39,7 @@ class QuakeWindow : public QMainWindow {
   QTabWidget* tabWidget;
   WaterTable* table;
   LitterPage* litterPage;
+  PollutantPage* pollutantPage;
 
  private slots:
   void setDataLocation();

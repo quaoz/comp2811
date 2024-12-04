@@ -1,5 +1,3 @@
-// COMP2811 Coursework 1 sample solution: QuakeDataset class
-
 #pragma once
 
 #include <vector>
