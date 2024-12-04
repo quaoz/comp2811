@@ -3,7 +3,6 @@
 #include "model.hpp"
 
 #include "sample.hpp"
-#include "window.hpp"
 
 void QuakeModel::updateFromFile(const QString& filename) {
   beginResetModel();

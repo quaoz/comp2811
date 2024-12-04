@@ -4,16 +4,15 @@
 
 #include <QMainWindow>
 #include <QTabWidget>
-#include <QTCharts>
 
-#include "model.hpp"
+#include "data/model.hpp"
+#include "pages/litter.hpp"
+#include "pages/table.hpp"
 
 class QString;
 class QComboBox;
 class QLabel;
 class QPushButton;
-class QTableView;
-class StatsDialog;
 
 class QuakeWindow : public QMainWindow {
   Q_OBJECT
@@ -22,7 +21,6 @@ class QuakeWindow : public QMainWindow {
   QuakeWindow();
 
  private:
-  void createMainWidget();
   void createFileSelectors();
   void createButtons();
   void createToolBar();
@@ -30,18 +28,15 @@ class QuakeWindow : public QMainWindow {
   void addFileMenu();
   void addHelpMenu();
   void createTabBar();
-  void createPieChart();
-  void updatePieChart();
 
   QuakeModel model;         // data model used by table
   QString dataLocation;     // location of CSV data files
   QComboBox* period;        // selector for quake feed time period
   QPushButton* loadButton;  // button to load a new CSV file
-  QTableView* table1;
   QLabel* fileInfo;         // status bar info on current file
   QTabWidget* tabWidget;
-  QChartView* chartView;
-  QPieSeries* series;  // series for the pie chart
+  WaterTable* table;
+  LitterPage* litterPage;
 
  private slots:
   void setDataLocation();

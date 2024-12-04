@@ -10,9 +10,11 @@ qt_standard_project_setup()
 
 qt_add_executable(quaketool
     src/main.cpp
-    src/dataset.cpp
-    src/model.cpp
     src/window.cpp
+    src/data/dataset.cpp
+    src/data/model.cpp
+    src/pages/table.cpp
+    src/pages/litter.cpp
 )
 
 target_link_libraries(quaketool PRIVATE Qt6::Widgets Qt6::Charts)
