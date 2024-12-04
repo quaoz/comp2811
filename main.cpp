@@ -1,3 +1,16 @@
+#include <QtWidgets>
+#include "window.hpp"
+
+int main(int argc, char* argv[])
+{
+  QApplication app(argc, argv);
+
+  QuakeWindow window;
+  window.show();
+
+  return app.exec();
+}
+
 // #include <QApplication>
 // #include "pollutantoverview.hpp"
 
@@ -11,71 +24,72 @@
 //   return app.exec();
 // }
 
-#include <QApplication>
-#include <QMainWindow>
-#include <QMenuBar>
-#include <QMenu>
-#include <QAction>
-#include <QLineEdit>
-#include <QToolBar>
-#include <QVBoxLayout>
+//WORKING WINDOW
+// #include <QApplication>
+// #include <QMainWindow>
+// #include <QMenuBar>
+// #include <QMenu>
+// #include <QAction>
+// #include <QLineEdit>
+// #include <QToolBar>
+// #include <QVBoxLayout>
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
+// int main(int argc, char *argv[])
+// {
+//     QApplication app(argc, argv);
 
-    QMainWindow mainWindow;
+//     QMainWindow mainWindow;
 
-    // Create a menu bar
-    QMenuBar *menuBar = mainWindow.menuBar();
+//     // Create a menu bar
+//     QMenuBar *menuBar = mainWindow.menuBar();
 
-    // Create a file menu
-    QMenu *fileMenu = menuBar->addMenu("File");
+//     // Create a file menu
+//     QMenu *fileMenu = menuBar->addMenu("File");
 
-    // Create actions for the file menu
-    QAction *newAction = new QAction("New", &mainWindow);
-    QAction *openAction = new QAction("Open", &mainWindow);
-    QAction *exitAction = new QAction("Exit", &mainWindow);
+//     // Create actions for the file menu
+//     QAction *newAction = new QAction("New", &mainWindow);
+//     QAction *openAction = new QAction("Open", &mainWindow);
+//     QAction *exitAction = new QAction("Exit", &mainWindow);
 
-    // Add actions to the file menu
-    fileMenu->addAction(newAction);
-    fileMenu->addAction(openAction);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAction);
+//     // Add actions to the file menu
+//     fileMenu->addAction(newAction);
+//     fileMenu->addAction(openAction);
+//     fileMenu->addSeparator();
+//     fileMenu->addAction(exitAction);
 
-    // Connect the exit action to close the application
-    QObject::connect(exitAction, &QAction::triggered, &app, &QApplication::quit);
+//     // Connect the exit action to close the application
+//     QObject::connect(exitAction, &QAction::triggered, &app, &QApplication::quit);
 
-    QWidget *centralWidget = new QWidget(&mainWindow);
-    QVBoxLayout *layout = new QVBoxLayout(centralWidget);
+//     QWidget *centralWidget = new QWidget(&mainWindow);
+//     QVBoxLayout *layout = new QVBoxLayout(centralWidget);
 
-    // Create a toolbar for the search bar
-    QToolBar *searchToolBar = new QToolBar("Search");
-    QLineEdit *searchLineEdit = new QLineEdit();
-    searchLineEdit->setPlaceholderText("Search...");
-    searchToolBar->addWidget(searchLineEdit);
+//     // Create a toolbar for the search bar
+//     QToolBar *searchToolBar = new QToolBar("Search");
+//     QLineEdit *searchLineEdit = new QLineEdit();
+//     searchLineEdit->setPlaceholderText("Search...");
+//     searchToolBar->addWidget(searchLineEdit);
 
-    // Add the search toolbar to the main window
-    //mainWindow.addToolBar(searchToolBar);
-    layout->addWidget(searchToolBar);
+//     // Add the search toolbar to the main window
+//     //mainWindow.addToolBar(searchToolBar);
+//     layout->addWidget(searchToolBar);
 
     
 
-    QWidget *spaceForGraph = new QWidget();
-    spaceForGraph->setStyleSheet("background-color: lightgray; border: 1px solid black;");
-    spaceForGraph->setFixedSize(200,200);
+//     QWidget *spaceForGraph = new QWidget();
+//     spaceForGraph->setStyleSheet("background-color: lightgray; border: 1px solid black;");
+//     spaceForGraph->setFixedSize(200,200);
 
-    layout->addWidget(spaceForGraph);
-    layout->addStretch();
+//     layout->addWidget(spaceForGraph);
+//     layout->addStretch();
 
-    mainWindow.setCentralWidget(centralWidget);
+//     mainWindow.setCentralWidget(centralWidget);
 
-    mainWindow.setWindowTitle("Pollutant overview");
-    mainWindow.resize(800, 600);
-    mainWindow.show();
+//     mainWindow.setWindowTitle("Pollutant overview");
+//     mainWindow.resize(800, 600);
+//     mainWindow.show();
 
-    return app.exec();
-}
+//     return app.exec();
+// }
 
 // #include <QApplication>
 // #include <QMainWindow>

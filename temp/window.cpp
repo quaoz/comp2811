@@ -163,7 +163,7 @@ void QuakeWindow::createMainWidget() {
     //Determinand determinandData = model.getSample(i);
     
     
-    if (SampleData.getDeterminand().getLabel() == "Endrin"){
+    if (SampleData.getDeterminand().getDefinition() == "Fluoride"){
 
       //pollutantSeries->append(10,15);
       //pollutantSeries->append(12,10);
@@ -176,7 +176,7 @@ void QuakeWindow::createMainWidget() {
 
   QChart *pollutantChart = new QChart();
   pollutantChart->addSeries(pollutantSeries);
-  pollutantChart->setTitle("Endrin");
+  pollutantChart->setTitle("Flouride");
 
   QValueAxis *axisX = new QValueAxis();
   // axisX->setRange(0, 0.01);

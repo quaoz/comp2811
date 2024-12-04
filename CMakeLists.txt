@@ -9,8 +9,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 qt_standard_project_setup()
 
 qt_add_executable(hello
-    main.cpp
-    pollutantoverview.cpp
+    practice.cpp
 )
 
 target_link_libraries(hello PRIVATE Qt6::Widgets)
