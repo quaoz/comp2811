@@ -1,5 +1,3 @@
-// COMP2811 Coursework 2 sample solution: main window
-
 #pragma once
 
 #include <QMainWindow>

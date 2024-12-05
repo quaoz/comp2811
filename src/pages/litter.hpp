@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QTCharts/QChartView>
-#include <QTCharts/QPieSeries>
 #include <QWidget>
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
 
 #include "../data/model.hpp"
 

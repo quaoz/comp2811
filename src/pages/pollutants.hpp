@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QTCharts/QChartView>
-#include <QTCharts/QLineSeries>
 #include <QValueAxis>
 #include <QWidget>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
 
 #include "../data/model.hpp"
 

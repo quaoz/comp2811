@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
     systems.url = "github:nix-systems/default";
     flake-utils = {
       url = "github:numtide/flake-utils";
@@ -11,15 +12,31 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     flake-utils,
+    pre-commit-hooks,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
       in {
+        checks = {
+          pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              flake-checker.enable = true;
+              #clang-format.enable = true;
+              convco.enable = true;
+            };
+          };
+        };
+
         devShells.default = pkgs.mkShell {
+          inherit (self.checks.${system}.pre-commit-check) shellHook;
+          buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
+
           packages = with pkgs; [
             just
             cmake
