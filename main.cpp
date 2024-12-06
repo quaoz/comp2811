@@ -11,4 +11,8 @@ int main(int argc, char* argv[]) {
   window.show();
 
   return app.exec();
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bd0649b (init)

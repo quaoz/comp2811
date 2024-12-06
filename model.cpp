@@ -70,3 +70,29 @@ QVariant QuakeModel::headerData(int section, Qt::Orientation orientation,
     default: return QVariant();
   }
 }
+<<<<<<< HEAD
+=======
+
+// void PollutantGraph::updateFromFile(const QString& filename) {
+//   beginResetModel();
+//   dataset.loadData(filename.toStdString());
+//   endResetModel();
+// }
+
+// void PollutantGraph::data(const QModelIndex& index, int role) {
+//   if (index.isValid()) {
+//     Sample q = dataset[index.row()];
+//     double counter = 0.0;
+//     if (q.getDeterminand().getLabel() == "Endrin"){
+//       //return QVariant(q.getSampleDateTime().c_str());
+//       //pollutantData.qMakePair(q.getSampleDateTime(), q.getResult());
+//       //pollutantData.push_back(std::make_pair(q.getSampleDateTime(), q.getResult()));
+//       //pollutantData.push_back(std::make_pair(q.getSampleDateTime(), q.getResult()));
+//       //pollutantData.push_back(std::make_pair(counter, q.getResult()));
+//       pollutantData.append(QPointF(counter, q.getResult()));
+//       counter = counter + 1.0;
+//     }
+//   }
+
+// }
+>>>>>>> bd0649b (init)

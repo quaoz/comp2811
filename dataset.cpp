@@ -48,6 +48,22 @@ void QuakeDataset::loadData(const string& filename) {
   }
 }
 
+<<<<<<< HEAD
 void QuakeDataset::checkDataExists() const {
   if (size() == 0) { throw std::runtime_error("Dataset is empty!"); }
 }
+=======
+// std::vector<std::pair<std::string, double>> QuakeDataset::getSpecificPollutantData(std::string pollutantName){
+//   std::vector<std::pair<std::string, double>> pollutantData;
+//   for (const auto& point : data) {
+//     if (point.getDeterminand().getLabel() == pollutantName) {
+//       pollutantData.push_back(std::make_pair(point.getSampleDateTime(), point.getResult()));
+//     };
+//   }
+//   return pollutantData;
+// }
+
+void QuakeDataset::checkDataExists() const {
+  if (size() == 0) { throw std::runtime_error("Dataset is empty!"); }
+}
+>>>>>>> bd0649b (init)

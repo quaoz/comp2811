@@ -12,6 +12,11 @@ class QLabel;
 class QPushButton;
 class QTableView;
 class StatsDialog;
+<<<<<<< HEAD
+=======
+class QGraph;
+class QLineSeries;
+>>>>>>> bd0649b (init)
 
 class QuakeWindow : public QMainWindow {
   Q_OBJECT
@@ -27,16 +32,35 @@ class QuakeWindow : public QMainWindow {
   void createStatusBar();
   void addFileMenu();
   void addHelpMenu();
+<<<<<<< HEAD
 
   QuakeModel model;         // data model used by table
+=======
+  void addSelectPollutantMenu();
+  void updatePollutantGraph();
+  
+  //void createGraph();
+
+  QuakeModel model;         // data model used by table
+  //PollutantGraph pollutantGraph;
+>>>>>>> bd0649b (init)
   QString dataLocation;     // location of CSV data files
   QComboBox* period;        // selector for quake feed time period
   QPushButton* loadButton;  // button to load a new CSV file
   QTableView* table;        // table of quake data
   QLabel* fileInfo;         // status bar info on current file
+<<<<<<< HEAD
+=======
+  QGraph* pollutantGraph;
+  QLineSeries *pollutantSeries;
+>>>>>>> bd0649b (init)
 
  private slots:
   void setDataLocation();
   void openCSV();
   void about();
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> bd0649b (init)

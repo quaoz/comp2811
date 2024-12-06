@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+281025ff4ea047785c90e339b6ec9e03 CMakeFiles/quaketool_autogen
+281025ff4ea047785c90e339b6ec9e03 CMakeFiles/quaketool_autogen_timestamp_deps
+1c01677aa72814adf5d831cdd892c607 quaketool_autogen/timestamp

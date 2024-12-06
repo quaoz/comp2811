@@ -1,0 +1,9 @@
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/quaketool.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/edit_cache.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/rebuild_cache.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/list_install_components.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/install.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/install/local.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/install/strip.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/quaketool_autogen_timestamp_deps.dir
+/home/yuanh23/cwk2_solution_final/build/CMakeFiles/quaketool_autogen.dir

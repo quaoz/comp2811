@@ -3,24 +3,51 @@
 #include "window.hpp"
 
 #include <QtWidgets>
+<<<<<<< HEAD
 #include <iostream>
 #include <stdexcept>
+=======
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QChart>
+//#include <QtCore/QDateTime>
+#include <QtCore/QVector>
+//#include <QtCharts/QDateTimeAxis>
+#include <QDateTime>
+#include <QString>
+
+#include <iostream>
+#include <stdexcept>
+#include <utility>  // for std::pair
+#include <vector>
+
+//using namespace std;
+>>>>>>> bd0649b (init)
 
 static const int MIN_WIDTH = 620;
 
 QuakeWindow::QuakeWindow() : QMainWindow() {
+<<<<<<< HEAD
   createMainWidget();
+=======
+  //createMainWidget();
+>>>>>>> bd0649b (init)
   createFileSelectors();
   createButtons();
   createToolBar();
   createStatusBar();
   addFileMenu();
   addHelpMenu();
+<<<<<<< HEAD
+=======
+  addSelectPollutantMenu();
+>>>>>>> bd0649b (init)
 
   setMinimumWidth(MIN_WIDTH);
   setWindowTitle("Water Quality Tool");
 }
 
+<<<<<<< HEAD
 void QuakeWindow::createMainWidget() {
   table = new QTableView();
   table->setModel(&model);
@@ -29,6 +56,178 @@ void QuakeWindow::createMainWidget() {
   table->setFont(tableFont);
 
   setCentralWidget(table);
+=======
+// void QuakeWindow::createMainWidget() {
+//   table = new QTableView();
+//   table->setModel(&model);
+
+//   QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+//   table->setFont(tableFont);
+
+//   QLineSeries *POLLUTANTSERIES = new QLineSeries();
+//   std::vector<std::pair<std::string, double>> graphData = pollutantGraph.getData();
+
+//   for (const auto& dataPair : graphData) {
+//     //DateTime dateTime = QDateTime::fromString(QString::fromStdString(pair.first), "yyyy-MM-ddTHH:mm:ss");
+//     //POLLUTANTSERIES->append(dateTime.toMSecsSinceEpoch(), dataPair.second);
+//     QString dateTimeString = QString::fromStdString(dataPair.first);
+//     QDateTime dateTime = QDateTime::fromString(dateTimeString, "yyyy-MM-ddTHH:mm:ss");
+//     qreal xValue = dateTime.toMSecsSinceEpoch();
+//     POLLUTANTSERIES->append(xValue, dataPair.second);
+
+//     //POLLUTANTSERIES->append(dataPair.first, dataPair.second);
+//   }
+
+//   QChart *POLLUTANTCHART = new QChart();
+//   POLLUTANTCHART->addSeries(POLLUTANTSERIES);
+//   POLLUTANTCHART->createDefaultAxes();
+
+//   QChartView *POLLUTANTCHARTVIEW = new QChartView(POLLUTANTCHART);
+//   POLLUTANTCHARTVIEW->setRenderHint(QPainter::Antialiasing);
+
+//   //setCentralWidget(POLLUTANTCHARTVIEW);
+
+
+//   setCentralWidget(table);
+
+// }
+//void QuakeWindow::createGraph() {
+
+  //cout << "Graph create";
+
+  // QLineSeries *POLLUTANTSERIES = new QLineSeries();
+  // std::vector<std::pair<std::string, double>> graphData = pollutantGraph.getData();
+
+  // for (const auto& dataPair : graphData) {
+  //   //DateTime dateTime = QDateTime::fromString(QString::fromStdString(pair.first), "yyyy-MM-ddTHH:mm:ss");
+  //   //POLLUTANTSERIES->append(dateTime.toMSecsSinceEpoch(), dataPair.second);
+  //   QString dateTimeString = QString::fromStdString(dataPair.first);
+ //QLineSeries *POLLUTANTSERIES = new QLineSeries();
+  // std::vector<std::pair<std::string, double>> graphData = pollutantGraph.getData();
+
+  // for (const auto& dataPair : graphData) {
+  //   //DateTime dateTime = QDateTime::fromString(QString::fromStdString(pair.first), "yyyy-MM-ddTHH:mm:ss");
+  //   //POLLUTANTSERIES->append(dateTime.toMSecsSinceEpoch(), dataPair.second);
+  //   QString dateTimeString = QString::fromStdString(dataPair.first);
+  //   QDateTime dateTime = QDateTime::fromString(dateTimeString, "yyyy-MM-ddTHH:mm:ss");
+  //   qreal xValue = dateTime.toMSecsSinceEpoch();
+  //   POLLUTANTSERIES->append(xValue, dataPair.second);
+
+  //   //POLLUTANTSERIES->append(dataPair.first, dataPair.second);
+  // }
+
+  // QChart *POLLUTANTCHART = new QChart();
+  // POLLUTANTCHART->addSeries(POLLUTANTSERIES);
+  // POLLUTANTCHART->createDefaultAxes();
+
+  // QChartView *POLLUTANTCHARTVIEW = new QChartView(POLLUTANTCHART);
+  // POLLUTANTCHARTVIEW->setRenderHint(QPainter::Antialiasing);
+
+  // setCentralWidget(POLLUTANTCHARTVIEW);
+  //   //POLLUTANTSERIES->append(dataPair.first, dataPair.second);
+  // }
+
+  // QChart *POLLUTANTCHART = new QChart();
+  // POLLUTANTCHART->addSeries(POLLUTANTSERIES);
+  // POLLUTANTCHART->createDefaultAxes();
+
+  // QChartView *POLLUTANTCHARTVIEW = new QChartView(POLLUTANTCHART);
+  // POLLUTANTCHARTVIEW->setRenderHint(QPainter::Antialiasing);
+
+  // setCentralWidget(POLLUTANTCHARTVIEW);
+
+  // if dataset.size() != 0 {
+  //   Sample sample = 
+  //   std::cout << 
+  // }
+  // //std::vector<std::pair<std::string, double>> QuakeDataset::getSpecificPollutantData(std::string pollutantName){
+  // //std::vector<std::pair<std::string, double>> pollutantData;
+  // std::vector<QuakeDataset> specificPollutantData(const )
+  // for (const auto& point : pollutantData) {
+  //   if (point.getDeterminand().getLabel() == pollutantName) {
+
+  //     //pollutantData.push_back(std::make_pair(point.getSampleDateTime(), point.getResult()));
+  //   };
+  // }
+
+  // //LAST CODING HERE
+
+  // std::vector<std::pair<std::string, double>> pollutantData = QuakeDataset.getSpecificPollutantData("Endrin");
+  
+  // QLineSeries *series = new QLineSeries();
+  // for (const auto )
+
+
+  // pollutantGraph = new QGraph();
+  // pollutant/* void QuakeWindow::createMainWidget() {
+//   table = new QTableView();
+//   table->setModel(&model);
+
+//   QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+//   table->setFont(tableFont);
+
+
+//   setCentralWidget(table);
+// }
+
+
+void QuakeWindow::createMainWidget() {
+
+  pollutantSeries = new QLineSeries();
+
+  //pollutantSeries->append(10,15);
+  //pollutantSeries->append(12,10);
+
+  double counter = 0;
+  
+  for(int i = 0; i<(model.rowCount(QModelIndex())); i++) {
+    Sample SampleData = model.getSample(i);
+    //Determinand determinandData = model.getSample(i);
+    
+    
+    if (SampleData.getDeterminand().getDefinition() == "Fluoride"){
+
+      //pollutantSeries->append(10,15);
+      //pollutantSeries->append(12,10);
+      pollutantSeries->append(counter, SampleData.getResult());
+
+      // pollutantSeries->append(counter, SampleData.getResult());
+      counter = counter + 1.0;
+    }
+  }
+
+  QChart *pollutantChart = new QChart();
+  pollutantChart->addSeries(pollutantSeries);
+  pollutantChart->setTitle("Flouride");
+
+  QValueAxis *axisX = new QValueAxis();
+  // axisX->setRange(0, 0.01);
+  // pollutantChart->addAxis(axisX, Qt::AlignBottom);
+
+  // pollutantSeries->attachAxis(axisX);
+
+  QValueAxis *axisY = new QValueAxis();
+  // axisY->setRange(0, 100);
+  // pollutantChart->addAxis(axisY, Qt::AlignLeft);
+  // pollutantSeries->attachAxis(axisY);
+
+  pollutantChart->createDefaultAxes();
+
+  QChartView *pollutantView = new QChartView(pollutantChart);
+  pollutantView->setRenderHint(QPainter::Antialiasing);
+
+  setCentralWidget(pollutantView);
+
+
+  // table = new QTableView();
+  // table->setModel(&model);
+
+  // QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+  // table->setFont(tableFont);
+
+
+  // setCentralWidget(table);
+>>>>>>> bd0649b (init)
 }
 
 void QuakeWindow::createFileSelectors() {
@@ -114,6 +313,24 @@ void QuakeWindow::addHelpMenu() {
   helpMenu->addAction(aboutQtAction);
 }
 
+<<<<<<< HEAD
+=======
+void QuakeWindow::addSelectPollutantMenu() {
+
+  QMenu *selectMenu = menuBar()->addMenu("SelectPollutant");
+
+  QComboBox *selectPollutant = new QComboBox(this);
+  selectPollutant->addItem("option 1");
+
+  QWidgetAction *comboAction = new QWidgetAction(this);
+  comboAction->setDefaultWidget(selectPollutant);
+
+  selectMenu->addAction(comboAction);
+}
+
+
+
+>>>>>>> bd0649b (init)
 void QuakeWindow::setDataLocation() {
   QString directory = QFileDialog::getExistingDirectory(
     this, "Data Location", ".",
@@ -142,7 +359,13 @@ void QuakeWindow::openCSV() {
   }
 
   fileInfo->setText(QString("Current file: <kbd>%1</kbd>").arg(filename));
+<<<<<<< HEAD
   table->resizeColumnsToContents();
+=======
+  //table->resizeColumnsToContents();
+
+  createMainWidget();
+>>>>>>> bd0649b (init)
 }
 
 void QuakeWindow::about() {
@@ -152,3 +375,18 @@ void QuakeWindow::about() {
     "a CSV file produced by the Environment Agency Water Quality "
     "Archive.\n\n");
 }
+<<<<<<< HEAD
+=======
+
+// void QuakeWindow::getPollutantData() {
+//   int datasetSize = dataset.size();
+
+//   for(int i = 0; i<datasetSize; i++) {
+//     Sample q = dataset[i.row()];
+//     if (q.getDeterminand().getLabel() == "Endrin"){
+//       pollutantData.append(QPointF(counter, q.getResult()));
+//       counter = counter + 1.0;
+//     }
+//   }
+// }
+>>>>>>> bd0649b (init)

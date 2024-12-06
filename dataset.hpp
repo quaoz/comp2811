@@ -14,7 +14,17 @@ class QuakeDataset {
   int size() const { return data.size(); }
   Sample operator[](int index) const { return data.at(index); }
 
+<<<<<<< HEAD
  private:
   std::vector<Sample> data;
   void checkDataExists() const;
 };
+=======
+
+ private:
+  std::vector<Sample> data;
+  void checkDataExists() const;
+  //std::vector<std::pair<std::string, double>> pollutantData;
+  //std::vector<std::pair<std::string, double>> getSpecificPollutantData(std::string pollutantName);
+};
+>>>>>>> bd0649b (init)
