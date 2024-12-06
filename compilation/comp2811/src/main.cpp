@@ -11,60 +11,76 @@
 //   return app.exec();
 // }
 
-
+//Coloured graph prototype:
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QScatterSeries>
+#include <QtCharts/QValueAxis>
 
 //QT_CHARTS_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+  QApplication a(argc, argv);
 
-    QChart *chart = new QChart();
+  
 
-    //QLineSeries *series = new QLineSeries();
+  QLineSeries *lineSeries = new QLineSeries();
 
-  QScatterSeries* redSeries = new QScatterSeries;
-  redSeries->append(0, 6);
-  redSeries->append(2, 4);
+  QScatterSeries *scatterSeries = new QScatterSeries();
+  QScatterSeries *redSeries = new QScatterSeries();
+  scatterSeries->setMarkerSize(10.0);
+  redSeries->setMarkerSize(10.0);
+
+  lineSeries->append(0,6);
+  redSeries->append(0,6);
   redSeries->setColor(Qt::red);
-  redSeries->setPen(QPen(Qt::blue));
 
-  QScatterSeries* blueSeries = new QScatterSeries;
-  blueSeries->append(3, 8);
-  blueSeries->append(7, 4);
-  blueSeries->append(10, 5);
-  blueSeries->setColor(Qt::blue);
+  lineSeries->append(4,2);
+  scatterSeries->append(4,2);
+  scatterSeries->setColor(Qt::blue);
 
-  chart->addSeries(redSeries);
-  chart->addSeries(blueSeries);
-  //redSeries.setPen(QPen(Qt::blue));
+  lineSeries->append(8,3);
+  scatterSeries->append(8,3);
+  scatterSeries->setColor(Qt::blue);
 
-    // series->append(0, 6);
-    // series->append(2, 4);
-    // series->append(3, 8);
-    // series->append(7, 4);
-    // series->append(10, 5);
-    // *series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
+  lineSeries->append(6,9);
+  scatterSeries->append(6,9);
+  scatterSeries->setColor(Qt::blue);
 
-    // QChart *chart = new QChart();
-    // chart->legend()->hide();
-    // chart->addSeries(series);
-    chart->createDefaultAxes();
-    // chart->setTitle("Simple line chart example");
+QChart *chart = new QChart();
 
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
+chart->addSeries(lineSeries);
+chart->addSeries(scatterSeries);
+chart->addSeries(redSeries);
 
-    QMainWindow window;
-    window.setCentralWidget(chartView);
-    window.resize(400, 300);
-    window.show();
+QValueAxis *axisX = new QValueAxis();
+axisX->setTitleText("X-Axis");
+QValueAxis *axisY = new QValueAxis();
+axisY->setTitleText("Y-Axis");
 
-    return a.exec();
+// Attach axes to the chart
+chart->addAxis(axisX, Qt::AlignBottom);
+chart->addAxis(axisY, Qt::AlignLeft);
+
+lineSeries->attachAxis(axisX);
+lineSeries->attachAxis(axisY);
+scatterSeries->attachAxis(axisX);
+scatterSeries->attachAxis(axisY);
+redSeries->attachAxis(axisX);
+redSeries->attachAxis(axisY);
+
+// Create the chart view
+QChartView *chartView = new QChartView(chart);
+chartView->setRenderHint(QPainter::Antialiasing);
+
+QMainWindow window;
+window.setCentralWidget(chartView);
+window.resize(400, 300);
+window.show();
+
+return a.exec();
 }
