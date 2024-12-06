@@ -31,6 +31,7 @@ void QuakeWindow::update() {
   //mainDashboardPage->update(&model);
   PCBCard->updateCard(&model, "PCB");
   litterCard->updateCard(&model, "BWP - O.L.");
+  fluoroCard->updateCard(&model, "Fluoro");
 }
 
 void QuakeWindow::createTabBar() {
@@ -54,16 +55,19 @@ void QuakeWindow::createTabBar() {
   // //pollutantPage->update(&model);
   // tabWidget->addTab(pollutantPageTwo, "Polutantsss");
 
-  PCBCard = new overviewCard("PCBs overview", this);
+  PCBCard = new overviewCard("PCBs compounds overview", *tabWidget, this);
   PCBCard->updateCard(&model, "PCB");
 
-  litterCard = new overviewCard("Environmental litter overview", this);
+  litterCard = new overviewCard("Environmental litter overview", *tabWidget, this);
   litterCard->updateCard(&model, "BWP - O.L.");
+
+  fluoroCard = new overviewCard("Fluorinated compounds overview", *tabWidget, this);
+  fluoroCard->updateCard(&model, "Fluoro");
 
 
   mainDashboardPage = new MainDashboardPage(this);
 
-  mainDashboardPage->update(&model, PCBCard, litterCard);
+  mainDashboardPage->update(&model, PCBCard, litterCard, fluoroCard);
   //mainDashboardPage->update(&model);
   tabWidget->addTab(mainDashboardPage, "Main");
 

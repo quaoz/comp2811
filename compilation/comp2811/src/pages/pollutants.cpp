@@ -4,9 +4,14 @@
 
 PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
   series = new QLineSeries();
+  scatterSeries = new QScatterSeries();
+  scatterSeries->setMarkerSize(10.0);
+
+
 
   QChart* chart = new QChart();
   chart->addSeries(series);
+  chart->addSeries(scatterSeries);
   chart->setTitle("Endrin");
   chart->createDefaultAxes();
 
@@ -20,6 +25,7 @@ PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
 
 void PollutantPage::update(QuakeModel* model) {
   series->clear();
+  scatterSeries->clear();
 
   double counter = 0;
   double max = 0;
@@ -31,6 +37,7 @@ void PollutantPage::update(QuakeModel* model) {
       if (result > max) { max = result; }
 
       series->append(counter++, result);
+      scatterSeries->append(counter++, result);
     }
   }
 

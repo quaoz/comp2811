@@ -43,6 +43,7 @@ class QuakeWindow : public QMainWindow {
   MainDashboardPage* mainDashboardPage;
   overviewCard* PCBCard;
   overviewCard* litterCard;
+  overviewCard* fluoroCard;
   WaterTable* table;
   LitterPage* litterPage;
   PollutantPage* pollutantPage;

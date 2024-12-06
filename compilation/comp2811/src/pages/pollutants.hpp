@@ -2,6 +2,7 @@
 
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QScatterSeries>
 #include <QValueAxis>
 #include <QWidget>
 
@@ -19,4 +20,5 @@ class PollutantPage : public QWidget {
  private:
   QChartView* chartView;
   QLineSeries* series;
+  QScatterSeries *scatterSeries;
 };
