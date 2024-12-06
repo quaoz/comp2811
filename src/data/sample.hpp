@@ -53,7 +53,7 @@ class Sample {
          const std::string &sampleDateTime, const Determinand &determinand,
          const std::string &resultQualifier, const double result,
          const std::string &resultInterpretation,
-         const std::string &sampledMaterialType, const std::string &compliant,
+         const std::string &sampledMaterialType, const std::string &compliance,
          const std::string &purpose)
     : id(id),
       samplingPoint(samplingPoint),
@@ -63,7 +63,7 @@ class Sample {
       result(result),
       resultInterpretation(resultInterpretation),
       sampledMaterialType(sampledMaterialType),
-      compliant(compliant),
+      compliance(compliance),
       purpose(purpose){};
   std::string getID() const { return id; };
   SamplingPoint getSamplingPoint() const { return samplingPoint; };
@@ -74,7 +74,7 @@ class Sample {
   std::string getResultInterpretation() const { return resultInterpretation; };
   std::string getSampledMaterialType() const { return sampledMaterialType; };
   std::string isComplianceSample() const {
-    return compliant;
+    return compliance;
   };  // TODO: should be bool
   std::string getPurpose() const { return purpose; };
 
@@ -87,6 +87,6 @@ class Sample {
   double result;                     // result
   std::string resultInterpretation;  // codedResultInterpretation.interpretation
   std::string sampledMaterialType;   // sample.sampledMaterialType.label
-  std::string compliant;             // sample.isComplianceSample
+  std::string compliance;            // sample.isComplianceSample
   std::string purpose;               // sample.purpose.label
 };

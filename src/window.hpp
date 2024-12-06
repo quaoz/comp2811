@@ -4,8 +4,11 @@
 #include <QTabWidget>
 
 #include "data/model.hpp"
+#include "pages/compliance.hpp"
+#include "pages/flourinated.hpp"
 #include "pages/litter.hpp"
 #include "pages/pollutants.hpp"
+#include "pages/pops.hpp"
 #include "pages/table.hpp"
 
 class QString;
@@ -38,6 +41,9 @@ class QuakeWindow : public QMainWindow {
   WaterTable* table;
   LitterPage* litterPage;
   PollutantPage* pollutantPage;
+  ComplianceDashboard* compliancePage;
+  POPsPage* popsPage;
+  FlourinatedPage* flourinatedPage;
 
  private slots:
   void setDataLocation();

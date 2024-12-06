@@ -27,7 +27,7 @@
             src = ./.;
             hooks = {
               flake-checker.enable = true;
-              #clang-format.enable = true;
+              clang-format.enable = true;
               convco.enable = true;
             };
           };
@@ -37,17 +37,7 @@
           inherit (self.checks.${system}.pre-commit-check) shellHook;
           buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
 
-          packages = with pkgs; [
-            just
-            cmake
-            qt6.qtbase
-            qt6.qtcharts
-            qt6.qtwebview
-            qt6.qtlocation
-            qt6.qtpositioning
-            qt6.qtmultimedia
-            libclang.python
-          ];
+          inputsFrom = [self.packages.${system}.default];
         };
 
         packages.default = pkgs.stdenv.mkDerivation {

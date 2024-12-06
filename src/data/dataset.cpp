@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <numeric>
 #include <stdexcept>
+#include <unordered_map>
+#include <vector>
 
 #include "csv.hpp"
 #include "sample.hpp"
@@ -14,6 +16,7 @@ void QuakeDataset::loadData(const string& filename) {
 
   data.clear();
 
+  unordered_map<string, vector<Sample>> dateSampleMap;
   for (const auto& row : reader) {
     SamplingPoint samplingPoint{
       row["sample.samplingPoint"].get<string>(),
@@ -42,7 +45,53 @@ void QuakeDataset::loadData(const string& filename) {
       row["sample.isComplianceSample"].get<string>(),
       row["sample.purpose.label"].get<string>(),
     };
-    data.push_back(sample);
+
+    dateSampleMap[sample.getSampleDateTime()].push_back(sample);
+  }
+
+  /* Data sorting:
+   *
+   * samples appended to vector containing samples with same dateTime
+   * iterate over dateTimes and construct ordered list
+   * iterate over list of dateTimes and append corresponding vector to dataset
+   *
+   * as there are many samples for each dateTime it is more efficent to group
+   * them by dateTime and then sort the vector of dateTimes
+   *
+   */
+
+  // TODO: maybe more efficient to construct vector of keys and then sort
+  //       to avoid expensive insertions
+  int count = 0;
+  vector<string> keys;
+  for (auto& value : dateSampleMap) {
+    int left = 0;
+    int right = count;
+
+    if (count <= 1) {
+      if (count == 0 || keys[0].compare(value.first) < 0) {
+        keys.push_back(value.first);
+      } else {
+        keys.insert(keys.begin(), value.first);
+      }
+    } else {
+      while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (keys[mid].compare(value.first) < 0) {
+          left = mid + 1;
+        } else {
+          right = mid;
+        }
+      }
+      keys.insert(keys.begin() + left, value.first);
+    }
+
+    count++;
+  }
+
+  for (auto& key : keys) {
+    data.insert(data.end(), dateSampleMap[key].begin(),
+                dateSampleMap[key].end());
   }
 }
 

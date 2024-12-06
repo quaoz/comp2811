@@ -6,8 +6,6 @@
 
 #include "../data/model.hpp"
 
-class QTableView;
-
 class LitterPage : public QWidget {
   Q_OBJECT
 
@@ -16,6 +14,6 @@ class LitterPage : public QWidget {
   void update(QuakeModel* model);
 
  private:
-  QChartView* chartView;
-  QPieSeries* series;
+  QPieSeries* locationSeries;
+  QPieSeries* waterBodySeries;
 };

@@ -2,6 +2,10 @@
 
 #include <QtWidgets>
 
+#include "pages/compliance.hpp"
+#include "pages/flourinated.hpp"
+#include "pages/pops.hpp"
+
 static const int MIN_WIDTH = 620;
 
 QuakeWindow::QuakeWindow() : QMainWindow() {
@@ -19,25 +23,35 @@ QuakeWindow::QuakeWindow() : QMainWindow() {
 
 void QuakeWindow::update() {
   table->update(&model);
-  litterPage->update(&model);
   pollutantPage->update(&model);
+  popsPage->update(&model);
+  litterPage->update(&model);
+  flourinatedPage->update(&model);
+  compliancePage->update(&model);
 }
 
 void QuakeWindow::createTabBar() {
   tabWidget = new QTabWidget();
 
   table = new WaterTable(this);
-  table->update(&model);
-  tabWidget->addTab(table, "Table");
-
-  litterPage = new LitterPage(this);
-  litterPage->update(&model);
-  tabWidget->addTab(litterPage, "Litter");
+  tabWidget->addTab(table, "Dashboard");
 
   pollutantPage = new PollutantPage(this);
-  pollutantPage->update(&model);
-  tabWidget->addTab(pollutantPage, "Polutants");
+  tabWidget->addTab(pollutantPage, "Polutant Overview");
 
+  popsPage = new POPsPage(this);
+  tabWidget->addTab(popsPage, "Persistent Organic Pollutants");
+
+  litterPage = new LitterPage(this);
+  tabWidget->addTab(litterPage, "Environmental Litter Indicators");
+
+  flourinatedPage = new FlourinatedPage(this);
+  tabWidget->addTab(flourinatedPage, "Flourinated Compounds");
+
+  compliancePage = new ComplianceDashboard(this);
+  tabWidget->addTab(compliancePage, "Compliance Dashboard");
+
+  update();
   setCentralWidget(tabWidget);
 }
 

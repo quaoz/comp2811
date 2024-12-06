@@ -3,35 +3,50 @@
 #include <QtWidgets>
 
 LitterPage::LitterPage(QWidget* parent) : QWidget(parent) {
-  series = new QPieSeries();
+  locationSeries = new QPieSeries();
+  waterBodySeries = new QPieSeries();
 
-  QChart* chart = new QChart();
-  chart->addSeries(series);
-  chart->setTitle("Litter Samples per Location");
-  chart->legend()->setAlignment(Qt::AlignLeft);
+  QChart* locationChart = new QChart();
+  locationChart->addSeries(locationSeries);
+  locationChart->setTitle("Litter Samples per Location");
+  locationChart->legend()->setAlignment(Qt::AlignLeft);
 
-  chartView = new QChartView(chart);
-  chartView->setRenderHint(QPainter::Antialiasing);
+  QChartView* locationChartView = new QChartView(locationChart);
+  locationChartView->setRenderHint(QPainter::Antialiasing);
+
+  QChart* waterBodyChart = new QChart();
+  waterBodyChart->addSeries(waterBodySeries);
+  waterBodyChart->setTitle("Litter Samples per Water Body Type");
+  waterBodyChart->legend()->setAlignment(Qt::AlignLeft);
+
+  QChartView* waterBodyChartView = new QChartView(waterBodyChart);
+  waterBodyChartView->setRenderHint(QPainter::Antialiasing);
 
   QVBoxLayout* layout = new QVBoxLayout(this);
-  layout->addWidget(chartView);
+  layout->addWidget(locationChartView);
+  layout->addWidget(waterBodyChartView);
   setLayout(layout);
 }
 
 void LitterPage::update(QuakeModel* model) {
-  series->clear();
+  locationSeries->clear();
+  waterBodySeries->clear();
 
-  // Count the number of litter samples per location
-  std::map<std::string, int> litterCount;
+  std::map<std::string, int> locationCount;
+  std::map<std::string, int> waterBodyCount;
   for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
     Sample sample = model->getSample(i);
     if (sample.getDeterminand().getLabel() == "BWP - O.L.") {
-      litterCount[sample.getSamplingPoint().getLabel()]++;
+      locationCount[sample.getSamplingPoint().getLabel()]++;
+      waterBodyCount[sample.getSampledMaterialType()]++;
     }
   }
 
-  // Add data to the pie series
-  for (const auto& entry : litterCount) {
-    series->append(entry.first.c_str(), entry.second);
+  for (const auto& entry : locationCount) {
+    locationSeries->append(entry.first.c_str(), entry.second);
+  }
+
+  for (const auto& entry : waterBodyCount) {
+    waterBodySeries->append(entry.first.c_str(), entry.second);
   }
 }

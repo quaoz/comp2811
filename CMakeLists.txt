@@ -14,8 +14,11 @@ qt_add_executable(quaketool
     src/data/dataset.cpp
     src/data/model.cpp
     src/pages/table.cpp
+    src/pages/pops.cpp
     src/pages/litter.cpp
     src/pages/pollutants.cpp
+    src/pages/compliance.cpp
+    src/pages/flourinated.cpp
 )
 
 target_link_libraries(quaketool PRIVATE Qt6::Widgets Qt6::Charts)
