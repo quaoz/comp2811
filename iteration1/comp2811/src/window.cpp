@@ -5,7 +5,7 @@
 static const int MIN_WIDTH = 620;
 
 QuakeWindow::QuakeWindow() : QMainWindow() {
-  createFileSelectors();
+  //reateFileSelectors();
   createButtons();
   createToolBar();
   createStatusBar();
@@ -51,38 +51,6 @@ void QuakeWindow::createTabBar() {
   setCentralWidget(tabWidget);
 }
 
-void QuakeWindow::createFileSelectors() {
-  QStringList periodOptions;
-  periodOptions << "2024"
-                << "2023"
-                << "2023"
-                << "2022"
-                << "2021"
-                << "2020"
-                << "2019"
-                << "2018"
-                << "2017"
-                << "2016"
-                << "2015"
-                << "2014"
-                << "2013"
-                << "2012"
-                << "2011"
-                << "2010"
-                << "2009"
-                << "2008"
-                << "2007"
-                << "2006"
-                << "2005"
-                << "2004"
-                << "2003"
-                << "2002"
-                << "2001"
-                << "2000";
-  period = new QComboBox();
-  period->addItems(periodOptions);
-}
-
 void QuakeWindow::createButtons() {
   loadButton = new QPushButton("Load");
   connect(loadButton, SIGNAL(clicked()), this, SLOT(openCSV()));
@@ -90,12 +58,6 @@ void QuakeWindow::createButtons() {
 
 void QuakeWindow::createToolBar() {
   QToolBar* toolBar = new QToolBar();
-  QLabel* periodLabel = new QLabel("Period");
-  periodLabel->setAlignment(Qt::AlignVCenter);
-  toolBar->addWidget(periodLabel);
-  toolBar->addWidget(period);
-
-  toolBar->addSeparator();
 
   toolBar->addWidget(loadButton);
 
@@ -150,7 +112,7 @@ void QuakeWindow::openCSV() {
     return;
   }
 
-  auto filename = QString("Y-%1.csv").arg(period->currentText());
+  auto filename = QString("Y-2024.csv");
 
   auto path = dataLocation + "/" + filename;
 
