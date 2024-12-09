@@ -1,7 +1,10 @@
 #include "dataset.hpp"
 
+#include <QDateTime>
+#include <QWidget>
 #include <algorithm>
 #include <numeric>
+#include <queue>
 #include <stdexcept>
 #include <unordered_map>
 #include <vector>
@@ -16,9 +19,17 @@ void QuakeDataset::loadData(const string& filename) {
 
   data.clear();
 
+  using std::chrono::duration;
+  using std::chrono::duration_cast;
+  using std::chrono::high_resolution_clock;
+  using std::chrono::milliseconds;
+
+  auto t1 = high_resolution_clock::now();
+
   unordered_map<string, vector<Sample>> dateSampleMap;
+  dateSampleMap.reserve(150000);
   for (const auto& row : reader) {
-    SamplingPoint samplingPoint{
+    SamplingPoint const samplingPoint{
       row["sample.samplingPoint"].get<string>(),
       row["sample.samplingPoint.notation"].get<string>(),
       row["sample.samplingPoint.label"].get<string>(),
@@ -26,14 +37,14 @@ void QuakeDataset::loadData(const string& filename) {
       row["sample.samplingPoint.northing"].get<int>(),
     };
 
-    Determinand determinand{
+    Determinand const determinand{
       row["determinand.label"].get<string>(),
       row["determinand.definition"].get<string>(),
       row["determinand.notation"].get<int>(),
       row["determinand.unit.label"].get<string>(),
     };
 
-    Sample sample{
+    Sample const sample{
       row["@id"].get<string>(),
       samplingPoint,
       row["sample.sampleDateTime"].get<string>(),
@@ -46,11 +57,18 @@ void QuakeDataset::loadData(const string& filename) {
       row["sample.purpose.label"].get<string>(),
     };
 
-    dateSampleMap[sample.getSampleDateTime()].push_back(sample);
+    dateSampleMap[sample.getSampleDateTime()].push_back(std::move(sample));
+    locations.insert(sample.getSamplingPoint().getLabel());
+    pollutants.insert(sample.getDeterminand().getLabel());
   }
+
+  auto t2 = high_resolution_clock::now();
+  duration<double, std::milli> ms_double = t2 - t1;
+  std::cout << "main body: " << ms_double.count() << "ms\n";
 
   /* Data sorting:
    *
+   * dateTime maps to vector of samples
    * samples appended to vector containing samples with same dateTime
    * iterate over dateTimes and construct ordered list
    * iterate over list of dateTimes and append corresponding vector to dataset
@@ -60,39 +78,28 @@ void QuakeDataset::loadData(const string& filename) {
    *
    */
 
-  // TODO: maybe more efficient to construct vector of keys and then sort
-  //       to avoid expensive insertions
-  int count = 0;
-  vector<string> keys;
-  for (auto& value : dateSampleMap) {
-    int left = 0;
-    int right = count;
+  t1 = high_resolution_clock::now();
 
-    if (count <= 1) {
-      if (count == 0 || keys[0].compare(value.first) < 0) {
-        keys.push_back(value.first);
-      } else {
-        keys.insert(keys.begin(), value.first);
-      }
-    } else {
-      while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (keys[mid].compare(value.first) < 0) {
-          left = mid + 1;
-        } else {
-          right = mid;
-        }
-      }
-      keys.insert(keys.begin() + left, value.first);
-    }
+  // construct priority queue of dates
+  priority_queue<string, vector<string>, greater<string>> dates;
+  for (const auto& entry : dateSampleMap) { dates.push(entry.first); }
 
-    count++;
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "pq construct: " << ms_double.count() << "ms\n";
+
+  t1 = high_resolution_clock::now();
+
+  // drain priority queue
+  for (; !dates.empty(); dates.pop()) {
+    string const date = dates.top();
+    data.insert(data.end(), dateSampleMap[date].begin(),
+                dateSampleMap[date].end());
   }
 
-  for (auto& key : keys) {
-    data.insert(data.end(), dateSampleMap[key].begin(),
-                dateSampleMap[key].end());
-  }
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "pq drain: " << ms_double.count() << "ms\n";
 }
 
 void QuakeDataset::checkDataExists() const {

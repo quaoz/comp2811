@@ -5,6 +5,13 @@ project(cwk2 VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_FLAGS_DEBUG "-Og")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 find_package(Qt6 REQUIRED COMPONENTS Widgets Charts)
 qt_standard_project_setup()
 

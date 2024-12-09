@@ -139,22 +139,16 @@ void ComplianceDashboard::update(QuakeModel *model) {
   locationFilter->clear();
   pollutantFilter->clear();
 
-  // Populate filters dynamically
-  QSet<QString> locations, pollutants;
-  for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
-    Sample sample = model->getSample(i);
-    locations.insert(sample.getSamplingPoint().getLabel().c_str());
-    pollutants.insert(sample.getDeterminand().getLabel().c_str());
+  for (const auto &location : model->getLocations()) {
+    locationFilter->addItem(QString::fromStdString(location));
   }
+  locationFilter->addItem("All Locations");
 
-  // TODO: inefficient
-  QStringList locationList = {"All Locations"};
-  locationList.append(locations.values());
-  locationFilter->addItems(locationList);
-
-  QStringList pollutantList = {"All Pollutants"};
-  pollutantList.append(pollutants.values());
-  pollutantFilter->addItems(pollutantList);
+  // pollutantFilter->addItem("All Pollutants");
+  for (const auto &pollutants : model->getPollutants()) {
+    pollutantFilter->addItem(QString::fromStdString(pollutants));
+  }
+  pollutantFilter->addItem("All Pollutants");
 
   filterComplianceData();
 }
@@ -167,17 +161,18 @@ void ComplianceDashboard::filterComplianceData() {
   complianceTable->setRowCount(0);
   int nonCompliantCount = 0;        // Counter for non-compliant sites
   QStringList nonCompliantDetails;  // List to store non-compliant site details
-  // QString options[3] = {"Compliant", "Non-Compliant", "Near Limit"};
+  QString options[3] = {"Compliant", "Non-Compliant", "Near Limit"};
 
   for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
     // TODO change
-    QString status = "";
+
     Sample sample = model->getSample(i);
     if ((selectedLocation == "All Locations" ||
          sample.getSamplingPoint().getLabel() == selectedLocation) &&
         (selectedPollutant == "All Pollutants" ||
          sample.getDeterminand().getLabel() == selectedPollutant)) {
       // Apply color filter
+      QString status = options[i % 3];
       bool matchesColor = false;
       if (selectedColor == "All Statuses") {
         matchesColor = true;
