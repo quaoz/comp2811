@@ -27,7 +27,7 @@ void QuakeDataset::loadData(const string& filename) {
   auto t1 = high_resolution_clock::now();
 
   unordered_map<string, vector<Sample>> dateSampleMap;
-  dateSampleMap.reserve(150000);
+  dateSampleMap.reserve(50000);
   for (const auto& row : reader) {
     SamplingPoint const samplingPoint{
       row["sample.samplingPoint"].get<string>(),
@@ -68,13 +68,9 @@ void QuakeDataset::loadData(const string& filename) {
 
   /* Data sorting:
    *
-   * dateTime maps to vector of samples
-   * samples appended to vector containing samples with same dateTime
-   * iterate over dateTimes and construct ordered list
-   * iterate over list of dateTimes and append corresponding vector to dataset
-   *
-   * as there are many samples for each dateTime it is more efficent to group
-   * them by dateTime and then sort the vector of dateTimes
+   * hashmap mapping each dateTime to a vector of samples constructed
+   * dateTimes extracted from hashmap keys, appended to priority queue
+   * pq drained, for each value corresponding vector from hashmap added to data
    *
    */
 
@@ -91,10 +87,12 @@ void QuakeDataset::loadData(const string& filename) {
   t1 = high_resolution_clock::now();
 
   // drain priority queue
+  data.reserve(dateSampleMap.size());
   for (; !dates.empty(); dates.pop()) {
     string const date = dates.top();
-    data.insert(data.end(), dateSampleMap[date].begin(),
-                dateSampleMap[date].end());
+    auto& samples = dateSampleMap[date];
+    data.insert(data.end(), std::make_move_iterator(samples.begin()),
+                std::make_move_iterator(samples.end()));
   }
 
   t2 = high_resolution_clock::now();
