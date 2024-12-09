@@ -5,6 +5,7 @@
 
 #include "data/model.hpp"
 #include "pages/compliance.hpp"
+#include "pages/dashboard.hpp"
 #include "pages/flourinated.hpp"
 #include "pages/litter.hpp"
 #include "pages/pollutants.hpp"
@@ -44,6 +45,11 @@ class QuakeWindow : public QMainWindow {
   ComplianceDashboard* compliancePage;
   POPsPage* popsPage;
   FlourinatedPage* flourinatedPage;
+  MainDashboardPage* mainDashboardPage;
+
+  overviewCard* PCBCard;
+  overviewCard* litterCard;
+  overviewCard* fluoroCard;
 
  private slots:
   void setDataLocation();

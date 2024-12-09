@@ -26,6 +26,7 @@ qt_add_executable(quaketool
     src/pages/pollutants.cpp
     src/pages/compliance.cpp
     src/pages/flourinated.cpp
+    src/pages/dashboard.cpp
 )
 
 target_link_libraries(quaketool PRIVATE Qt6::Widgets Qt6::Charts)

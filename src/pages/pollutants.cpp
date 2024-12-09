@@ -65,6 +65,12 @@ PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
           &PollutantPage::onComboBoxChanged);
   connect(locationComboBox, &QComboBox::currentTextChanged, this,
           &PollutantPage::onComboBoxChanged);
+  connect(redSeries, &QScatterSeries::clicked, this,
+          &PollutantPage::onDataPointClicked);
+  connect(yellowSeries, &QScatterSeries::clicked, this,
+          &PollutantPage::onDataPointClicked);
+  connect(greenSeries, &QScatterSeries::clicked, this,
+          &PollutantPage::onDataPointClicked);
 }
 
 void PollutantPage::update(QuakeModel* model) {
@@ -74,6 +80,7 @@ void PollutantPage::update(QuakeModel* model) {
     pollutantComboBox->addItem(QString::fromStdString(pollutant));
   }
 
+  locationComboBox->addItem("All Locations");
   for (const auto& location : model->getLocations()) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
@@ -107,8 +114,9 @@ void PollutantPage::filter() {
       QDateTime::fromString(sample.getSampleDateTime().c_str(), Qt::ISODate);
 
     if (sample.getDeterminand().getLabel() == selectedPollutant.toStdString() &&
-        sample.getSamplingPoint().getLabel() ==
-          selectedLocation.toStdString()) {
+        (selectedLocation.toStdString() == "All Locations" ||
+         sample.getSamplingPoint().getLabel() ==
+           selectedLocation.toStdString())) {
       double result = sample.getResult();
       if (result > max) { max = result; }
 
@@ -118,11 +126,9 @@ void PollutantPage::filter() {
         redBoundary = result * 1.1;
         greenBoundary = result * 0.9;
         firstSample = false;
-      } else if (dateTime.toMSecsSinceEpoch() <
-                 minDateTime.toMSecsSinceEpoch()) {
+      } else if (dateTime < minDateTime) {
         minDateTime = dateTime;
-      } else if (dateTime.toMSecsSinceEpoch() >
-                 maxDateTime.toMSecsSinceEpoch()) {
+      } else if (dateTime > maxDateTime) {
         maxDateTime = dateTime;
       }
 
@@ -145,3 +151,26 @@ void PollutantPage::filter() {
 }
 
 void PollutantPage::onComboBoxChanged() { filter(); }
+
+void PollutantPage::onDataPointClicked(const QPointF& point) {
+  QString complianceLevel;
+
+  if (redSeries->points().contains(point)) {
+    complianceLevel = "Not Compliant";
+  } else if (yellowSeries->points().contains(point)) {
+    complianceLevel = "Near Limit";
+  } else if (greenSeries->points().contains(point)) {
+    complianceLevel = "Compliant";
+  } else {
+    complianceLevel = "Unknown";
+  }
+
+  // Construct popup message
+  QString popupText = QString("Pollutant: %1\nValue: %2\nCompliance: %3")
+                        .arg(pollutantComboBox->currentText())
+                        .arg(point.y())
+                        .arg(complianceLevel);
+
+  // Show the tooltip near the cursor
+  QToolTip::showText(QCursor::pos(), popupText, this);
+}

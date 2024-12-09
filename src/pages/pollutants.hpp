@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QComboBox>
+#include <QPair>
 #include <QValueAxis>
+#include <QVector>
 #include <QWidget>
 #include <QtCharts/QChartView>
 #include <QtCharts/QDateTimeAxis>
@@ -24,6 +26,7 @@ class PollutantPage : public QWidget {
 
  private:
   void filter();
+  void onDataPointClicked(const QPointF& point);
 
   QChartView* chartView;
   QLineSeries* series;

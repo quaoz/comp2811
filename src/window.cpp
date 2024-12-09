@@ -2,10 +2,6 @@
 
 #include <QtWidgets>
 
-#include "pages/compliance.hpp"
-#include "pages/flourinated.hpp"
-#include "pages/pops.hpp"
-
 static const int MIN_WIDTH = 620;
 
 QuakeWindow::QuakeWindow() : QMainWindow() {
@@ -28,13 +24,27 @@ void QuakeWindow::update() {
   litterPage->update(&model);
   flourinatedPage->update(&model);
   compliancePage->update(&model);
+
+  PCBCard->updateCard(&model, "PCB");
+  litterCard->updateCard(&model, "BWP - O.L.");
+  fluoroCard->updateCard(&model, "Fluoro");
+  mainDashboardPage->update(&model, PCBCard, litterCard, fluoroCard);
 }
 
 void QuakeWindow::createTabBar() {
   tabWidget = new QTabWidget();
 
+  PCBCard = new overviewCard("PCBs compounds overview", *tabWidget, this);
+  litterCard =
+    new overviewCard("Environmental litter overview", *tabWidget, this);
+  fluoroCard =
+    new overviewCard("Fluorinated compounds overview", *tabWidget, this);
+
+  mainDashboardPage = new MainDashboardPage(this);
+  tabWidget->addTab(mainDashboardPage, "Dashboard");
+
   table = new WaterTable(this);
-  tabWidget->addTab(table, "Dashboard");
+  tabWidget->addTab(table, "Table");
 
   pollutantPage = new PollutantPage(this);
   tabWidget->addTab(pollutantPage, "Polutant Overview");
