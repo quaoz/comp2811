@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QWidget>
 #include <algorithm>
+#include <map>
 #include <numeric>
 #include <queue>
 #include <stdexcept>
@@ -18,6 +19,10 @@ void QuakeDataset::loadData(const string& filename) {
   csv::CSVReader reader(filename);
 
   data.clear();
+  locationsMap.clear();
+  pollutantsMap.clear();
+  locations.clear();
+  pollutants.clear();
 
   using std::chrono::duration;
   using std::chrono::duration_cast;
@@ -26,8 +31,7 @@ void QuakeDataset::loadData(const string& filename) {
 
   auto t1 = high_resolution_clock::now();
 
-  unordered_map<string, vector<Sample>> dateSampleMap;
-  dateSampleMap.reserve(50000);
+  map<string, vector<Sample>, greater<string>> dateSampleMap;
   for (const auto& row : reader) {
     SamplingPoint const samplingPoint{
       row["sample.samplingPoint"].get<string>(),
@@ -57,7 +61,7 @@ void QuakeDataset::loadData(const string& filename) {
       row["sample.purpose.label"].get<string>(),
     };
 
-    dateSampleMap[sample.getSampleDateTime()].push_back(std::move(sample));
+    dateSampleMap[sample.getSampleDateTime()].push_back(sample);
     locations.insert(sample.getSamplingPoint().getLabel());
     pollutants.insert(sample.getDeterminand().getLabel());
   }
@@ -68,7 +72,7 @@ void QuakeDataset::loadData(const string& filename) {
 
   /* Data sorting:
    *
-   * hashmap mapping each dateTime to a vector of samples constructed
+   * ordered map mapping each dateTime to a vector of samples constructed
    * dateTimes extracted from hashmap keys, appended to priority queue
    * pq drained, for each value corresponding vector from hashmap added to data
    *
@@ -76,28 +80,81 @@ void QuakeDataset::loadData(const string& filename) {
 
   t1 = high_resolution_clock::now();
 
-  // construct priority queue of dates
-  priority_queue<string, vector<string>, greater<string>> dates;
-  for (const auto& entry : dateSampleMap) { dates.push(entry.first); }
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "pq construct: " << ms_double.count() << "ms\n";
-
-  t1 = high_resolution_clock::now();
-
   // drain priority queue
   data.reserve(dateSampleMap.size());
-  for (; !dates.empty(); dates.pop()) {
-    string const date = dates.top();
-    auto& samples = dateSampleMap[date];
-    data.insert(data.end(), std::make_move_iterator(samples.begin()),
-                std::make_move_iterator(samples.end()));
+  for (const auto& entry : dateSampleMap) {
+    data.insert(data.end(), entry.second.begin(), entry.second.end());
   }
 
   t2 = high_resolution_clock::now();
   ms_double = t2 - t1;
   std::cout << "pq drain: " << ms_double.count() << "ms\n";
+
+  t1 = high_resolution_clock::now();
+  for (const auto& sample : data) {
+    locationsMap[sample.getSamplingPoint().getLabel()].push_back(sample);
+    pollutantsMap[sample.getDeterminand().getLabel()].push_back(sample);
+  }
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "map const: " << ms_double.count() << "ms\n";
+}
+
+struct sampleCmp {
+  bool operator()(const Sample& a, const Sample& b) const {
+    return a.getSampleDateTime() > b.getSampleDateTime();
+  }
+};
+
+std::vector<Sample> QuakeDataset::getLocationSamples(
+  const std::string& location) const {
+  auto it = locationsMap.find(location);
+  if (it != locationsMap.end()) {
+    return it->second;
+  } else {
+    return {};
+  }
+}
+
+// TODO: inefficient merge strategy
+std::vector<Sample> QuakeDataset::getLocationSamples(
+  const std::set<std::string>& locations) const {
+  vector<Sample> samples = {};
+
+  for (const auto& location : locations) {
+    auto current = getLocationSamples(location);
+    vector<Sample> temp;
+    set_union(samples.begin(), samples.end(), current.begin(), current.end(),
+              back_inserter(temp), sampleCmp());
+    samples.swap(temp);
+  }
+
+  return samples;
+}
+
+std::vector<Sample> QuakeDataset::getPollutantSamples(
+  const std::string& pollutant) const {
+  auto it = pollutantsMap.find(pollutant);
+  if (it != pollutantsMap.end()) {
+    return it->second;
+  } else {
+    return {};
+  }
+}
+
+std::vector<Sample> QuakeDataset::getPollutantSamples(
+  const std::set<std::string>& pollutants) const {
+  vector<Sample> samples = {};
+
+  for (const auto& pollutant : pollutants) {
+    auto current = getPollutantSamples(pollutant);
+    vector<Sample> temp;
+    set_union(samples.begin(), samples.end(), current.begin(), current.end(),
+              back_inserter(temp), sampleCmp());
+    samples.swap(temp);
+  }
+
+  return samples;
 }
 
 void QuakeDataset::checkDataExists() const {

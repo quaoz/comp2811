@@ -1,6 +1,7 @@
 #include "window.hpp"
 
 #include <QtWidgets>
+#include <iostream>
 
 static const int MIN_WIDTH = 620;
 
@@ -14,21 +15,77 @@ QuakeWindow::QuakeWindow() : QMainWindow() {
   createTabBar();
 
   setMinimumWidth(MIN_WIDTH);
-  setWindowTitle("Water Quality Tool");
+  setWindowTitle("WaterQal Tool");  // TODO change no more quake tool
 }
 
 void QuakeWindow::update() {
-  table->update(&model);
+  using std::chrono::duration;
+  using std::chrono::duration_cast;
+  using std::chrono::high_resolution_clock;
+  using std::chrono::milliseconds;
+  auto t1 = high_resolution_clock::now();
+
   pollutantPage->update(&model);
+
+  auto t2 = high_resolution_clock::now();
+  duration<double, std::milli> ms_double = t2 - t1;
+  std::cout << "pollutant: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
   popsPage->update(&model);
+
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "pops: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
   litterPage->update(&model);
-  flourinatedPage->update(&model);
+
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "litter: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
+  fluorinatedPage->update(&model);
+
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "fluor: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
   compliancePage->update(&model);
 
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "comp: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
   PCBCard->updateCard(&model, "PCB");
+
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "pcb card: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
   litterCard->updateCard(&model, "BWP - O.L.");
+
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "litter card: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
   fluoroCard->updateCard(&model, "Fluoro");
+
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "fluro card: " << ms_double.count() << "ms\n";
+  t1 = high_resolution_clock::now();
+
   mainDashboardPage->update(&model, PCBCard, litterCard, fluoroCard);
+
+  t2 = high_resolution_clock::now();
+  ms_double = t2 - t1;
+  std::cout << "main: " << ms_double.count() << "ms\n";
 }
 
 void QuakeWindow::createTabBar() {
@@ -43,9 +100,6 @@ void QuakeWindow::createTabBar() {
   mainDashboardPage = new MainDashboardPage(this);
   tabWidget->addTab(mainDashboardPage, "Dashboard");
 
-  table = new WaterTable(this);
-  tabWidget->addTab(table, "Table");
-
   pollutantPage = new PollutantPage(this);
   tabWidget->addTab(pollutantPage, "Polutant Overview");
 
@@ -55,8 +109,8 @@ void QuakeWindow::createTabBar() {
   litterPage = new LitterPage(this);
   tabWidget->addTab(litterPage, "Environmental Litter Indicators");
 
-  flourinatedPage = new FlourinatedPage(this);
-  tabWidget->addTab(flourinatedPage, "Flourinated Compounds");
+  fluorinatedPage = new FluorinatedPage(this);
+  tabWidget->addTab(fluorinatedPage, "Fluorinated Compounds");
 
   compliancePage = new ComplianceDashboard(this);
   tabWidget->addTab(compliancePage, "Compliance Dashboard");
@@ -65,6 +119,7 @@ void QuakeWindow::createTabBar() {
   setCentralWidget(tabWidget);
 }
 
+// TODO: remove file period selector
 void QuakeWindow::createFileSelectors() {
   QStringList periodOptions;
   periodOptions << "2024"
@@ -164,7 +219,7 @@ void QuakeWindow::openCSV() {
     return;
   }
 
-  auto filename = QString("Y-%1.csv").arg(period->currentText());
+  auto filename = QString("Y-2024.csv");
 
   auto path = dataLocation + "/" + filename;
 

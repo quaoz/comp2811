@@ -75,6 +75,8 @@ PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
 
 void PollutantPage::update(QuakeModel* model) {
   this->model = model;
+  pollutantComboBox->clear();
+  locationComboBox->clear();
 
   for (const auto& pollutant : model->getPollutants()) {
     pollutantComboBox->addItem(QString::fromStdString(pollutant));
@@ -108,15 +110,15 @@ void PollutantPage::filter() {
 
   bool firstSample = true;
 
-  for (int i = 0; i < (model->rowCount(QModelIndex())); i++) {
-    Sample sample = model->getSample(i);
-    QDateTime dateTime =
-      QDateTime::fromString(sample.getSampleDateTime().c_str(), Qt::ISODate);
+  std::vector<Sample> samples =
+    model->getPollutantSamples(selectedPollutant.toStdString());
 
-    if (sample.getDeterminand().getLabel() == selectedPollutant.toStdString() &&
-        (selectedLocation.toStdString() == "All Locations" ||
-         sample.getSamplingPoint().getLabel() ==
-           selectedLocation.toStdString())) {
+  for (const auto& sample : samples) {
+    if (selectedLocation.toStdString() == "All Locations" ||
+        sample.getSamplingPoint().getLabel() ==
+          selectedLocation.toStdString()) {
+      QDateTime dateTime =
+        QDateTime::fromString(sample.getSampleDateTime().c_str(), Qt::ISODate);
       double result = sample.getResult();
       if (result > max) { max = result; }
 

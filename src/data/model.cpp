@@ -1,11 +1,16 @@
 #include "model.hpp"
 
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
+
 #include "sample.hpp"
 
 void QuakeModel::updateFromFile(const QString& filename) {
+  // QFuture<void> future = QtConcurrent::run([this, filename]() {
   beginResetModel();
   dataset.loadData(filename.toStdString());
   endResetModel();
+  //});
 }
 
 QVariant QuakeModel::data(const QModelIndex& index, int role) const {

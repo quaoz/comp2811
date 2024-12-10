@@ -6,11 +6,10 @@
 #include "data/model.hpp"
 #include "pages/compliance.hpp"
 #include "pages/dashboard.hpp"
-#include "pages/flourinated.hpp"
+#include "pages/fluorinated.hpp"
 #include "pages/litter.hpp"
 #include "pages/pollutants.hpp"
 #include "pages/pops.hpp"
-#include "pages/table.hpp"
 
 class QString;
 class QComboBox;
@@ -39,12 +38,12 @@ class QuakeWindow : public QMainWindow {
   QPushButton* loadButton;  // button to load a new CSV file
   QLabel* fileInfo;         // status bar info on current file
   QTabWidget* tabWidget;
-  WaterTable* table;
+  // WaterTable* table;
   LitterPage* litterPage;
   PollutantPage* pollutantPage;
   ComplianceDashboard* compliancePage;
   POPsPage* popsPage;
-  FlourinatedPage* flourinatedPage;
+  FluorinatedPage* fluorinatedPage;
   MainDashboardPage* mainDashboardPage;
 
   overviewCard* PCBCard;

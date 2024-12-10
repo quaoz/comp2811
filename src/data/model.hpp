@@ -22,6 +22,21 @@ class QuakeModel : public QAbstractTableModel {
     return dataset.getPollutants();
   }
 
+  std::vector<Sample> getLocationSamples(const std::string& location) const {
+    return dataset.getLocationSamples(location);
+  }
+  std::vector<Sample> getLocationSamples(
+    const std::set<std::string>& locations) const {
+    return dataset.getLocationSamples(locations);
+  }
+  std::vector<Sample> getPollutantSamples(const std::string& pollutant) const {
+    return dataset.getPollutantSamples(pollutant);
+  }
+  std::vector<Sample> getPollutantSamples(
+    const std::set<std::string>& pollutants) const {
+    return dataset.getPollutantSamples(pollutants);
+  }
+
  private:
   QuakeDataset dataset;
 };

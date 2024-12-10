@@ -69,6 +69,7 @@ void overviewCard::openWindow() {
   // }
 }
 
+// TODO: inefficient
 void overviewCard::updateCard(QuakeModel* model, std::string cardType) {
   double tempPCBCounter = 0;
   for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {

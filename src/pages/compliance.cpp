@@ -163,16 +163,28 @@ void ComplianceDashboard::filterComplianceData() {
   QStringList nonCompliantDetails;  // List to store non-compliant site details
   QString options[3] = {"Compliant", "Non-Compliant", "Near Limit"};
 
-  for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
-    // TODO change
+  std::vector<Sample> samples = {};
 
-    Sample sample = model->getSample(i);
+  if (selectedPollutant.toStdString() != "All Pollutants") {
+    samples = model->getPollutantSamples(selectedPollutant.toStdString());
+  } else {
+    if (selectedLocation.toStdString() != "All Locations") {
+      samples = model->getLocationSamples(selectedLocation.toStdString());
+    } else {
+      // TODO: handle other case
+    }
+  }
+
+  for (const auto &sample : samples) {
     if ((selectedLocation == "All Locations" ||
-         sample.getSamplingPoint().getLabel() == selectedLocation) &&
+         sample.getSamplingPoint().getLabel() ==
+           selectedLocation.toStdString()) &&
         (selectedPollutant == "All Pollutants" ||
-         sample.getDeterminand().getLabel() == selectedPollutant)) {
+         sample.getDeterminand().getLabel() ==
+           selectedPollutant.toStdString())) {
       // Apply color filter
-      QString status = options[i % 3];
+      QString status = options[rand() % 3];
+      ;
       bool matchesColor = false;
       if (selectedColor == "All Statuses") {
         matchesColor = true;

@@ -1,9 +1,7 @@
 #pragma once
 
 #include <QComboBox>
-#include <QPair>
 #include <QValueAxis>
-#include <QVector>
 #include <QWidget>
 #include <QtCharts/QChartView>
 #include <QtCharts/QDateTimeAxis>

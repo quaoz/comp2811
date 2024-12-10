@@ -1,6 +1,7 @@
 #include "litter.hpp"
 
 #include <QtWidgets>
+#include <vector>
 
 LitterPage::LitterPage(QWidget* parent) : QWidget(parent) {
   locationSeries = new QPieSeries();
@@ -32,14 +33,13 @@ void LitterPage::update(QuakeModel* model) {
   locationSeries->clear();
   waterBodySeries->clear();
 
+  std::vector<Sample> samples = model->getPollutantSamples("BWP - O.L.");
+
   std::map<std::string, int> locationCount;
   std::map<std::string, int> waterBodyCount;
-  for (int i = 0; i < model->rowCount(QModelIndex()); ++i) {
-    Sample sample = model->getSample(i);
-    if (sample.getDeterminand().getLabel() == "BWP - O.L.") {
-      locationCount[sample.getSamplingPoint().getLabel()]++;
-      waterBodyCount[sample.getSampledMaterialType()]++;
-    }
+  for (const auto& sample : samples) {
+    locationCount[sample.getSamplingPoint().getLabel()]++;
+    waterBodyCount[sample.getSampledMaterialType()]++;
   }
 
   for (const auto& entry : locationCount) {
