@@ -25,7 +25,7 @@ qt_add_executable(quaketool
     src/pages/litter.cpp
     src/pages/pollutants.cpp
     src/pages/compliance.cpp
-    src/pages/flourinated.cpp
+    src/pages/fluorinated.cpp
     src/pages/dashboard.cpp
 )
 
