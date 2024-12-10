@@ -20,7 +20,6 @@ qt_add_executable(quaketool
     src/window.cpp
     src/data/dataset.cpp
     src/data/model.cpp
-    src/pages/table.cpp
     src/pages/pops.cpp
     src/pages/litter.cpp
     src/pages/pollutants.cpp
