@@ -1,5 +1,6 @@
 #include "fluorinated.hpp"
 
+#include <QLegendMarker>
 #include <QtWidgets>
 #include <vector>
 
@@ -28,13 +29,20 @@ FluorinatedPage::FluorinatedPage(QWidget* parent) : QWidget(parent) {
   chart->addSeries(greenSeries);
   chart->setTitle("Fluorinated Compounds");
 
+  chart->legend()->setVisible(true);
+  chart->legend()->setAlignment(Qt::AlignBottom);
+  chart->legend()->markers()[0]->setLabel("Sample Data");
+  chart->legend()->markers()[1]->setLabel("Above Limit");
+  chart->legend()->markers()[2]->setLabel("Near Limit");
+  chart->legend()->markers()[3]->setLabel("Below Limit");
+
   chartView = new QChartView(chart);
   chartView->setRenderHint(QPainter::Antialiasing);
 
   axisX = new QDateTimeAxis;
-  axisX->setFormat("MMM yyyy");
+  axisX->setFormat("dd MMM");
   axisX->setTitleText("Date");
-  axisX->setTickCount(10);
+  // axisX->setTickCount(10);
   chartView->chart()->addAxis(axisX, Qt::AlignBottom);
   series->attachAxis(axisX);
   redSeries->attachAxis(axisX);
@@ -52,7 +60,6 @@ FluorinatedPage::FluorinatedPage(QWidget* parent) : QWidget(parent) {
   locationComboBox = new QComboBox();
   fluorinatedComboBox = new QComboBox();
 
-  fluorinatedComboBox->addItem("All Compounds");
   for (const auto& compound : fluorinatedCompounds) {
     fluorinatedComboBox->addItem(QString::fromStdString(compound));
   }
@@ -111,19 +118,13 @@ void FluorinatedPage::filter() {
 
   bool firstSample = true;
 
-  std::vector<Sample> samples = {};
-
-  if (selectedCompound.toStdString() == "All Compounds") {
-    samples = model->getPollutantSamples(fluorinatedCompounds);
-  } else {
-    samples = model->getPollutantSamples(selectedCompound.toStdString());
-  }
+  auto samples = model->getPollutantSamples(selectedCompound.toStdString());
 
   for (const auto& sample : samples) {
     if (selectedLocation.toStdString() == "All Locations" ||
         sample.getSamplingPoint().getLabel() ==
           selectedLocation.toStdString()) {
-      QDateTime dateTime =
+      auto dateTime =
         QDateTime::fromString(sample.getSampleDateTime().c_str(), Qt::ISODate);
       double result = sample.getResult();
       if (result > max) { max = result; }
@@ -155,6 +156,7 @@ void FluorinatedPage::filter() {
   max *= 1.05;
 
   axisX->setRange(minDateTime, maxDateTime);
+  axisX->setTickCount(maxDateTime.date().month() - minDateTime.date().month());
   axisY->setRange(0, max);
 }
 
@@ -174,10 +176,12 @@ void FluorinatedPage::onDataPointClicked(const QPointF& point) {
   }
 
   // Construct popup message
-  QString popupText = QString("Pollutant: %1\nValue: %2\nCompliance: %3")
-                        .arg("TODO: fix diff series")
-                        .arg(point.y())
-                        .arg(complianceLevel);
+  QString popupText =
+    QString("Pollutant: %1\nDate: %2\nValue: %3\nCompliance: %4")
+      .arg(fluorinatedComboBox->currentText())
+      .arg(QDateTime::fromMSecsSinceEpoch(point.x()).toString(Qt::ISODate))
+      .arg(point.y())
+      .arg(complianceLevel);
 
   // Show the tooltip near the cursor
   QToolTip::showText(QCursor::pos(), popupText, this);

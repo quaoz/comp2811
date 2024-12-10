@@ -1,6 +1,7 @@
 #include "pollutants.hpp"
 
 #include <QDateTime>
+#include <QLegendMarker>
 #include <QtWidgets>
 
 PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
@@ -28,13 +29,20 @@ PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
   chart->addSeries(greenSeries);
   chart->setTitle("Pollutant Overview");
 
+  chart->legend()->setVisible(true);
+  chart->legend()->setAlignment(Qt::AlignBottom);
+  chart->legend()->markers()[0]->setLabel("Sample Data");
+  chart->legend()->markers()[1]->setLabel("Above Limit");
+  chart->legend()->markers()[2]->setLabel("Near Limit");
+  chart->legend()->markers()[3]->setLabel("Below Limit");
+
   chartView = new QChartView(chart);
   chartView->setRenderHint(QPainter::Antialiasing);
 
   axisX = new QDateTimeAxis;
-  axisX->setFormat("MMM yyyy");
+  axisX->setFormat("dd MMM");
   axisX->setTitleText("Date");
-  axisX->setTickCount(10);
+  // xisX->setTickCount(10);
   chartView->chart()->addAxis(axisX, Qt::AlignBottom);
   series->attachAxis(axisX);
   redSeries->attachAxis(axisX);
@@ -110,14 +118,13 @@ void PollutantPage::filter() {
 
   bool firstSample = true;
 
-  std::vector<Sample> samples =
-    model->getPollutantSamples(selectedPollutant.toStdString());
+  auto samples = model->getPollutantSamples(selectedPollutant.toStdString());
 
   for (const auto& sample : samples) {
     if (selectedLocation.toStdString() == "All Locations" ||
         sample.getSamplingPoint().getLabel() ==
           selectedLocation.toStdString()) {
-      QDateTime dateTime =
+      auto dateTime =
         QDateTime::fromString(sample.getSampleDateTime().c_str(), Qt::ISODate);
       double result = sample.getResult();
       if (result > max) { max = result; }
@@ -149,6 +156,7 @@ void PollutantPage::filter() {
   max *= 1.05;
 
   axisX->setRange(minDateTime, maxDateTime);
+  axisX->setTickCount(maxDateTime.date().month() - minDateTime.date().month());
   axisY->setRange(0, max);
 }
 
@@ -168,10 +176,12 @@ void PollutantPage::onDataPointClicked(const QPointF& point) {
   }
 
   // Construct popup message
-  QString popupText = QString("Pollutant: %1\nValue: %2\nCompliance: %3")
-                        .arg(pollutantComboBox->currentText())
-                        .arg(point.y())
-                        .arg(complianceLevel);
+  QString popupText =
+    QString("Pollutant: %1\nDate: %2\nValue: %3\nCompliance: %4")
+      .arg(pollutantComboBox->currentText())
+      .arg(QDateTime::fromMSecsSinceEpoch(point.x()).toString(Qt::ISODate))
+      .arg(point.y())
+      .arg(complianceLevel);
 
   // Show the tooltip near the cursor
   QToolTip::showText(QCursor::pos(), popupText, this);
