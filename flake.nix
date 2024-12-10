@@ -27,8 +27,14 @@
             src = ./.;
             hooks = {
               flake-checker.enable = true;
+
               clang-format.enable = true;
+              cmake-format.enable = true;
+
+              typos.enable = true;
+
               convco.enable = true;
+              forbid-new-submodules = true;
             };
           };
         };
