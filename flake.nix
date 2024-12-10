@@ -28,7 +28,7 @@
             hooks = {
               flake-checker.enable = true;
 
-              clang-format.enable = true;
+              #clang-format.enable = true;
               cmake-format.enable = true;
 
               typos.enable = true;
