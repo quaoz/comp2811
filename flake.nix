@@ -32,9 +32,7 @@
               cmake-format.enable = true;
 
               typos.enable = true;
-
               convco.enable = true;
-              forbid-new-submodules = true;
             };
           };
         };
