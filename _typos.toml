@@ -1,0 +1,2 @@
+[files]
+extend-exclude = ["data/*", "src/data/csv.hpp"]
