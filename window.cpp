@@ -1,233 +1,91 @@
-// COMP2811 Coursework 2 sample solution: main window
-
 #include "window.hpp"
 
 #include <QtWidgets>
-<<<<<<< HEAD
-#include <iostream>
-#include <stdexcept>
-=======
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QChart>
-//#include <QtCore/QDateTime>
-#include <QtCore/QVector>
-//#include <QtCharts/QDateTimeAxis>
-#include <QDateTime>
-#include <QString>
-
-#include <iostream>
-#include <stdexcept>
-#include <utility>  // for std::pair
-#include <vector>
-
-//using namespace std;
->>>>>>> bd0649b (init)
 
 static const int MIN_WIDTH = 620;
 
 QuakeWindow::QuakeWindow() : QMainWindow() {
-<<<<<<< HEAD
-  createMainWidget();
-=======
-  //createMainWidget();
->>>>>>> bd0649b (init)
   createFileSelectors();
   createButtons();
   createToolBar();
   createStatusBar();
   addFileMenu();
   addHelpMenu();
-<<<<<<< HEAD
-=======
-  addSelectPollutantMenu();
->>>>>>> bd0649b (init)
+  createTabBar();
 
   setMinimumWidth(MIN_WIDTH);
   setWindowTitle("Water Quality Tool");
 }
 
-<<<<<<< HEAD
-void QuakeWindow::createMainWidget() {
-  table = new QTableView();
-  table->setModel(&model);
-
-  QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-  table->setFont(tableFont);
-
-  setCentralWidget(table);
-=======
-// void QuakeWindow::createMainWidget() {
-//   table = new QTableView();
-//   table->setModel(&model);
-
-//   QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-//   table->setFont(tableFont);
-
-//   QLineSeries *POLLUTANTSERIES = new QLineSeries();
-//   std::vector<std::pair<std::string, double>> graphData = pollutantGraph.getData();
-
-//   for (const auto& dataPair : graphData) {
-//     //DateTime dateTime = QDateTime::fromString(QString::fromStdString(pair.first), "yyyy-MM-ddTHH:mm:ss");
-//     //POLLUTANTSERIES->append(dateTime.toMSecsSinceEpoch(), dataPair.second);
-//     QString dateTimeString = QString::fromStdString(dataPair.first);
-//     QDateTime dateTime = QDateTime::fromString(dateTimeString, "yyyy-MM-ddTHH:mm:ss");
-//     qreal xValue = dateTime.toMSecsSinceEpoch();
-//     POLLUTANTSERIES->append(xValue, dataPair.second);
-
-//     //POLLUTANTSERIES->append(dataPair.first, dataPair.second);
-//   }
-
-//   QChart *POLLUTANTCHART = new QChart();
-//   POLLUTANTCHART->addSeries(POLLUTANTSERIES);
-//   POLLUTANTCHART->createDefaultAxes();
-
-//   QChartView *POLLUTANTCHARTVIEW = new QChartView(POLLUTANTCHART);
-//   POLLUTANTCHARTVIEW->setRenderHint(QPainter::Antialiasing);
-
-//   //setCentralWidget(POLLUTANTCHARTVIEW);
-
-
-//   setCentralWidget(table);
-
-// }
-//void QuakeWindow::createGraph() {
-
-  //cout << "Graph create";
-
-  // QLineSeries *POLLUTANTSERIES = new QLineSeries();
-  // std::vector<std::pair<std::string, double>> graphData = pollutantGraph.getData();
-
-  // for (const auto& dataPair : graphData) {
-  //   //DateTime dateTime = QDateTime::fromString(QString::fromStdString(pair.first), "yyyy-MM-ddTHH:mm:ss");
-  //   //POLLUTANTSERIES->append(dateTime.toMSecsSinceEpoch(), dataPair.second);
-  //   QString dateTimeString = QString::fromStdString(dataPair.first);
- //QLineSeries *POLLUTANTSERIES = new QLineSeries();
-  // std::vector<std::pair<std::string, double>> graphData = pollutantGraph.getData();
-
-  // for (const auto& dataPair : graphData) {
-  //   //DateTime dateTime = QDateTime::fromString(QString::fromStdString(pair.first), "yyyy-MM-ddTHH:mm:ss");
-  //   //POLLUTANTSERIES->append(dateTime.toMSecsSinceEpoch(), dataPair.second);
-  //   QString dateTimeString = QString::fromStdString(dataPair.first);
-  //   QDateTime dateTime = QDateTime::fromString(dateTimeString, "yyyy-MM-ddTHH:mm:ss");
-  //   qreal xValue = dateTime.toMSecsSinceEpoch();
-  //   POLLUTANTSERIES->append(xValue, dataPair.second);
-
-  //   //POLLUTANTSERIES->append(dataPair.first, dataPair.second);
-  // }
-
-  // QChart *POLLUTANTCHART = new QChart();
-  // POLLUTANTCHART->addSeries(POLLUTANTSERIES);
-  // POLLUTANTCHART->createDefaultAxes();
-
-  // QChartView *POLLUTANTCHARTVIEW = new QChartView(POLLUTANTCHART);
-  // POLLUTANTCHARTVIEW->setRenderHint(QPainter::Antialiasing);
-
-  // setCentralWidget(POLLUTANTCHARTVIEW);
-  //   //POLLUTANTSERIES->append(dataPair.first, dataPair.second);
-  // }
-
-  // QChart *POLLUTANTCHART = new QChart();
-  // POLLUTANTCHART->addSeries(POLLUTANTSERIES);
-  // POLLUTANTCHART->createDefaultAxes();
-
-  // QChartView *POLLUTANTCHARTVIEW = new QChartView(POLLUTANTCHART);
-  // POLLUTANTCHARTVIEW->setRenderHint(QPainter::Antialiasing);
-
-  // setCentralWidget(POLLUTANTCHARTVIEW);
-
-  // if dataset.size() != 0 {
-  //   Sample sample = 
-  //   std::cout << 
-  // }
-  // //std::vector<std::pair<std::string, double>> QuakeDataset::getSpecificPollutantData(std::string pollutantName){
-  // //std::vector<std::pair<std::string, double>> pollutantData;
-  // std::vector<QuakeDataset> specificPollutantData(const )
-  // for (const auto& point : pollutantData) {
-  //   if (point.getDeterminand().getLabel() == pollutantName) {
-
-  //     //pollutantData.push_back(std::make_pair(point.getSampleDateTime(), point.getResult()));
-  //   };
-  // }
-
-  // //LAST CODING HERE
-
-  // std::vector<std::pair<std::string, double>> pollutantData = QuakeDataset.getSpecificPollutantData("Endrin");
+void QuakeWindow::update() {
   
-  // QLineSeries *series = new QLineSeries();
-  // for (const auto )
-
-
-  // pollutantGraph = new QGraph();
-  // pollutant/* void QuakeWindow::createMainWidget() {
-//   table = new QTableView();
-//   table->setModel(&model);
-
-//   QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-//   table->setFont(tableFont);
-
-
-//   setCentralWidget(table);
-// }
-
-
-void QuakeWindow::createMainWidget() {
-
-  pollutantSeries = new QLineSeries();
-
-  //pollutantSeries->append(10,15);
-  //pollutantSeries->append(12,10);
-
-  double counter = 0;
+  table->update(&model);
+  litterPage->update(&model);
+  pollutantPage->update(&model);
+  popsPage->update(&model);
   
-  for(int i = 0; i<(model.rowCount(QModelIndex())); i++) {
-    Sample SampleData = model.getSample(i);
-    //Determinand determinandData = model.getSample(i);
-    
-    
-    if (SampleData.getDeterminand().getDefinition() == "Fluoride"){
-
-      //pollutantSeries->append(10,15);
-      //pollutantSeries->append(12,10);
-      pollutantSeries->append(counter, SampleData.getResult());
-
-      // pollutantSeries->append(counter, SampleData.getResult());
-      counter = counter + 1.0;
-    }
-  }
-
-  QChart *pollutantChart = new QChart();
-  pollutantChart->addSeries(pollutantSeries);
-  pollutantChart->setTitle("Flouride");
-
-  QValueAxis *axisX = new QValueAxis();
-  // axisX->setRange(0, 0.01);
-  // pollutantChart->addAxis(axisX, Qt::AlignBottom);
-
-  // pollutantSeries->attachAxis(axisX);
-
-  QValueAxis *axisY = new QValueAxis();
-  // axisY->setRange(0, 100);
-  // pollutantChart->addAxis(axisY, Qt::AlignLeft);
-  // pollutantSeries->attachAxis(axisY);
-
-  pollutantChart->createDefaultAxes();
-
-  QChartView *pollutantView = new QChartView(pollutantChart);
-  pollutantView->setRenderHint(QPainter::Antialiasing);
-
-  setCentralWidget(pollutantView);
+  //PCBCard = new overviewCard("Card 1 Title", this);
+  //mainDashboardPage->update(&model, PCBCard);
 
 
-  // table = new QTableView();
-  // table->setModel(&model);
+  //mainDashboardPage->update(&model);
+  PCBCard->updateCard(&model, "PCB");
+  litterCard->updateCard(&model, "BWP - O.L.");
+  fluoroCard->updateCard(&model, "Fluoro");
+}
 
-  // QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-  // table->setFont(tableFont);
+void QuakeWindow::createTabBar() {
+  tabWidget = new QTabWidget();
+
+  
+
+  table = new WaterTable(this);
+  table->update(&model);
+  tabWidget->addTab(table, "Table");
+
+  litterPage = new LitterPage(this);
+  litterPage->update(&model);
+  tabWidget->addTab(litterPage, "Litter");
+
+  pollutantPage = new PollutantPage(this);
+  pollutantPage->update(&model);
+  tabWidget->addTab(pollutantPage, "Polutants");
+
+  // pollutantPageTwo = new PollutantPage(this);
+  // //pollutantPage->update(&model);
+  // tabWidget->addTab(pollutantPageTwo, "Polutantsss");
+
+  PCBCard = new overviewCard("PCBs compounds overview", "Polychlorinated biphenyls (PCBs) are a group of manmade chemical that persist in the environment and accumulate in living organisms."
+                             "PCBs were used widely in electrical equipment and bind strongly to soil and sediment, causing pollution to the environment.", *tabWidget, this);
+  PCBCard->updateCard(&model, "PCB");
+
+  litterCard = new overviewCard("Environmental litter overview", "Littering is the careless disposal of trash. Waste like plastics and chemicals enters rivers, lakes, and oceans, harming aquatic life and ecosystems."
+                                "Some compounds that cannot decompose persist for many years, and toxic substances can contaminate groundwater, affecting drinking water and agriculture.", 
+                                *tabWidget, this);
+  litterCard->updateCard(&model, "BWP - O.L.");
+
+  fluoroCard = new overviewCard("Fluorinated compounds overview", "Fluorinated compounds are chemicals containing fluorine atoms that are highly stable and resistant to degradation. These compounds are used in various products like non-stick coatings and fire-fighting foams, but they persist in the environment and can contaminate water, soil, and wildlife, posing health risks.", *tabWidget, this);
+  fluoroCard->updateCard(&model, "Fluoro");
 
 
-  // setCentralWidget(table);
->>>>>>> bd0649b (init)
+  mainDashboardPage = new MainDashboardPage(this);
+
+  mainDashboardPage->update(&model, PCBCard, litterCard, fluoroCard);
+  //mainDashboardPage->update(&model);
+  tabWidget->addTab(mainDashboardPage, "Main");
+
+  
+
+  popsPage = new PopsPage(this);
+  popsPage->update(&model);
+  tabWidget->addTab(popsPage, "Pops");
+
+  
+
+  //PCBOverview->update(&model, 1.0);
+
+
+  setCentralWidget(tabWidget);
 }
 
 void QuakeWindow::createFileSelectors() {
@@ -313,24 +171,6 @@ void QuakeWindow::addHelpMenu() {
   helpMenu->addAction(aboutQtAction);
 }
 
-<<<<<<< HEAD
-=======
-void QuakeWindow::addSelectPollutantMenu() {
-
-  QMenu *selectMenu = menuBar()->addMenu("SelectPollutant");
-
-  QComboBox *selectPollutant = new QComboBox(this);
-  selectPollutant->addItem("option 1");
-
-  QWidgetAction *comboAction = new QWidgetAction(this);
-  comboAction->setDefaultWidget(selectPollutant);
-
-  selectMenu->addAction(comboAction);
-}
-
-
-
->>>>>>> bd0649b (init)
 void QuakeWindow::setDataLocation() {
   QString directory = QFileDialog::getExistingDirectory(
     this, "Data Location", ".",
@@ -359,13 +199,7 @@ void QuakeWindow::openCSV() {
   }
 
   fileInfo->setText(QString("Current file: <kbd>%1</kbd>").arg(filename));
-<<<<<<< HEAD
-  table->resizeColumnsToContents();
-=======
-  //table->resizeColumnsToContents();
-
-  createMainWidget();
->>>>>>> bd0649b (init)
+  update();
 }
 
 void QuakeWindow::about() {
@@ -375,18 +209,3 @@ void QuakeWindow::about() {
     "a CSV file produced by the Environment Agency Water Quality "
     "Archive.\n\n");
 }
-<<<<<<< HEAD
-=======
-
-// void QuakeWindow::getPollutantData() {
-//   int datasetSize = dataset.size();
-
-//   for(int i = 0; i<datasetSize; i++) {
-//     Sample q = dataset[i.row()];
-//     if (q.getDeterminand().getLabel() == "Endrin"){
-//       pollutantData.append(QPointF(counter, q.getResult()));
-//       counter = counter + 1.0;
-//     }
-//   }
-// }
->>>>>>> bd0649b (init)

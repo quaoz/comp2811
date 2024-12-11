@@ -3,20 +3,20 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QTabWidget>
 
-#include "model.hpp"
+#include "data/model.hpp"
+
+#include "pages/litter.hpp"
+#include "pages/pollutants.hpp"
+#include "pages/table.hpp"
+#include "pages/dashboard.hpp"
+#include "pages/pops.hpp"
 
 class QString;
 class QComboBox;
 class QLabel;
 class QPushButton;
-class QTableView;
-class StatsDialog;
-<<<<<<< HEAD
-=======
-class QGraph;
-class QLineSeries;
->>>>>>> bd0649b (init)
 
 class QuakeWindow : public QMainWindow {
   Q_OBJECT
@@ -25,42 +25,38 @@ class QuakeWindow : public QMainWindow {
   QuakeWindow();
 
  private:
-  void createMainWidget();
   void createFileSelectors();
   void createButtons();
   void createToolBar();
   void createStatusBar();
   void addFileMenu();
   void addHelpMenu();
-<<<<<<< HEAD
+  void createTabBar();
+  void update();
 
   QuakeModel model;         // data model used by table
-=======
-  void addSelectPollutantMenu();
-  void updatePollutantGraph();
-  
-  //void createGraph();
-
-  QuakeModel model;         // data model used by table
-  //PollutantGraph pollutantGraph;
->>>>>>> bd0649b (init)
   QString dataLocation;     // location of CSV data files
   QComboBox* period;        // selector for quake feed time period
   QPushButton* loadButton;  // button to load a new CSV file
-  QTableView* table;        // table of quake data
   QLabel* fileInfo;         // status bar info on current file
-<<<<<<< HEAD
-=======
-  QGraph* pollutantGraph;
-  QLineSeries *pollutantSeries;
->>>>>>> bd0649b (init)
+  QTabWidget* tabWidget;
+  MainDashboardPage* mainDashboardPage;
+  overviewCard* PCBCard;
+  overviewCard* litterCard;
+  overviewCard* fluoroCard;
+  WaterTable* table;
+  LitterPage* litterPage;
+  PollutantPage* pollutantPage;
+  PollutantPage* pollutantPageTwo;
+  //overviewCard *PCBOverview;
+  PopsPage* popsPage;
+  //MainDashboardPage* mainDashboardPage;
+  //overviewCard* PCBCard;
+
+
 
  private slots:
   void setDataLocation();
   void openCSV();
   void about();
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> bd0649b (init)
