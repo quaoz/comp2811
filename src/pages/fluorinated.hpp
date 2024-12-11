@@ -8,7 +8,7 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QScatterSeries>
 
-#include "../data/model.hpp"
+#include "../data/dataset.hpp"
 #include "../window.hpp"
 #include "card.hpp"
 
@@ -17,7 +17,7 @@ class FluorinatedPage : public QWidget {
 
  public:
   FluorinatedPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeModel* model);
+  void update(QuakeDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private slots:
@@ -36,7 +36,7 @@ class FluorinatedPage : public QWidget {
   QValueAxis* axisY;
   QComboBox* locationComboBox;
   QComboBox* fluorinatedComboBox;
-  QuakeModel* model;
+  QuakeDataset* model;
   OverviewCard* card;
   std::set<std::string> const fluorinatedCompounds = {
     "11Cl-PF3OUdS", "3:3 FTCA",     "4:2 FTSA",     "5:3 FTCA",

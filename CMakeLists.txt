@@ -26,7 +26,6 @@ qt_add_executable(
   src/main.cpp
   src/window.cpp
   src/data/dataset.cpp
-  src/data/model.cpp
   src/pages/pops.cpp
   src/pages/litter.cpp
   src/pages/pollutants.cpp

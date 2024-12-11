@@ -8,7 +8,7 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QScatterSeries>
 
-#include "../data/model.hpp"
+#include "../data/dataset.hpp"
 #include "../window.hpp"
 #include "card.hpp"
 
@@ -17,7 +17,7 @@ class POPsPage : public QWidget {
 
  public:
   POPsPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeModel* model);
+  void update(QuakeDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private slots:
@@ -36,7 +36,7 @@ class POPsPage : public QWidget {
   QValueAxis* axisY;
   QComboBox* locationComboBox;
   QComboBox* pbcsComboBox;
-  QuakeModel* model;
+  QuakeDataset* model;
   OverviewCard* card;
   std::set<std::string> const pcbs = {
     "PCB Con 028", "PCB Con 052", "PCB Con 101", "PCB Con 105", "PCB Con 118",

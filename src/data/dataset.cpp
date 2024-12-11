@@ -1,7 +1,10 @@
 #include "dataset.hpp"
 
 #include <QDateTime>
+#include <QFuture>
+#include <QFutureSynchronizer>
 #include <QWidget>
+#include <QtConcurrent/QtConcurrent>
 #include <algorithm>
 #include <map>
 #include <numeric>
@@ -61,8 +64,6 @@ void QuakeDataset::loadData(const string& filename) {
     };
 
     dateSampleMap[sample.getSampleDateTime()].push_back(sample);
-    locations.insert(sample.getSamplingPoint().getLabel());
-    pollutants.insert(sample.getDeterminand().getLabel());
   }
 
   auto t2 = high_resolution_clock::now();
@@ -77,28 +78,44 @@ void QuakeDataset::loadData(const string& filename) {
    *
    */
 
+  QFutureSynchronizer<void> synchronizer;
+
   t1 = high_resolution_clock::now();
 
-  // drain priority queue
-  data.reserve(dateSampleMap.size());
-  for (const auto& entry : dateSampleMap) {
-    data.insert(data.end(), entry.second.begin(), entry.second.end());
-  }
+  synchronizer.addFuture(QtConcurrent::run([this, dateSampleMap]() {
+    data.reserve(dateSampleMap.size());
+    for (const auto& entry : dateSampleMap) {
+      data.insert(data.end(), entry.second.begin(), entry.second.end());
+    }
+  }));
+
+  synchronizer.addFuture(QtConcurrent::run([this, dateSampleMap]() {
+    pollutantsMap.reserve(dateSampleMap.size());
+
+    for (const auto& entry : dateSampleMap) {
+      for (const auto& sample : entry.second) {
+        pollutants.insert(sample.getDeterminand().getLabel());
+        pollutantsMap[sample.getDeterminand().getLabel()].push_back(sample);
+      }
+    }
+  }));
+
+  synchronizer.addFuture(QtConcurrent::run([this, dateSampleMap]() {
+    locationsMap.reserve(dateSampleMap.size());
+
+    for (const auto& entry : dateSampleMap) {
+      for (const auto& sample : entry.second) {
+        locations.insert(sample.getSamplingPoint().getLabel());
+        locationsMap[sample.getSamplingPoint().getLabel()].push_back(sample);
+      }
+    }
+  }));
+
+  synchronizer.waitForFinished();
 
   t2 = high_resolution_clock::now();
   ms_double = t2 - t1;
-  std::cout << "pq drain: " << ms_double.count() << "ms\n";
-
-  t1 = high_resolution_clock::now();
-  locationsMap.reserve(dateSampleMap.size());
-  pollutantsMap.reserve(dateSampleMap.size());
-  for (const auto& sample : data) {
-    locationsMap[sample.getSamplingPoint().getLabel()].push_back(sample);
-    pollutantsMap[sample.getDeterminand().getLabel()].push_back(sample);
-  }
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "map const: " << ms_double.count() << "ms\n";
+  std::cout << "processing: " << ms_double.count() << "ms\n";
 }
 
 struct sampleCmp {
@@ -117,7 +134,6 @@ std::vector<Sample> QuakeDataset::getLocationSamples(
   }
 }
 
-// TODO: inefficient merge strategy
 std::vector<Sample> QuakeDataset::getLocationSamples(
   const std::set<std::string>& locations) const {
   vector<Sample> samples = {};

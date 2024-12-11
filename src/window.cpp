@@ -1,5 +1,8 @@
 #include "window.hpp"
 
+#include <QFuture>
+#include <QFutureSynchronizer>
+#include <QtConcurrent/QtConcurrent>
 #include <QtWidgets>
 #include <iostream>
 
@@ -33,11 +36,15 @@ void QuakeWindow::update() {
   using std::chrono::milliseconds;
   auto t1 = high_resolution_clock::now();
 
-  pollutantPage->update(&model);
-  popsPage->update(&model);
-  litterPage->update(&model);
-  fluorinatedPage->update(&model);
-  compliancePage->update(&model);
+  QFutureSynchronizer<void> synchronizer;
+
+  synchronizer.addFuture(QtConcurrent::run([this]() {pollutantPage->update(&model);}));
+  synchronizer.addFuture(QtConcurrent::run([this]() {popsPage->update(&model);}));
+  synchronizer.addFuture(QtConcurrent::run([this]() {litterPage->update(&model);}));
+  synchronizer.addFuture(QtConcurrent::run([this]() {fluorinatedPage->update(&model);}));
+  synchronizer.addFuture(QtConcurrent::run([this]() {compliancePage->update(&model);}));
+
+  synchronizer.waitForFinished();
 
   auto t2 = high_resolution_clock::now();
   duration<double, std::milli> ms_double = t2 - t1;
@@ -172,7 +179,7 @@ void QuakeWindow::openCSV() {
   auto path = dataLocation + "/" + filename;
 
   try {
-    model.updateFromFile(path);
+    model.loadData(path.toStdString());
   } catch (const std::exception& error) {
     QMessageBox::critical(this, tr("CSV File Error"), error.what());
     return;

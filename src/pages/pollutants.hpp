@@ -8,7 +8,7 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QScatterSeries>
 
-#include "../data/model.hpp"
+#include "../data/dataset.hpp"
 #include "../window.hpp"
 #include "card.hpp"
 
@@ -19,7 +19,7 @@ class PollutantPage : public QWidget {
 
  public:
   PollutantPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeModel* model);
+  void update(QuakeDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private slots:
@@ -38,6 +38,6 @@ class PollutantPage : public QWidget {
   QValueAxis* axisY;
   QComboBox* pollutantComboBox;
   QComboBox* locationComboBox;
-  QuakeModel* model;
+  QuakeDataset* model;
   OverviewCard* card;
 };

@@ -4,7 +4,7 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QPieSeries>
 
-#include "../data/model.hpp"
+#include "../data/dataset.hpp"
 #include "../window.hpp"
 #include "card.hpp"
 
@@ -13,7 +13,7 @@ class LitterPage : public QWidget {
 
  public:
   LitterPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeModel* model);
+  void update(QuakeDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private:

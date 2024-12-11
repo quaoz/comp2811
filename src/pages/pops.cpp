@@ -86,7 +86,7 @@ POPsPage::POPsPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
           &POPsPage::onDataPointClicked);
 }
 
-void POPsPage::update(QuakeModel* model) {
+void POPsPage::update(QuakeDataset* model) {
   this->model = model;
   locationComboBox->clear();
 

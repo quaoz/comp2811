@@ -22,7 +22,6 @@
 #include <QWidget>
 #include <QtWidgets>
 
-#include "../data/model.hpp"
 #include "../data/dataset.hpp"
 
 class QMenu;
@@ -32,7 +31,7 @@ class ComplianceDashboard : public QWidget {
 
  public:
   ComplianceDashboard(QWidget *parent = nullptr);
-  void update(QuakeModel *model);
+  void update(QuakeDataset *model);
 
  private slots:
   void filterComplianceData();
@@ -58,7 +57,7 @@ class ComplianceDashboard : public QWidget {
   QComboBox *colorFilter;  // Filter by compliance status color
   QLabel
     *nonCompliantSummary;  // Label to display summary of non-compliant sites
-  QuakeModel *model;
+  QuakeDataset *model;
 
   QTranslator translator;
 };

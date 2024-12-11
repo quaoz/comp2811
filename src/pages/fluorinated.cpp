@@ -87,7 +87,7 @@ FluorinatedPage::FluorinatedPage(QuakeWindow* window, QWidget* parent)
           &FluorinatedPage::onDataPointClicked);
 }
 
-void FluorinatedPage::update(QuakeModel* model) {
+void FluorinatedPage::update(QuakeDataset* model) {
   this->model = model;
   locationComboBox->clear();
 

@@ -31,7 +31,7 @@ LitterPage::LitterPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
   setLayout(layout);
 }
 
-void LitterPage::update(QuakeModel* model) {
+void LitterPage::update(QuakeDataset* model) {
   locationSeries->clear();
   waterBodySeries->clear();
 

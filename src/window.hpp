@@ -3,7 +3,7 @@
 #include <QMainWindow>
 #include <QTabWidget>
 
-#include "data/model.hpp"
+#include "data/dataset.hpp"
 #include "pages/card.hpp"
 #include "pages/compliance.hpp"
 #include "pages/dashboard.hpp"
@@ -39,7 +39,7 @@ class QuakeWindow : public QMainWindow {
   void createTabBar();
   void update();
 
-  QuakeModel model;         // data model used by table
+  QuakeDataset model;         // data model used by table
   QString dataLocation;     // location of CSV data files
   QComboBox* period;        // selector for quake feed time period
   QPushButton* loadButton;  // button to load a new CSV file

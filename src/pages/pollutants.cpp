@@ -83,7 +83,7 @@ PollutantPage::PollutantPage(QuakeWindow* window, QWidget* parent)
           &PollutantPage::onDataPointClicked);
 }
 
-void PollutantPage::update(QuakeModel* model) {
+void PollutantPage::update(QuakeDataset* model) {
   this->model = model;
   pollutantComboBox->clear();
   locationComboBox->clear();
@@ -97,7 +97,7 @@ void PollutantPage::update(QuakeModel* model) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
 
-  int sampleCount = model->rowCount(QModelIndex());
+  int sampleCount = model->size();
   card->updateCard(sampleCount);
 
   filter();
