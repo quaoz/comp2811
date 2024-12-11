@@ -36,15 +36,26 @@ void WaterQalWindow::update() {
   using std::chrono::milliseconds;
   auto t1 = high_resolution_clock::now();
 
-  QFutureSynchronizer<void> synchronizer;
+  //QFutureSynchronizer<void> synchronizer;
 
-  synchronizer.addFuture(QtConcurrent::run([this]() {pollutantPage->update(&model);}));
-  synchronizer.addFuture(QtConcurrent::run([this]() {popsPage->update(&model);}));
-  synchronizer.addFuture(QtConcurrent::run([this]() {litterPage->update(&model);}));
-  synchronizer.addFuture(QtConcurrent::run([this]() {fluorinatedPage->update(&model);}));
-  synchronizer.addFuture(QtConcurrent::run([this]() {compliancePage->update(&model);}));
+  //synchronizer.addFuture(
+  //  QtConcurrent::run([this]() { pollutantPage->update(&model); }));
+  //synchronizer.addFuture(
+  //  QtConcurrent::run([this]() { popsPage->update(&model); }));
+  //synchronizer.addFuture(
+  //  QtConcurrent::run([this]() { litterPage->update(&model); }));
+  //synchronizer.addFuture(
+  //  QtConcurrent::run([this]() { fluorinatedPage->update(&model); }));
+  //synchronizer.addFuture(
+  //  QtConcurrent::run([this]() { compliancePage->update(&model); }));
 
-  synchronizer.waitForFinished();
+  //synchronizer.waitForFinished();
+
+  pollutantPage->update(&model);
+  popsPage->update(&model);
+  litterPage->update(&model);
+  fluorinatedPage->update(&model);
+  compliancePage->update(&model);
 
   auto t2 = high_resolution_clock::now();
   duration<double, std::milli> ms_double = t2 - t1;
