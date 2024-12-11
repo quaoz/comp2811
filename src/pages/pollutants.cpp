@@ -50,8 +50,9 @@ void PollutantPage::update(WaterQalDataset* model) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
 
-  int sampleCount = model->size();
-  card->updateCard(sampleCount, model->getLocations().size());
+  //TODO: doesnt filter pollutants or locations
+  std::vector<Sample> samples = model->getSamples();
+  card->updateCard(samples.size(), model->getLocations().size());
 
   filter();
 }

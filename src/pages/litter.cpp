@@ -3,6 +3,10 @@
 #include <QtWidgets>
 #include <vector>
 
+// TODO filters and tooltips
+// TODO translation
+// TODO contrast
+
 LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
   card = new OverviewCard(

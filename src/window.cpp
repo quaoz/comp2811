@@ -26,7 +26,9 @@ WaterQalWindow::WaterQalWindow() : QMainWindow() {
   createTabBar();
 
   setMinimumWidth(MIN_WIDTH);
-  setWindowTitle(tr("WaterQal Tool"));  // TODO change no more quake tool
+  setWindowTitle(tr("WaterQal Tool"));  // TODO change no more waterqal tool
+
+  connect(&model, &WaterQalDataset::dataChanged, this, &WaterQalWindow::update);
 }
 
 void WaterQalWindow::update() {
@@ -56,6 +58,7 @@ void WaterQalWindow::update() {
   litterPage->update(&model);
   fluorinatedPage->update(&model);
   compliancePage->update(&model);
+  mainDashboardPage->update(&model);
 
   auto t2 = high_resolution_clock::now();
   duration<double, std::milli> ms_double = t2 - t1;

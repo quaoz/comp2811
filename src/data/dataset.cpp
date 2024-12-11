@@ -113,6 +113,11 @@ void WaterQalDataset::loadData(const string& filename) {
 
   synchronizer.waitForFinished();
 
+  minDate = data.at(data.size() - 1).getSampleDateTime();
+  maxDate = data.at(0).getSampleDateTime();
+  startDate = minDate;
+  endDate = maxDate;
+
   t2 = high_resolution_clock::now();
   ms_double = t2 - t1;
   std::cout << "processing: " << ms_double.count() << "ms\n";
@@ -128,7 +133,7 @@ std::vector<Sample> WaterQalDataset::getLocationSamples(
   const std::string& location) const {
   auto it = locationsMap.find(location);
   if (it != locationsMap.end()) {
-    return it->second;
+    return this->mask(it->second);
   } else {
     return {};
   }
@@ -146,14 +151,14 @@ std::vector<Sample> WaterQalDataset::getLocationSamples(
     samples.swap(temp);
   }
 
-  return samples;
+  return this->mask(samples);
 }
 
 std::vector<Sample> WaterQalDataset::getPollutantSamples(
   const std::string& pollutant) const {
   auto it = pollutantsMap.find(pollutant);
   if (it != pollutantsMap.end()) {
-    return it->second;
+    return this->mask(it->second);
   } else {
     return {};
   }
@@ -171,7 +176,33 @@ std::vector<Sample> WaterQalDataset::getPollutantSamples(
     samples.swap(temp);
   }
 
-  return samples;
+  return this->mask(samples);
+}
+
+void WaterQalDataset::setDataMask(const std::string& startDate,
+                                  const std::string& endDate) {
+  this->startDate = startDate;
+  this->endDate = endDate;
+  emit dataChanged();
+}
+
+void WaterQalDataset::resetDataMask() {
+  this->startDate = minDate;
+  this->endDate = maxDate;
+  emit dataChanged();
+}
+
+std::vector<Sample> WaterQalDataset::mask(std::vector<Sample> samples) const {
+  std::vector<Sample> maskedSamples;
+
+  for (const auto& sample : samples) {
+    if (sample.getSampleDateTime() >= startDate &&
+        sample.getSampleDateTime() <= endDate) {
+      maskedSamples.push_back(sample);
+    }
+  }
+
+  return maskedSamples;
 }
 
 void WaterQalDataset::checkDataExists() const {
