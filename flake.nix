@@ -62,6 +62,7 @@
             qt6.qtlocation
             qt6.qtpositioning
             qt6.qtmultimedia
+            qt6.qttools
           ];
         };
       }

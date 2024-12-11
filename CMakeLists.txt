@@ -17,7 +17,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Charts LinguistTools)
 
-set(TS_FILES quaketool_en.ts quaketool_fr.ts)
+set(TS_FILES waterqaltool.ts waterqaltool_fr.ts)
 
 qt_standard_project_setup()
 
@@ -35,7 +35,7 @@ qt_add_executable(
   src/pages/card.cpp
   src/pages/timeseries.cpp)
 
-qt_add_translations(waterqaltool TS_FILES quaketool_fr.ts quaketool_en.ts)
+qt_add_translations(waterqaltool TS_FILES waterqaltool_fr.ts waterqaltool_en.ts)
 
 target_link_libraries(waterqaltool PRIVATE Qt6::Widgets Qt6::Charts)
 
