@@ -2,9 +2,11 @@
 
 #include <QLegendMarker>
 #include <QtWidgets>
-#include <vector>
 
-FluorinatedPage::FluorinatedPage(QWidget* parent) : QWidget(parent) {
+FluorinatedPage::FluorinatedPage(QuakeWindow* window, QWidget* parent)
+  : QWidget(parent) {
+  card = new OverviewCard("Fluorinated Compounds Overview", 4, window);
+
   series = new QLineSeries();
   redSeries = new QScatterSeries();
   yellowSeries = new QScatterSeries();
@@ -89,11 +91,13 @@ void FluorinatedPage::update(QuakeModel* model) {
   this->model = model;
   locationComboBox->clear();
 
-  // TODO: clone combo box from construction maybe???
   locationComboBox->addItem("All Locations");
   for (const auto& location : model->getLocations()) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
+
+  int sampleCount = model->getPollutantSamples(fluorinatedCompounds).size();
+  card->updateCard(sampleCount);
 
   filter();
 }
@@ -115,11 +119,9 @@ void FluorinatedPage::filter() {
   double greenBoundary;
   QDateTime minDateTime;
   QDateTime maxDateTime;
-
   bool firstSample = true;
 
   auto samples = model->getPollutantSamples(selectedCompound.toStdString());
-
   for (const auto& sample : samples) {
     if (selectedLocation.toStdString() == "All Locations" ||
         sample.getSamplingPoint().getLabel() ==

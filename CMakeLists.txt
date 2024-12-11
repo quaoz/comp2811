@@ -32,7 +32,8 @@ qt_add_executable(
   src/pages/pollutants.cpp
   src/pages/compliance.cpp
   src/pages/fluorinated.cpp
-  src/pages/dashboard.cpp)
+  src/pages/dashboard.cpp
+  src/pages/card.cpp)
 
 qt_add_translations(quaketool TS_FILES quaketool_fr.ts quaketool_en.ts)
 

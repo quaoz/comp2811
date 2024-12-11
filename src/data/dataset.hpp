@@ -2,6 +2,7 @@
 
 #include <map>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 #include "sample.hpp"
@@ -26,9 +27,7 @@ class QuakeDataset {
   std::vector<Sample> data;
   std::set<std::string> locations;
   std::set<std::string> pollutants;
-  std::map<std::string, std::vector<Sample>, std::greater<std::string>>
-    locationsMap;
-  std::map<std::string, std::vector<Sample>, std::greater<std::string>>
-    pollutantsMap;
+  std::unordered_map<std::string, std::vector<Sample>> locationsMap;
+  std::unordered_map<std::string, std::vector<Sample>> pollutantsMap;
   void checkDataExists() const;
 };

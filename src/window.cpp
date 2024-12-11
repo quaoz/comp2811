@@ -3,6 +3,14 @@
 #include <QtWidgets>
 #include <iostream>
 
+#include "pages/card.hpp"
+#include "pages/compliance.hpp"
+#include "pages/dashboard.hpp"
+#include "pages/fluorinated.hpp"
+#include "pages/litter.hpp"
+#include "pages/pollutants.hpp"
+#include "pages/pops.hpp"
+
 static const int MIN_WIDTH = 620;
 
 QuakeWindow::QuakeWindow() : QMainWindow() {
@@ -26,94 +34,35 @@ void QuakeWindow::update() {
   auto t1 = high_resolution_clock::now();
 
   pollutantPage->update(&model);
+  popsPage->update(&model);
+  litterPage->update(&model);
+  fluorinatedPage->update(&model);
+  compliancePage->update(&model);
 
   auto t2 = high_resolution_clock::now();
   duration<double, std::milli> ms_double = t2 - t1;
-  std::cout << "pollutant: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  popsPage->update(&model);
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "pops: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  litterPage->update(&model);
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "litter: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  fluorinatedPage->update(&model);
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "fluor: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  compliancePage->update(&model);
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "comp: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  PCBCard->updateCard(&model, "PCB");
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "pcb card: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  litterCard->updateCard(&model, "BWP - O.L.");
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "litter card: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  fluoroCard->updateCard(&model, "Fluoro");
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "fluro card: " << ms_double.count() << "ms\n";
-  t1 = high_resolution_clock::now();
-
-  mainDashboardPage->update(&model, PCBCard, litterCard, fluoroCard);
-
-  t2 = high_resolution_clock::now();
-  ms_double = t2 - t1;
-  std::cout << "main: " << ms_double.count() << "ms\n";
+  std::cout << "updates: " << ms_double.count() << "ms\n";
 }
 
 void QuakeWindow::createTabBar() {
   tabWidget = new QTabWidget();
 
-  PCBCard = new overviewCard(tr("PCBs compounds overview"), *tabWidget, this);
-  litterCard =
-    new overviewCard(tr("Environmental litter overview"), *tabWidget, this);
-  fluoroCard =
-    new overviewCard(tr("Fluorinated compounds overview"), *tabWidget, this);
-
-  mainDashboardPage = new MainDashboardPage(this);
-  tabWidget->addTab(mainDashboardPage, tr("Dashboard"));
-
   pollutantPage = new PollutantPage(this);
-  tabWidget->addTab(pollutantPage, tr("Polutant Overview"));
-
   popsPage = new POPsPage(this);
-  tabWidget->addTab(popsPage, tr("Persistent Organic Pollutants"));
-
   litterPage = new LitterPage(this);
-  tabWidget->addTab(litterPage, tr("Environmental Litter Indicators"));
-
   fluorinatedPage = new FluorinatedPage(this);
-  tabWidget->addTab(fluorinatedPage, tr("Fluorinated Compounds"));
-
   compliancePage = new ComplianceDashboard(this);
+  mainDashboardPage = new MainDashboardPage(
+    pollutantPage->getCard(), popsPage->getCard(), litterPage->getCard(),
+    fluorinatedPage->getCard(), this);
+
+  tabWidget->addTab(mainDashboardPage, tr("Dashboard"));
+  tabWidget->addTab(pollutantPage, tr("Polutant Overview"));
+  tabWidget->addTab(popsPage, tr("Persistent Organic Pollutants"));
+  tabWidget->addTab(litterPage, tr("Environmental Litter Indicators"));
+  tabWidget->addTab(fluorinatedPage, tr("Fluorinated Compounds"));
   tabWidget->addTab(compliancePage, tr("Compliance Dashboard"));
+
 
   update();
   setCentralWidget(tabWidget);
@@ -165,7 +114,6 @@ void QuakeWindow::createToolBar() {
   toolBar->addWidget(period);
 
   toolBar->addSeparator();
-
   toolBar->addWidget(loadButton);
 
   addToolBar(Qt::LeftToolBarArea, toolBar);

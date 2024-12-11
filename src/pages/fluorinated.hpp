@@ -7,16 +7,18 @@
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QScatterSeries>
-#include <set>
 
 #include "../data/model.hpp"
+#include "../window.hpp"
+#include "card.hpp"
 
 class FluorinatedPage : public QWidget {
   Q_OBJECT
 
  public:
-  FluorinatedPage(QWidget* parent = nullptr);
+  FluorinatedPage(QuakeWindow* window, QWidget* parent = nullptr);
   void update(QuakeModel* model);
+  OverviewCard* getCard() const { return card; }
 
  private slots:
   void onComboBoxChanged();
@@ -35,6 +37,7 @@ class FluorinatedPage : public QWidget {
   QComboBox* locationComboBox;
   QComboBox* fluorinatedComboBox;
   QuakeModel* model;
+  OverviewCard* card;
   std::set<std::string> const fluorinatedCompounds = {
     "11Cl-PF3OUdS", "3:3 FTCA",     "4:2 FTSA",     "5:3 FTCA",
     "6:2 FTSA",     "7:3 FTCA",     "8:2 FTSA",     "9Cl-PF3ONS",

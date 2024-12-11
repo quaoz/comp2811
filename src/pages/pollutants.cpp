@@ -1,10 +1,12 @@
 #include "pollutants.hpp"
 
-#include <QDateTime>
 #include <QLegendMarker>
 #include <QtWidgets>
 
-PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
+PollutantPage::PollutantPage(QuakeWindow* window, QWidget* parent)
+  : QWidget(parent) {
+  card = new OverviewCard("Pollutants Overview", 1, window);
+
   series = new QLineSeries();
   redSeries = new QScatterSeries();
   yellowSeries = new QScatterSeries();
@@ -94,6 +96,9 @@ void PollutantPage::update(QuakeModel* model) {
   for (const auto& location : model->getLocations()) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
+
+  int sampleCount = model->rowCount(QModelIndex());
+  card->updateCard(sampleCount);
 
   filter();
 }

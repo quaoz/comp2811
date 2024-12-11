@@ -7,7 +7,6 @@
 #include <numeric>
 #include <queue>
 #include <stdexcept>
-#include <unordered_map>
 #include <vector>
 
 #include "csv.hpp"
@@ -91,6 +90,8 @@ void QuakeDataset::loadData(const string& filename) {
   std::cout << "pq drain: " << ms_double.count() << "ms\n";
 
   t1 = high_resolution_clock::now();
+  locationsMap.reserve(dateSampleMap.size());
+  pollutantsMap.reserve(dateSampleMap.size());
   for (const auto& sample : data) {
     locationsMap[sample.getSamplingPoint().getLabel()].push_back(sample);
     pollutantsMap[sample.getDeterminand().getLabel()].push_back(sample);

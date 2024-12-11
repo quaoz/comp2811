@@ -4,6 +4,7 @@
 #include <QTabWidget>
 
 #include "data/model.hpp"
+#include "pages/card.hpp"
 #include "pages/compliance.hpp"
 #include "pages/dashboard.hpp"
 #include "pages/fluorinated.hpp"
@@ -16,11 +17,17 @@ class QComboBox;
 class QLabel;
 class QPushButton;
 
+class PollutantPage;
+class POPsPage;
+class LitterPage;
+class FluorinatedPage;
+
 class QuakeWindow : public QMainWindow {
   Q_OBJECT
 
  public:
   QuakeWindow();
+  void switchTab(int index) const { tabWidget->setCurrentIndex(index); }
 
  private:
   void createFileSelectors();
@@ -45,10 +52,6 @@ class QuakeWindow : public QMainWindow {
   POPsPage* popsPage;
   FluorinatedPage* fluorinatedPage;
   MainDashboardPage* mainDashboardPage;
-
-  overviewCard* PCBCard;
-  overviewCard* litterCard;
-  overviewCard* fluoroCard;
 
  private slots:
   void setDataLocation();

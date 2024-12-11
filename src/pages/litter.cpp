@@ -3,7 +3,9 @@
 #include <QtWidgets>
 #include <vector>
 
-LitterPage::LitterPage(QWidget* parent) : QWidget(parent) {
+LitterPage::LitterPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
+  card = new OverviewCard("Environmental Litter Overview", 3, window);
+
   locationSeries = new QPieSeries();
   waterBodySeries = new QPieSeries();
 
@@ -32,6 +34,9 @@ LitterPage::LitterPage(QWidget* parent) : QWidget(parent) {
 void LitterPage::update(QuakeModel* model) {
   locationSeries->clear();
   waterBodySeries->clear();
+
+  int sampleCount = model->getPollutantSamples("BWP - O.L.").size();
+  card->updateCard(sampleCount);
 
   std::vector<Sample> samples = model->getPollutantSamples("BWP - O.L.");
 

@@ -9,6 +9,8 @@
 #include <QtCharts/QScatterSeries>
 
 #include "../data/model.hpp"
+#include "../window.hpp"
+#include "card.hpp"
 
 class QTableView;
 
@@ -16,8 +18,9 @@ class PollutantPage : public QWidget {
   Q_OBJECT
 
  public:
-  PollutantPage(QWidget* parent = nullptr);
+  PollutantPage(QuakeWindow* window, QWidget* parent = nullptr);
   void update(QuakeModel* model);
+  OverviewCard* getCard() const { return card; }
 
  private slots:
   void onComboBoxChanged();
@@ -36,4 +39,5 @@ class PollutantPage : public QWidget {
   QComboBox* pollutantComboBox;
   QComboBox* locationComboBox;
   QuakeModel* model;
+  OverviewCard* card;
 };

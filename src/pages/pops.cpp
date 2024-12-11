@@ -3,7 +3,9 @@
 #include <QLegendMarker>
 #include <QtWidgets>
 
-POPsPage::POPsPage(QWidget* parent) : QWidget(parent) {
+POPsPage::POPsPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
+  card = new OverviewCard("Persistent Organic Pollutants", 2, window);
+
   series = new QLineSeries();
   redSeries = new QScatterSeries();
   yellowSeries = new QScatterSeries();
@@ -92,6 +94,9 @@ void POPsPage::update(QuakeModel* model) {
   for (const auto& location : model->getLocations()) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
+
+  int sampleCount = model->getPollutantSamples(pcbs).size();
+  card->updateCard(sampleCount);
 
   filter();
 }
