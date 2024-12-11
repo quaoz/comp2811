@@ -82,41 +82,41 @@ Required Libraries
 ## File Structure
 
 
-comp2811-matthew/
-├── CMakeLists.txt
-├── README.md
-├── data/
-│   ├── Y-2024.csv
-├── src/
-│   ├── data/
-│   │   ├── dataset.cpp
-│   │   ├── dataset.hpp
-│   │   ├── model.cpp
-│   │   ├── model.hpp
-│   │   └── csv.hpp
-│   ├── pages/
-│   │   
-│   │   ├── compliance.cpp
-│   │   ├── compliance.hpp
-│   │   ├── dashboard.cpp
-│   │   ├── dashboard.hpp
-│   │   ├── litter.cpp
-│   │   ├── litter.hpp
-│   │   ├── pollutants.cpp
-│   │   ├── pollutants.hpp
-│   │   ├── pops.cpp
-│   │   ├── pops.hpp
-│   │   ├── fluorinated.cpp
-│   │   ├── fluorinated.hpp
-│   │   ├──card.cpp
-│   │   ├──card.hpp
-│   ├── window.cpp
-│   ├── window.hpp
-│   ├── main.cpp
-├── waterqaltool_en.ts     # English translations
-├── waterqaltool_fr.ts     # French translations
-├── waterqaltool_en.qm     # Compiled English translations
-├── waterqaltool_fr.qm     # Compiled French translations
+comp2811-matthew/  
+├── CMakeLists.txt  
+├── README.md  
+├── data/  
+│   ├── Y-2024.csv  
+├── src/  
+│   ├── data/  
+│   │   ├── dataset.cpp  
+│   │   ├── dataset.hpp  
+│   │   ├── model.cpp  
+│   │   ├── model.hpp  
+│   │   └── csv.hpp  
+│   ├── pages/  
+│   │     
+│   │   ├── compliance.cpp  
+│   │   ├── compliance.hpp  
+│   │   ├── dashboard.cpp  
+│   │   ├── dashboard.hpp  
+│   │   ├── litter.cpp  
+│   │   ├── litter.hpp  
+│   │   ├── pollutants.cpp  
+│   │   ├── pollutants.hpp  
+│   │   ├── pops.cpp  
+│   │   ├── pops.hpp  
+│   │   ├── fluorinated.cpp  
+│   │   ├── fluorinated.hpp  
+│   │   ├──card.cpp  
+│   │   ├──card.hpp  
+│   ├── window.cpp  
+│   ├── window.hpp  
+│   ├── main.cpp  
+├── waterqaltool_en.ts     # English translations  
+├── waterqaltool_fr.ts     # French translations  
+├── waterqaltool_en.qm     # Compiled English translations  
+├── waterqaltool_fr.qm     # Compiled French translations  
 
 ## Known Issues
  1. Translation Updates: If new user-visible strings are added, .ts files must be updated and recompiled.
