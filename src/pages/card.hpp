@@ -14,10 +14,11 @@ class CardPopUp : public QDialog {
 
  public:
   CardPopUp(const QString& title, const QString& description,
-            QWidget* parent = nullptr);
+            const QString& secondaryText, QWidget* parent = nullptr);
   void updatePopUp(int sampleCount, int secondary);
 
  private:
+  QString secondaryText;
   QLabel* countLabel;
   QLabel* secondaryLabel;
 };
@@ -26,7 +27,8 @@ class OverviewCard : public QFrame {
   Q_OBJECT
 
  public:
-  OverviewCard(const QString& title, const QString& description, int tabID,
+  OverviewCard(const QString& title, const QString& description,
+               const QString& secondaryText, int tabID,
                WaterQalWindow* windowInstance, QWidget* parent = nullptr);
   void updateCard(int sampleCount, int secondary);
   void showPopUp();
@@ -36,6 +38,7 @@ class OverviewCard : public QFrame {
   WaterQalWindow* windowInstance;
   int tabID;
 
+  QString secondaryText;
   CardPopUp* popUp;
   QLabel* countLabel;
   QLabel* secondaryLabel;

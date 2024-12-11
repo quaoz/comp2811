@@ -12,7 +12,7 @@ LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
     "ecosystems. Some compounds that cannot decompose persist for many years, "
     "and toxic substances can contaminate groundwater, affecting drinking "
     "water and agriculture.",
-    3, window);
+    "Number of locations: %1", 3, window);
 
   locationSeries = new QPieSeries();
   waterBodySeries = new QPieSeries();
@@ -54,10 +54,7 @@ void LitterPage::update(WaterQalDataset* model) {
   locationSeries->clear();
   waterBodySeries->clear();
 
-  int sampleCount = model->getPollutantSamples("BWP - O.L.").size();
-  card->updateCard(sampleCount, 0);
-
-  std::vector<Sample> samples = model->getPollutantSamples("BWP - O.L.");
+  auto samples = model->getPollutantSamples("BWP - O.L.");
 
   std::map<std::string, int> locationCount;
   std::map<std::string, int> waterBodyCount;
@@ -73,4 +70,6 @@ void LitterPage::update(WaterQalDataset* model) {
   for (const auto& entry : waterBodyCount) {
     waterBodySeries->append(entry.first.c_str(), entry.second);
   }
+
+  card->updateCard(samples.size(), locationSeries->slices().size());
 }

@@ -2,6 +2,7 @@
 
 #include <QLegendMarker>
 #include <QtWidgets>
+#include <set>
 
 FluorinatedPage::FluorinatedPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
@@ -12,7 +13,7 @@ FluorinatedPage::FluorinatedPage(WaterQalWindow* window, QWidget* parent)
     "various products like non-stick coatings and fire-fighting foams, but "
     "they persist in the environment and can contaminate water, soil, and "
     "wildlife, posing health risks."),
-    4, window);
+    "Number of locations: %1", 4, window);
 
   chart = new TimeSeries(tr("Fluorinated Compounds"), this);
 
@@ -46,13 +47,19 @@ void FluorinatedPage::update(WaterQalDataset* model) {
   this->model = model;
   locationComboBox->clear();
 
+  auto samples = model->getPollutantSamples(fluorinatedCompounds);
+
+  std::set<std::string> locations;
+  for (const auto& sample : samples) {
+    locations.insert(sample.getSamplingPoint().getLabel());
+  }
+
   locationComboBox->addItem(tr("All Locations"));
-  for (const auto& location : model->getLocations()) {
+  for (const auto& location : locations) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
 
-  int sampleCount = model->getPollutantSamples(fluorinatedCompounds).size();
-  card->updateCard(sampleCount, 0);
+  card->updateCard(samples.size(), locations.size());
 
   filter();
 }

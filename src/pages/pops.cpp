@@ -2,6 +2,7 @@
 
 #include <QLegendMarker>
 #include <QtWidgets>
+#include <set>
 
 #include "timeseries.hpp"
 
@@ -12,7 +13,7 @@ POPsPage::POPsPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
     "persist in the environment and accumulate in living organisms. PCBs were "
     "used widely in electrical equipment and bind strongly to soil and "
     "sediment, causing pollution to the environment."),
-    2, window);
+    "Number of locations: %1", 2, window);
 
   chart = new TimeSeries(tr("Persistent Organic Pollutants"));
 
@@ -46,13 +47,19 @@ void POPsPage::update(WaterQalDataset* model) {
   this->model = model;
   locationComboBox->clear();
 
+  auto samples = model->getPollutantSamples(pcbs);
+
+  std::set<std::string> locations;
+  for (const auto& sample : samples) {
+    locations.insert(sample.getSamplingPoint().getLabel());
+  }
+
   locationComboBox->addItem("All Locations");
-  for (const auto& location : model->getLocations()) {
+  for (const auto& location : locations) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
 
-  int sampleCount = model->getPollutantSamples(pcbs).size();
-  card->updateCard(sampleCount, 0);
+  card->updateCard(samples.size(), locations.size());
 
   filter();
 }

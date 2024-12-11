@@ -6,8 +6,8 @@
 #include "../window.hpp"
 
 CardPopUp::CardPopUp(const QString& title, const QString& description,
-                     QWidget* parent)
-  : QDialog(parent) {
+                     const QString& secondaryText, QWidget* parent)
+  : secondaryText(secondaryText), QDialog(parent) {
   setWindowTitle("Persistent Organic Pollutants Overview");
 
   QLabel* descriptionLabel = new QLabel(description);
@@ -18,7 +18,7 @@ CardPopUp::CardPopUp(const QString& title, const QString& description,
   countLabel = new QLabel(QString("Number of samples: 0"));
   countLabel->setAlignment(Qt::AlignCenter);
 
-  secondaryLabel = new QLabel(QString("Mean of samples: 0"));
+  secondaryLabel = new QLabel(secondaryText.arg(0));
   secondaryLabel->setAlignment(Qt::AlignCenter);
 
   QVBoxLayout* layout = new QVBoxLayout(this);
@@ -31,13 +31,16 @@ CardPopUp::CardPopUp(const QString& title, const QString& description,
 
 void CardPopUp::updatePopUp(int sampleCount, int secondary) {
   countLabel->setText(QString("Number of samples: %1").arg(sampleCount));
-  secondaryLabel->setText(QString("Mean of samples: %1").arg(secondary));
+  secondaryLabel->setText(secondaryText.arg(secondary));
 }
 
 OverviewCard::OverviewCard(const QString& title, const QString& description,
-                           int tabID, WaterQalWindow* windowInstance,
-                           QWidget* parent)
-  : tabID(tabID), windowInstance(windowInstance), QFrame(parent) {
+                           const QString& secondaryText, int tabID,
+                           WaterQalWindow* windowInstance, QWidget* parent)
+  : secondaryText(secondaryText),
+    tabID(tabID),
+    windowInstance(windowInstance),
+    QFrame(parent) {
   // Set up the card's appearance
   setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
   setLineWidth(2);
@@ -52,7 +55,7 @@ OverviewCard::OverviewCard(const QString& title, const QString& description,
     "  background-color: #f0f8ff;"
     "}");
 
-  popUp = new CardPopUp(title, description, this);
+  popUp = new CardPopUp(title, description, secondaryText, this);
 
   // Layout for the card
   QVBoxLayout* layout = new QVBoxLayout(this);
@@ -71,7 +74,7 @@ OverviewCard::OverviewCard(const QString& title, const QString& description,
   countLabel = new QLabel(QString("Number of samples: 0"));
   countLabel->setAlignment(Qt::AlignCenter);
 
-  secondaryLabel = new QLabel(QString("Mean of samples: 0"));
+  secondaryLabel = new QLabel(secondaryText.arg(0));
   secondaryLabel->setAlignment(Qt::AlignCenter);
 
   QPushButton* actionButton = new QPushButton("View more", this);
@@ -89,7 +92,7 @@ OverviewCard::OverviewCard(const QString& title, const QString& description,
 
 void OverviewCard::updateCard(int sampleCount, int secondary) {
   countLabel->setText(QString("Number of samples: %1").arg(sampleCount));
-  secondaryLabel->setText(QString("Mean of samples: %1").arg(secondary));
+  secondaryLabel->setText(secondaryText.arg(secondary));
   popUp->updatePopUp(sampleCount, secondary);
 }
 
