@@ -39,7 +39,7 @@ class WaterQalWindow : public QMainWindow {
   void createTabBar();
   void update();
 
-  WaterQalDataset model;         // data model used by table
+  WaterQalDataset model;    // data model used by table
   QString dataLocation;     // location of CSV data files
   QComboBox* period;        // selector for waterqal feed time period
   QPushButton* loadButton;  // button to load a new CSV file

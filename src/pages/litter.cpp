@@ -3,7 +3,8 @@
 #include <QtWidgets>
 #include <vector>
 
-LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
+LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
+  : QWidget(parent) {
   card = new OverviewCard("Environmental Litter Overview", 3, window);
 
   locationSeries = new QPieSeries();
