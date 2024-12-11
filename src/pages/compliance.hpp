@@ -23,6 +23,7 @@
 #include <QtWidgets>
 
 #include "../data/model.hpp"
+#include "../data/dataset.hpp"
 
 class QMenu;
 

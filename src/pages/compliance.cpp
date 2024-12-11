@@ -39,9 +39,9 @@ void ComplianceDashboard::setupUI() {
     new QPushButton(tr("Compliance Dashboard"), this);
 
   languageSelector = new QComboBox(this);
-  languageSelector->addItem("English", "en");
-  languageSelector->addItem("French", "fr");
-  languageSelector->addItem("German", "de");
+  languageSelector->addItem(tr("English", "en"));
+  languageSelector->addItem(tr("French", "fr"));
+  languageSelector->addItem(tr("German", "de"));
 
   connect(languageSelector, &QComboBox::currentTextChanged, this,
           &ComplianceDashboard::changeLanguage);
@@ -61,14 +61,14 @@ void ComplianceDashboard::setupUI() {
   timeRangeFilter = new QComboBox(this);
   colorFilter = new QComboBox(this);
 
-  locationFilter->addItem("All Locations");
-  pollutantFilter->addItem("All Pollutants");
-  timeRangeFilter->addItem("Last Month");
-  timeRangeFilter->addItem("Last Year");
-  colorFilter->addItem("All Statuses");  // Default filter for colors
-  colorFilter->addItem("Compliant");
-  colorFilter->addItem("Non-Compliant");
-  colorFilter->addItem("Near Limit");
+  locationFilter->addItem(tr("All Locations"));
+  pollutantFilter->addItem(tr("All Pollutants"));
+  timeRangeFilter->addItem(tr("Last Month"));
+  timeRangeFilter->addItem(tr("Last Year"));
+  colorFilter->addItem(tr("All Statuses"));  // Default filter for colors
+  colorFilter->addItem(tr("Compliant"));
+  colorFilter->addItem(tr("Non-Compliant"));
+  colorFilter->addItem(tr("Near Limit"));
 
   connect(locationFilter, &QComboBox::currentTextChanged, this,
           &ComplianceDashboard::filterComplianceData);
@@ -142,13 +142,13 @@ void ComplianceDashboard::update(QuakeModel *model) {
   for (const auto &location : model->getLocations()) {
     locationFilter->addItem(QString::fromStdString(location));
   }
-  locationFilter->addItem("All Locations");
+  locationFilter->addItem(tr("All Locations"));
 
   // pollutantFilter->addItem("All Pollutants");
   for (const auto &pollutants : model->getPollutants()) {
     pollutantFilter->addItem(QString::fromStdString(pollutants));
   }
-  pollutantFilter->addItem("All Pollutants");
+  pollutantFilter->addItem(tr("All Pollutants"));
 
   filterComplianceData();
 }
@@ -161,7 +161,7 @@ void ComplianceDashboard::filterComplianceData() {
   complianceTable->setRowCount(0);
   int nonCompliantCount = 0;        // Counter for non-compliant sites
   QStringList nonCompliantDetails;  // List to store non-compliant site details
-  QString options[3] = {"Compliant", "Non-Compliant", "Near Limit"};
+  QString options[3] = {tr("Compliant"), tr("Non-Compliant"), tr("Near Limit")};
 
   std::vector<Sample> samples = {};
 
@@ -225,7 +225,7 @@ void ComplianceDashboard::filterComplianceData() {
       }
       complianceTable->setItem(row, 2, statusItem);
 
-      complianceTable->setItem(row, 3, new QTableWidgetItem("Details"));
+      complianceTable->setItem(row, 3, new QTableWidgetItem(tr("Details")));
     }
   }
 

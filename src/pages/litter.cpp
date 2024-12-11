@@ -9,7 +9,7 @@ LitterPage::LitterPage(QWidget* parent) : QWidget(parent) {
 
   QChart* locationChart = new QChart();
   locationChart->addSeries(locationSeries);
-  locationChart->setTitle("Litter Samples per Location");
+  locationChart->setTitle(tr("Litter Samples per Location"));
   locationChart->legend()->setAlignment(Qt::AlignLeft);
 
   QChartView* locationChartView = new QChartView(locationChart);
@@ -17,7 +17,7 @@ LitterPage::LitterPage(QWidget* parent) : QWidget(parent) {
 
   QChart* waterBodyChart = new QChart();
   waterBodyChart->addSeries(waterBodySeries);
-  waterBodyChart->setTitle("Litter Samples per Water Body Type");
+  waterBodyChart->setTitle(tr("Litter Samples per Water Body Type"));
   waterBodyChart->legend()->setAlignment(Qt::AlignLeft);
 
   QChartView* waterBodyChartView = new QChartView(waterBodyChart);

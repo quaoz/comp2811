@@ -27,21 +27,21 @@ PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
   chart->addSeries(redSeries);
   chart->addSeries(yellowSeries);
   chart->addSeries(greenSeries);
-  chart->setTitle("Pollutant Overview");
+  chart->setTitle(tr("Pollutant Overview"));
 
   chart->legend()->setVisible(true);
   chart->legend()->setAlignment(Qt::AlignBottom);
-  chart->legend()->markers()[0]->setLabel("Sample Data");
-  chart->legend()->markers()[1]->setLabel("Above Limit");
-  chart->legend()->markers()[2]->setLabel("Near Limit");
-  chart->legend()->markers()[3]->setLabel("Below Limit");
+  chart->legend()->markers()[0]->setLabel(tr("Sample Data"));
+  chart->legend()->markers()[1]->setLabel(tr("Above Limit"));
+  chart->legend()->markers()[2]->setLabel(tr("Near Limit"));
+  chart->legend()->markers()[3]->setLabel(tr("Below Limit"));
 
   chartView = new QChartView(chart);
   chartView->setRenderHint(QPainter::Antialiasing);
 
   axisX = new QDateTimeAxis;
-  axisX->setFormat("dd MMM");
-  axisX->setTitleText("Date");
+  axisX->setFormat(tr("dd MMM"));
+  axisX->setTitleText(tr("Date"));
   // xisX->setTickCount(10);
   chartView->chart()->addAxis(axisX, Qt::AlignBottom);
   series->attachAxis(axisX);
@@ -50,7 +50,7 @@ PollutantPage::PollutantPage(QWidget* parent) : QWidget(parent) {
   greenSeries->attachAxis(axisX);
 
   axisY = new QValueAxis;
-  axisY->setTitleText("Sample Quantity");
+  axisY->setTitleText(tr("Sample Quantity"));
   chartView->chart()->addAxis(axisY, Qt::AlignLeft);
   series->attachAxis(axisY);
   redSeries->attachAxis(axisY);
@@ -177,7 +177,7 @@ void PollutantPage::onDataPointClicked(const QPointF& point) {
 
   // Construct popup message
   QString popupText =
-    QString("Pollutant: %1\nDate: %2\nValue: %3\nCompliance: %4")
+    QString(tr("Pollutant: %1\nDate: %2\nValue: %3\nCompliance: %4"))
       .arg(pollutantComboBox->currentText())
       .arg(QDateTime::fromMSecsSinceEpoch(point.x()).toString(Qt::ISODate))
       .arg(point.y())

@@ -15,7 +15,7 @@ QuakeWindow::QuakeWindow() : QMainWindow() {
   createTabBar();
 
   setMinimumWidth(MIN_WIDTH);
-  setWindowTitle("WaterQal Tool");  // TODO change no more quake tool
+  setWindowTitle(tr("WaterQal Tool"));  // TODO change no more quake tool
 }
 
 void QuakeWindow::update() {
@@ -91,29 +91,29 @@ void QuakeWindow::update() {
 void QuakeWindow::createTabBar() {
   tabWidget = new QTabWidget();
 
-  PCBCard = new overviewCard("PCBs compounds overview", *tabWidget, this);
+  PCBCard = new overviewCard(tr("PCBs compounds overview"), *tabWidget, this);
   litterCard =
-    new overviewCard("Environmental litter overview", *tabWidget, this);
+    new overviewCard(tr("Environmental litter overview"), *tabWidget, this);
   fluoroCard =
-    new overviewCard("Fluorinated compounds overview", *tabWidget, this);
+    new overviewCard(tr("Fluorinated compounds overview"), *tabWidget, this);
 
   mainDashboardPage = new MainDashboardPage(this);
-  tabWidget->addTab(mainDashboardPage, "Dashboard");
+  tabWidget->addTab(mainDashboardPage, tr("Dashboard"));
 
   pollutantPage = new PollutantPage(this);
-  tabWidget->addTab(pollutantPage, "Polutant Overview");
+  tabWidget->addTab(pollutantPage, tr("Polutant Overview"));
 
   popsPage = new POPsPage(this);
-  tabWidget->addTab(popsPage, "Persistent Organic Pollutants");
+  tabWidget->addTab(popsPage, tr("Persistent Organic Pollutants"));
 
   litterPage = new LitterPage(this);
-  tabWidget->addTab(litterPage, "Environmental Litter Indicators");
+  tabWidget->addTab(litterPage, tr("Environmental Litter Indicators"));
 
   fluorinatedPage = new FluorinatedPage(this);
-  tabWidget->addTab(fluorinatedPage, "Fluorinated Compounds");
+  tabWidget->addTab(fluorinatedPage, tr("Fluorinated Compounds"));
 
   compliancePage = new ComplianceDashboard(this);
-  tabWidget->addTab(compliancePage, "Compliance Dashboard");
+  tabWidget->addTab(compliancePage, tr("Compliance Dashboard"));
 
   update();
   setCentralWidget(tabWidget);
@@ -153,13 +153,13 @@ void QuakeWindow::createFileSelectors() {
 }
 
 void QuakeWindow::createButtons() {
-  loadButton = new QPushButton("Load");
+  loadButton = new QPushButton(tr("Load"));
   connect(loadButton, SIGNAL(clicked()), this, SLOT(openCSV()));
 }
 
 void QuakeWindow::createToolBar() {
   QToolBar* toolBar = new QToolBar();
-  QLabel* periodLabel = new QLabel("Period");
+  QLabel* periodLabel = new QLabel(tr("Period"));
   periodLabel->setAlignment(Qt::AlignVCenter);
   toolBar->addWidget(periodLabel);
   toolBar->addWidget(period);
@@ -172,33 +172,33 @@ void QuakeWindow::createToolBar() {
 }
 
 void QuakeWindow::createStatusBar() {
-  fileInfo = new QLabel("Current file: <none>");
+  fileInfo = new QLabel(tr("Current file: <none>"));
   QStatusBar* status = statusBar();
   status->addWidget(fileInfo);
 }
 
 void QuakeWindow::addFileMenu() {
-  QAction* locAction = new QAction("Set Data &Location", this);
+  QAction* locAction = new QAction(tr("Set Data &Location"), this);
   locAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
   connect(locAction, SIGNAL(triggered()), this, SLOT(setDataLocation()));
 
-  QAction* closeAction = new QAction("Quit", this);
+  QAction* closeAction = new QAction(tr("Quit"), this);
   closeAction->setShortcut(QKeySequence::Close);
   connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
 
-  QMenu* fileMenu = menuBar()->addMenu("&File");
+  QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
   fileMenu->addAction(locAction);
   fileMenu->addAction(closeAction);
 }
 
 void QuakeWindow::addHelpMenu() {
-  QAction* aboutAction = new QAction("&About", this);
+  QAction* aboutAction = new QAction(tr("&About"), this);
   connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 
-  QAction* aboutQtAction = new QAction("About &Qt", this);
+  QAction* aboutQtAction = new QAction(tr("About &Qt"), this);
   connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-  QMenu* helpMenu = menuBar()->addMenu("&Help");
+  QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
   helpMenu->addAction(aboutAction);
   helpMenu->addAction(aboutQtAction);
 }
@@ -213,9 +213,9 @@ void QuakeWindow::setDataLocation() {
 
 void QuakeWindow::openCSV() {
   if (dataLocation == "") {
-    QMessageBox::critical(this, "Data Location Error",
-                          "Data location has not been set!\n\n"
-                          "You can specify this via the File menu.");
+    QMessageBox::critical(this, tr("Data Location Error"),
+                          tr("Data location has not been set!\n\n"
+                          "You can specify this via the File menu."));
     return;
   }
 
@@ -226,18 +226,18 @@ void QuakeWindow::openCSV() {
   try {
     model.updateFromFile(path);
   } catch (const std::exception& error) {
-    QMessageBox::critical(this, "CSV File Error", error.what());
+    QMessageBox::critical(this, tr("CSV File Error"), error.what());
     return;
   }
 
-  fileInfo->setText(QString("Current file: <kbd>%1</kbd>").arg(filename));
+  fileInfo->setText(QString(tr("Current file: <kbd>%1</kbd>")).arg(filename));
   update();
 }
 
 void QuakeWindow::about() {
   QMessageBox::about(
-    this, "About Water Quality Tool",
-    "Quake Tool displays and analyzes water quality data loaded from"
+    this, tr("About Water Quality Tool"),
+    tr("Quake Tool displays and analyzes water quality data loaded from"
     "a CSV file produced by the Environment Agency Water Quality "
-    "Archive.\n\n");
+    "Archive.\n\n"));
 }
