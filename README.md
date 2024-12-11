@@ -83,38 +83,36 @@ Required Libraries
 
 
 comp2811-matthew/
-├── CMakeLists.txt        # CMake configuration file
-├── README.md             # Readme file for the project
+├── CMakeLists.txt
+├── README.md
 ├── data/
-│   ├── Y-2024.csv        # CSV file containing large dataset
+│   ├── Y-2024.csv
 ├── src/
 │   ├── data/
 │   │   ├── dataset.cpp
-│   │   ├── dataset.hpp   # CSV parsing and data loading
+│   │   ├── dataset.hpp
 │   │   ├── model.cpp
-│   │   ├── model.hpp     # Data modeling and processing
-│   │   └── csv.hpp       # CSV parsing utilities
+│   │   ├── model.hpp
+│   │   └── csv.hpp
 │   ├── pages/
 │   │   
 │   │   ├── compliance.cpp
-│   │   ├── compliance.hpp # Compliance filtering
+│   │   ├── compliance.hpp
 │   │   ├── dashboard.cpp
-│   │   ├── dashboard.hpp # Summary dashboard
+│   │   ├── dashboard.hpp
 │   │   ├── litter.cpp
-│   │   ├── litter.hpp    # Litter analysis
+│   │   ├── litter.hpp
 │   │   ├── pollutants.cpp
-│   │   ├── pollutants.hpp # Pollutant visualizations
+│   │   ├── pollutants.hpp
 │   │   ├── pops.cpp
-│   │   ├── pops.hpp      # Persistent Organic Pollutants charts
+│   │   ├── pops.hpp
 │   │   ├── fluorinated.cpp
-│   │   ├── fluorinated.hpp # Fluorinated compound analysis
+│   │   ├── fluorinated.hpp
 │   │   ├──card.cpp
-│   │   ├──card.hpp # data card
+│   │   ├──card.hpp
 │   ├── window.cpp
-│   ├── window.hpp        # Main application window
-│   ├── main.cpp          # Entry point for the application
-
-# Translation files
+│   ├── window.hpp
+│   ├── main.cpp
 ├── waterqaltool_en.ts     # English translations
 ├── waterqaltool_fr.ts     # French translations
 ├── waterqaltool_en.qm     # Compiled English translations
