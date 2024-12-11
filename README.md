@@ -1,12 +1,12 @@
 # COMP2811 Coursework 3 (Group 26)
 
 ## Group Member
-Full Names and Student IDs:
--Yuan He Pang id: 201905231
--Matthew Alwan id: 201730832
--Zijian Ni id: 201753248
--Adil Aabideen id: 201706416
--Catherine Weightman id: 201699989
+Full Names and Student IDs:  
+-Yuan He Pang id: 201905231  
+-Matthew Alwan id: 201730832  
+-Zijian Ni id: 201753248  
+-Adil Aabideen id: 201706416  
+-Catherine Weightman id: 201699989  
 
 ## Waterqaltool
 
