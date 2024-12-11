@@ -3,60 +3,18 @@
 #include <QLegendMarker>
 #include <QtWidgets>
 
+#include "timeseries.hpp"
+
 POPsPage::POPsPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
-  card = new OverviewCard("Persistent Organic Pollutants", 2, window);
+  card = new OverviewCard(
+    tr("Persistent Organic Pollutants"),
+    tr("Polychlorinated biphenyls (PCBs) are a group of manmade chemical that "
+    "persist in the environment and accumulate in living organisms. PCBs were "
+    "used widely in electrical equipment and bind strongly to soil and "
+    "sediment, causing pollution to the environment."),
+    2, window);
 
-  series = new QLineSeries();
-  redSeries = new QScatterSeries();
-  yellowSeries = new QScatterSeries();
-  greenSeries = new QScatterSeries();
-
-  redSeries->setBrush(Qt::red);
-  redSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
-  redSeries->setMarkerSize(10.0);
-
-  yellowSeries->setBrush(Qt::yellow);
-  yellowSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
-  yellowSeries->setMarkerSize(10.0);
-
-  greenSeries->setBrush(Qt::green);
-  greenSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
-  greenSeries->setMarkerSize(10.0);
-
-  QChart* chart = new QChart();
-  chart->addSeries(series);
-  chart->addSeries(redSeries);
-  chart->addSeries(yellowSeries);
-  chart->addSeries(greenSeries);
-  chart->setTitle(tr("Persistent Organic Pollutants"));
-
-  chart->legend()->setVisible(true);
-  chart->legend()->setAlignment(Qt::AlignBottom);
-  chart->legend()->markers()[0]->setLabel(tr("Sample Data"));
-  chart->legend()->markers()[1]->setLabel(tr("Above Limit"));
-  chart->legend()->markers()[2]->setLabel(tr("Near Limit"));
-  chart->legend()->markers()[3]->setLabel(tr("Below Limit"));
-
-  chartView = new QChartView(chart);
-  chartView->setRenderHint(QPainter::Antialiasing);
-
-  axisX = new QDateTimeAxis;
-  axisX->setFormat(tr("dd MMM"));
-  axisX->setTitleText(tr("Date"));
-  // axisX->setTickCount(10);
-  chartView->chart()->addAxis(axisX, Qt::AlignBottom);
-  series->attachAxis(axisX);
-  redSeries->attachAxis(axisX);
-  yellowSeries->attachAxis(axisX);
-  greenSeries->attachAxis(axisX);
-
-  axisY = new QValueAxis;
-  axisY->setTitleText(tr("Sample Quantity"));
-  chartView->chart()->addAxis(axisY, Qt::AlignLeft);
-  series->attachAxis(axisY);
-  redSeries->attachAxis(axisY);
-  yellowSeries->attachAxis(axisY);
-  greenSeries->attachAxis(axisY);
+  chart = new TimeSeries(tr("Persistent Organic Pollutants"));
 
   locationComboBox = new QComboBox();
   pbcsComboBox = new QComboBox();
@@ -69,21 +27,19 @@ POPsPage::POPsPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
   options->addWidget(pbcsComboBox);
   options->addWidget(locationComboBox);
 
+  QPushButton* actionButton = new QPushButton("View more", this);
+
   QVBoxLayout* layout = new QVBoxLayout(this);
   layout->addLayout(options);
-  layout->addWidget(chartView);
+  layout->addWidget(chart);
+  layout->addWidget(actionButton);
   setLayout(layout);
 
   connect(locationComboBox, &QComboBox::currentTextChanged, this,
           &POPsPage::onComboBoxChanged);
   connect(pbcsComboBox, &QComboBox::currentTextChanged, this,
           &POPsPage::onComboBoxChanged);
-  connect(redSeries, &QScatterSeries::clicked, this,
-          &POPsPage::onDataPointClicked);
-  connect(yellowSeries, &QScatterSeries::clicked, this,
-          &POPsPage::onDataPointClicked);
-  connect(greenSeries, &QScatterSeries::clicked, this,
-          &POPsPage::onDataPointClicked);
+  connect(actionButton, &QPushButton::clicked, card, &OverviewCard::showPopUp);
 }
 
 void POPsPage::update(WaterQalDataset* model) {
@@ -96,96 +52,17 @@ void POPsPage::update(WaterQalDataset* model) {
   }
 
   int sampleCount = model->getPollutantSamples(pcbs).size();
-  card->updateCard(sampleCount);
+  card->updateCard(sampleCount, 0);
 
   filter();
 }
 
 void POPsPage::filter() {
-  series->clear();
-  redSeries->clear();
-  yellowSeries->clear();
-  greenSeries->clear();
-
   QString selectedLocation = locationComboBox->currentText();
   QString selectedCompound = pbcsComboBox->currentText();
 
-  chartView->chart()->setTitle(QString::fromStdString(
-    selectedCompound.toStdString() + " at " + selectedLocation.toStdString()));
-
-  double max = 0;
-  double redBoundary;
-  double greenBoundary;
-  QDateTime minDateTime;
-  QDateTime maxDateTime;
-
-  bool firstSample = true;
-
   auto samples = model->getPollutantSamples(selectedCompound.toStdString());
-
-  for (const auto& sample : samples) {
-    if (selectedLocation.toStdString() == "All Locations" ||
-        sample.getSamplingPoint().getLabel() ==
-          selectedLocation.toStdString()) {
-      auto dateTime =
-        QDateTime::fromString(sample.getSampleDateTime().c_str(), Qt::ISODate);
-      double result = sample.getResult();
-      if (result > max) { max = result; }
-
-      if (firstSample) {
-        minDateTime = dateTime;
-        maxDateTime = dateTime;
-        redBoundary = result * 1.1;
-        greenBoundary = result * 0.9;
-        firstSample = false;
-      } else if (dateTime < minDateTime) {
-        minDateTime = dateTime;
-      } else if (dateTime > maxDateTime) {
-        maxDateTime = dateTime;
-      }
-
-      series->append(dateTime.toMSecsSinceEpoch(), result);
-
-      if (result > redBoundary) {
-        redSeries->append(dateTime.toMSecsSinceEpoch(), result);
-      } else if (result < greenBoundary) {
-        greenSeries->append(dateTime.toMSecsSinceEpoch(), result);
-      } else {
-        yellowSeries->append(dateTime.toMSecsSinceEpoch(), result);
-      }
-    }
-  }
-
-  max *= 1.05;
-
-  axisX->setRange(minDateTime, maxDateTime);
-  axisX->setTickCount(maxDateTime.date().month() - minDateTime.date().month());
-  axisY->setRange(0, max);
+  chart->updateChart(samples, selectedLocation, selectedCompound);
 }
 
 void POPsPage::onComboBoxChanged() { filter(); }
-
-void POPsPage::onDataPointClicked(const QPointF& point) {
-  QString complianceLevel;
-
-  if (redSeries->points().contains(point)) {
-    complianceLevel = "Not Compliant";
-  } else if (yellowSeries->points().contains(point)) {
-    complianceLevel = "Near Limit";
-  } else if (greenSeries->points().contains(point)) {
-    complianceLevel = "Compliant";
-  } else {
-    complianceLevel = "Unknown";
-  }
-
-  // Construct popup message
-  QString popupText =
-    QString(tr("Pollutant: %1\nDate: %2\nValue: %3\nCompliance: %4"))
-      .arg(pbcsComboBox->currentText())
-      .arg(QDateTime::fromMSecsSinceEpoch(point.x()).toString(Qt::ISODate))
-      .arg(point.y())
-      .arg(complianceLevel);
-
-  // Show the tooltip near the cursor
-  QToolTip::showText(QCursor::pos(), popupText, this);
-}

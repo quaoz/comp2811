@@ -5,8 +5,38 @@
 
 #include "../window.hpp"
 
-OverviewCard::OverviewCard(const QString& title, int tabID,
-                           WaterQalWindow* windowInstance, QWidget* parent)
+CardPopUp::CardPopUp(const QString& title, const QString& description,
+                     QWidget* parent)
+  : QDialog(parent) {
+  setWindowTitle("Persistent Organic Pollutants Overview");
+
+  QLabel* descriptionLabel = new QLabel(description);
+  descriptionLabel->setStyleSheet("font-size: 14px; color: gray;");
+  descriptionLabel->setAlignment(Qt::AlignCenter);
+  descriptionLabel->setWordWrap(true);
+
+  countLabel = new QLabel(QString("Number of samples: 0"));
+  countLabel->setAlignment(Qt::AlignCenter);
+
+  secondaryLabel = new QLabel(QString("Mean of samples: 0"));
+  secondaryLabel->setAlignment(Qt::AlignCenter);
+
+  QVBoxLayout* layout = new QVBoxLayout(this);
+  layout->addWidget(descriptionLabel);
+  layout->addWidget(countLabel);
+  layout->addWidget(secondaryLabel);
+
+  setLayout(layout);
+}
+
+void CardPopUp::updatePopUp(int sampleCount, int secondary) {
+  countLabel->setText(QString("Number of samples: %1").arg(sampleCount));
+  secondaryLabel->setText(QString("Mean of samples: %1").arg(secondary));
+}
+
+OverviewCard::OverviewCard(const QString& title, const QString& description,
+                           int tabID, WaterQalWindow* windowInstance,
+                           QWidget* parent)
   : tabID(tabID), windowInstance(windowInstance), QFrame(parent) {
   // Set up the card's appearance
   setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
@@ -22,6 +52,8 @@ OverviewCard::OverviewCard(const QString& title, int tabID,
     "  background-color: #f0f8ff;"
     "}");
 
+  popUp = new CardPopUp(title, description, this);
+
   // Layout for the card
   QVBoxLayout* layout = new QVBoxLayout(this);
 
@@ -30,22 +62,37 @@ OverviewCard::OverviewCard(const QString& title, int tabID,
   titleLabel->setStyleSheet("font-weight: bold; font-size: 16px;");
   titleLabel->setAlignment(Qt::AlignCenter);
 
+  // Description label
+  QLabel* descriptionLabel = new QLabel(description);
+  descriptionLabel->setStyleSheet("font-size: 14px; color: gray;");
+  descriptionLabel->setAlignment(Qt::AlignCenter);
+  descriptionLabel->setWordWrap(true);
+
   countLabel = new QLabel(QString("Number of samples: 0"));
   countLabel->setAlignment(Qt::AlignCenter);
+
+  secondaryLabel = new QLabel(QString("Mean of samples: 0"));
+  secondaryLabel->setAlignment(Qt::AlignCenter);
 
   QPushButton* actionButton = new QPushButton("View more", this);
   connect(actionButton, &QPushButton::clicked, this, &OverviewCard::switchTab);
 
   // Add widgets to the layout
   layout->addWidget(titleLabel);
+  layout->addWidget(descriptionLabel);
   layout->addWidget(countLabel);
+  layout->addWidget(secondaryLabel);
   layout->addWidget(actionButton);
 
   setLayout(layout);
 }
 
-void OverviewCard::updateCard(int sampleCount) {
+void OverviewCard::updateCard(int sampleCount, int secondary) {
   countLabel->setText(QString("Number of samples: %1").arg(sampleCount));
+  secondaryLabel->setText(QString("Mean of samples: %1").arg(secondary));
+  popUp->updatePopUp(sampleCount, secondary);
 }
 
 void OverviewCard::switchTab() { windowInstance->switchTab(tabID); }
+
+void OverviewCard::showPopUp() { popUp->exec(); }

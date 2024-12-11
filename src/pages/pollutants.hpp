@@ -1,18 +1,12 @@
 #pragma once
 
 #include <QComboBox>
-#include <QValueAxis>
 #include <QWidget>
-#include <QtCharts/QChartView>
-#include <QtCharts/QDateTimeAxis>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QScatterSeries>
 
 #include "../data/dataset.hpp"
 #include "../window.hpp"
 #include "card.hpp"
-
-class QTableView;
+#include "timeseries.hpp"
 
 class PollutantPage : public QWidget {
   Q_OBJECT
@@ -27,15 +21,8 @@ class PollutantPage : public QWidget {
 
  private:
   void filter();
-  void onDataPointClicked(const QPointF& point);
 
-  QChartView* chartView;
-  QLineSeries* series;
-  QScatterSeries* redSeries;
-  QScatterSeries* yellowSeries;
-  QScatterSeries* greenSeries;
-  QDateTimeAxis* axisX;
-  QValueAxis* axisY;
+  TimeSeries* chart;
   QComboBox* pollutantComboBox;
   QComboBox* locationComboBox;
   WaterQalDataset* model;
