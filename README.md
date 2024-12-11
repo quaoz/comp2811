@@ -15,52 +15,50 @@ Full Names and Student IDs:
 Waterqaltool is a desktop application designed to visualize and manage the environmental water quality data of UK. The tool allows users to filter, explore, and analyze datasets using intuitive tables, charts, and summary dashboards. It supports multilingual translations to cater to a diverse user base.
 
 ## Features
- 1. Data Visualization
- • View water quality data in a tabular format.
- • Summary dashboard for compliance and non-compliance samples.
- 2. Filtering
- • Filter data by:
- • Location
- • Pollutant
- • Compliance level (Compliant, Non-Compliant, etc.)
- 3. Multilingual Support
- • Supports dynamic translations into multiple languages (e.g., English, French).
- • Automatically detects the system’s locale or allows manual language selection.
- 4. Chart Visualization
- • Visualize pollutant trends using line and bar charts.
- • Litter distribution via pie charts.
- 5. User-Friendly Interface
- • Clear and simple layout with interactive elements for seamless data exploration.
+ 1. Data Visualization  
+ • View water quality data in a tabular format.  
+ • Summary dashboard for compliance and non-compliance samples.  
+ 2. Filtering  
+ • Filter data by:  
+ • Location  
+ • Pollutant  
+ • Compliance level (Compliant, Non-Compliant, etc.)  
+ 3. Multilingual Support  
+ • Supports dynamic translations into multiple languages (e.g., English, French).  
+ • Automatically detects the system’s locale or allows manual language selection.  
+ 4. Chart Visualization  
+ • Visualize pollutant trends using line and bar charts.  
+ • Litter distribution via pie charts.  
+ 5. User-Friendly Interface  
+ • Clear and simple layout with interactive elements for seamless data exploration.  
 
-Setup and Installation
+Setup and Installation Requirements  
+ • Operating System: macOS, Windows, FEPS Red Hat system or Linux VM  
+ • Qt Version: Qt 6.8 or higher installed  
+ • Compiler: C++17 compatible compiler (e.g., GCC, MSVC, Clang)  
 
-Requirements
- • Operating System: macOS, Windows, FEPS Red Hat system or Linux VM
- • Qt Version: Qt 6.8 or higher installed
- • Compiler: C++17 compatible compiler (e.g., GCC, MSVC, Clang)
+Steps  
+ 1. Clone the Repository  
 
-Steps
- 1. Clone the Repository
-
-git clone <repository-url>
-cd <repository-folder>
+git clone <repository-url>  
+cd <repository-folder>  
 
 
- 2. Build the Application
- • Create a build directory:
+ 2. Build the Application  
+ • Create a build directory:  
 
-mkdir build && cd build
-
-
- • Configure the build with CMake:
-
-cmake ..
+mkdir build && cd build  
 
 
- • Build the application:
+ • Configure the build with CMake:  
 
-make waterqaltool
-(or just 'make' by itself.)
+cmake ..  
+
+
+ • Build the application:  
+
+make waterqaltool  
+(or just 'make' by itself.)  
 
 
  3. Run the Application by
@@ -69,15 +67,15 @@ make waterqaltool
 
 ## Dependencies
 
-Required Libraries
- 1. Qt Components:
- • Widgets
- • Charts
- 2. Compiler and Build Tools:
- • CMake (minimum version 3.16)
- • GCC/Clang
- 3. Additional Dependencies:
- • Ensure required libraries are available for CSV parsing (e.g., csv.hpp).
+Required Libraries  
+ 1. Qt Components:  
+ • Widgets  
+ • Charts  
+ 2. Compiler and Build Tools:  
+ • CMake (minimum version 3.16)  
+ • GCC/Clang  
+ 3. Additional Dependencies:  
+ • Ensure required libraries are available for CSV parsing (e.g., csv.hpp).  
 
 ## File Structure
 
@@ -119,6 +117,6 @@ comp2811-matthew/
 ├── waterqaltool_fr.qm     # Compiled French translations  
 
 ## Known Issues
- 1. Translation Updates: If new user-visible strings are added, .ts files must be updated and recompiled.
- 2. Red Hat Compatibility: Ensure the application runs on the FEPS Red Hat system. Certain Qt dependencies may require additional configuration.
- 3. Large Datasets: Performance may degrade when loading extremely large CSV files.
+ 1. Translation Updates: If new user-visible strings are added, .ts files must be updated and recompiled.  
+ 2. Red Hat Compatibility: Ensure the application runs on the FEPS Red Hat system. Certain Qt dependencies may require additional configuration.  
+ 3. Large Datasets: Performance may degrade when loading extremely large CSV files.  
