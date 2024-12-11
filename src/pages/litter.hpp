@@ -12,8 +12,8 @@ class LitterPage : public QWidget {
   Q_OBJECT
 
  public:
-  LitterPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeDataset* model);
+  LitterPage(WaterQalWindow* window, QWidget* parent = nullptr);
+  void update(WaterQalDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private:

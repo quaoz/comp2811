@@ -22,7 +22,7 @@ set(TS_FILES quaketool_en.ts quaketool_fr.ts)
 qt_standard_project_setup()
 
 qt_add_executable(
-  quaketool
+  waterqaltool
   src/main.cpp
   src/window.cpp
   src/data/dataset.cpp
@@ -34,11 +34,11 @@ qt_add_executable(
   src/pages/dashboard.cpp
   src/pages/card.cpp)
 
-qt_add_translations(quaketool TS_FILES quaketool_fr.ts quaketool_en.ts)
+qt_add_translations(waterqaltool TS_FILES quaketool_fr.ts quaketool_en.ts)
 
-target_link_libraries(quaketool PRIVATE Qt6::Widgets Qt6::Charts)
+target_link_libraries(waterqaltool PRIVATE Qt6::Widgets Qt6::Charts)
 
-set_target_properties(quaketool PROPERTIES WIN32_EXECUTABLE ON MACOSX_BUNDLE
-                                                               OFF)
+set_target_properties(waterqaltool PROPERTIES WIN32_EXECUTABLE ON MACOSX_BUNDLE
+                                                                  OFF)
 
-install(TARGETS quaketool DESTINATION bin)
+install(TARGETS waterqaltool DESTINATION bin)

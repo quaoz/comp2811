@@ -16,8 +16,8 @@ class FluorinatedPage : public QWidget {
   Q_OBJECT
 
  public:
-  FluorinatedPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeDataset* model);
+  FluorinatedPage(WaterQalWindow* window, QWidget* parent = nullptr);
+  void update(WaterQalDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private slots:
@@ -36,7 +36,7 @@ class FluorinatedPage : public QWidget {
   QValueAxis* axisY;
   QComboBox* locationComboBox;
   QComboBox* fluorinatedComboBox;
-  QuakeDataset* model;
+  WaterQalDataset* model;
   OverviewCard* card;
   std::set<std::string> const fluorinatedCompounds = {
     "11Cl-PF3OUdS", "3:3 FTCA",     "4:2 FTSA",     "5:3 FTCA",

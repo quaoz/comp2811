@@ -6,7 +6,7 @@
 #include "../window.hpp"
 
 OverviewCard::OverviewCard(const QString& title, int tabID,
-                           QuakeWindow* windowInstance, QWidget* parent)
+                           WaterQalWindow* windowInstance, QWidget* parent)
   : tabID(tabID), windowInstance(windowInstance), QFrame(parent) {
   // Set up the card's appearance
   setFrameStyle(QFrame::StyledPanel | QFrame::Raised);

@@ -31,7 +31,7 @@ class ComplianceDashboard : public QWidget {
 
  public:
   ComplianceDashboard(QWidget *parent = nullptr);
-  void update(QuakeDataset *model);
+  void update(WaterQalDataset *model);
 
  private slots:
   void filterComplianceData();
@@ -57,7 +57,7 @@ class ComplianceDashboard : public QWidget {
   QComboBox *colorFilter;  // Filter by compliance status color
   QLabel
     *nonCompliantSummary;  // Label to display summary of non-compliant sites
-  QuakeDataset *model;
+  WaterQalDataset *model;
 
   QTranslator translator;
 };

@@ -22,11 +22,11 @@ class POPsPage;
 class LitterPage;
 class FluorinatedPage;
 
-class QuakeWindow : public QMainWindow {
+class WaterQalWindow : public QMainWindow {
   Q_OBJECT
 
  public:
-  QuakeWindow();
+  WaterQalWindow();
   void switchTab(int index) const { tabWidget->setCurrentIndex(index); }
 
  private:
@@ -39,9 +39,9 @@ class QuakeWindow : public QMainWindow {
   void createTabBar();
   void update();
 
-  QuakeDataset model;         // data model used by table
+  WaterQalDataset model;         // data model used by table
   QString dataLocation;     // location of CSV data files
-  QComboBox* period;        // selector for quake feed time period
+  QComboBox* period;        // selector for waterqal feed time period
   QPushButton* loadButton;  // button to load a new CSV file
   QLabel* fileInfo;         // status bar info on current file
   QTabWidget* tabWidget;

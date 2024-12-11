@@ -134,7 +134,7 @@ void ComplianceDashboard::setupUI() {
   setLayout(mainLayout);
 }
 
-void ComplianceDashboard::update(QuakeDataset *model) {
+void ComplianceDashboard::update(WaterQalDataset *model) {
   this->model = model;
   locationFilter->clear();
   pollutantFilter->clear();

@@ -8,11 +8,11 @@ int main(int argc, char* argv[]) {
 
   // Create a translator instance
   QTranslator trn;
-  if (trn.load(QLocale::system(), "quaketool", "_", ":/i18n")) {
+  if (trn.load(QLocale::system(), "waterqaltool", "_", ":/i18n")) {
     app.installTranslator(&trn);
   }
 
-  QuakeWindow window;
+  WaterQalWindow window;
   window.show();
 
   return app.exec();

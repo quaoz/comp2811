@@ -16,7 +16,7 @@
 
 static const int MIN_WIDTH = 620;
 
-QuakeWindow::QuakeWindow() : QMainWindow() {
+WaterQalWindow::WaterQalWindow() : QMainWindow() {
   createFileSelectors();
   createButtons();
   createToolBar();
@@ -29,7 +29,7 @@ QuakeWindow::QuakeWindow() : QMainWindow() {
   setWindowTitle(tr("WaterQal Tool"));  // TODO change no more quake tool
 }
 
-void QuakeWindow::update() {
+void WaterQalWindow::update() {
   using std::chrono::duration;
   using std::chrono::duration_cast;
   using std::chrono::high_resolution_clock;
@@ -51,7 +51,7 @@ void QuakeWindow::update() {
   std::cout << "updates: " << ms_double.count() << "ms\n";
 }
 
-void QuakeWindow::createTabBar() {
+void WaterQalWindow::createTabBar() {
   tabWidget = new QTabWidget();
 
   pollutantPage = new PollutantPage(this);
@@ -76,7 +76,7 @@ void QuakeWindow::createTabBar() {
 }
 
 // TODO: remove file period selector
-void QuakeWindow::createFileSelectors() {
+void WaterQalWindow::createFileSelectors() {
   QStringList periodOptions;
   periodOptions << "2024"
                 << "2023"
@@ -108,12 +108,12 @@ void QuakeWindow::createFileSelectors() {
   period->addItems(periodOptions);
 }
 
-void QuakeWindow::createButtons() {
+void WaterQalWindow::createButtons() {
   loadButton = new QPushButton(tr("Load"));
   connect(loadButton, SIGNAL(clicked()), this, SLOT(openCSV()));
 }
 
-void QuakeWindow::createToolBar() {
+void WaterQalWindow::createToolBar() {
   QToolBar* toolBar = new QToolBar();
   QLabel* periodLabel = new QLabel(tr("Period"));
   periodLabel->setAlignment(Qt::AlignVCenter);
@@ -126,13 +126,13 @@ void QuakeWindow::createToolBar() {
   addToolBar(Qt::LeftToolBarArea, toolBar);
 }
 
-void QuakeWindow::createStatusBar() {
+void WaterQalWindow::createStatusBar() {
   fileInfo = new QLabel(tr("Current file: <none>"));
   QStatusBar* status = statusBar();
   status->addWidget(fileInfo);
 }
 
-void QuakeWindow::addFileMenu() {
+void WaterQalWindow::addFileMenu() {
   QAction* locAction = new QAction(tr("Set Data &Location"), this);
   locAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
   connect(locAction, SIGNAL(triggered()), this, SLOT(setDataLocation()));
@@ -146,7 +146,7 @@ void QuakeWindow::addFileMenu() {
   fileMenu->addAction(closeAction);
 }
 
-void QuakeWindow::addHelpMenu() {
+void WaterQalWindow::addHelpMenu() {
   QAction* aboutAction = new QAction(tr("&About"), this);
   connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 
@@ -158,7 +158,7 @@ void QuakeWindow::addHelpMenu() {
   helpMenu->addAction(aboutQtAction);
 }
 
-void QuakeWindow::setDataLocation() {
+void WaterQalWindow::setDataLocation() {
   QString directory = QFileDialog::getExistingDirectory(
     this, "Data Location", ".",
     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
@@ -166,7 +166,7 @@ void QuakeWindow::setDataLocation() {
   if (directory.length() > 0) { dataLocation = directory; }
 }
 
-void QuakeWindow::openCSV() {
+void WaterQalWindow::openCSV() {
   if (dataLocation == "") {
     QMessageBox::critical(this, tr("Data Location Error"),
                           tr("Data location has not been set!\n\n"
@@ -189,10 +189,10 @@ void QuakeWindow::openCSV() {
   update();
 }
 
-void QuakeWindow::about() {
+void WaterQalWindow::about() {
   QMessageBox::about(
-    this, tr("About Water Quality Tool"),
-    tr("Quake Tool displays and analyzes water quality data loaded from"
+    this, tr("About WaterQua Tool"),
+    tr("WaterQal Tool displays and analyzes water quality data loaded from"
     "a CSV file produced by the Environment Agency Water Quality "
     "Archive.\n\n"));
 }

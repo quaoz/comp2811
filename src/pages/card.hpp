@@ -5,13 +5,13 @@
 #include <QPushButton>
 #include <QWidget>
 
-class QuakeWindow;
+class WaterQalWindow;
 
 class OverviewCard : public QFrame {
   Q_OBJECT
 
  public:
-  OverviewCard(const QString& title, int tabID, QuakeWindow* windowInstance,
+  OverviewCard(const QString& title, int tabID, WaterQalWindow* windowInstance,
                QWidget* parent = nullptr);
   void updateCard(int sampleCount);
   void switchTab();
@@ -20,6 +20,6 @@ class OverviewCard : public QFrame {
   std::string cardTitle;
   int tabID;
 
-  QuakeWindow* windowInstance;
+  WaterQalWindow* windowInstance;
   QLabel* countLabel;
 };

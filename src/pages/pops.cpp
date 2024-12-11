@@ -3,7 +3,7 @@
 #include <QLegendMarker>
 #include <QtWidgets>
 
-POPsPage::POPsPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
+POPsPage::POPsPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
   card = new OverviewCard("Persistent Organic Pollutants", 2, window);
 
   series = new QLineSeries();
@@ -86,7 +86,7 @@ POPsPage::POPsPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
           &POPsPage::onDataPointClicked);
 }
 
-void POPsPage::update(QuakeDataset* model) {
+void POPsPage::update(WaterQalDataset* model) {
   this->model = model;
   locationComboBox->clear();
 

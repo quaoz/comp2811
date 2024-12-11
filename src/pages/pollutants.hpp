@@ -18,8 +18,8 @@ class PollutantPage : public QWidget {
   Q_OBJECT
 
  public:
-  PollutantPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeDataset* model);
+  PollutantPage(WaterQalWindow* window, QWidget* parent = nullptr);
+  void update(WaterQalDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private slots:
@@ -38,6 +38,6 @@ class PollutantPage : public QWidget {
   QValueAxis* axisY;
   QComboBox* pollutantComboBox;
   QComboBox* locationComboBox;
-  QuakeDataset* model;
+  WaterQalDataset* model;
   OverviewCard* card;
 };

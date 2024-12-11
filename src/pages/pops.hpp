@@ -16,8 +16,8 @@ class POPsPage : public QWidget {
   Q_OBJECT
 
  public:
-  POPsPage(QuakeWindow* window, QWidget* parent = nullptr);
-  void update(QuakeDataset* model);
+  POPsPage(WaterQalWindow* window, QWidget* parent = nullptr);
+  void update(WaterQalDataset* model);
   OverviewCard* getCard() const { return card; }
 
  private slots:
@@ -36,7 +36,7 @@ class POPsPage : public QWidget {
   QValueAxis* axisY;
   QComboBox* locationComboBox;
   QComboBox* pbcsComboBox;
-  QuakeDataset* model;
+  WaterQalDataset* model;
   OverviewCard* card;
   std::set<std::string> const pcbs = {
     "PCB Con 028", "PCB Con 052", "PCB Con 101", "PCB Con 105", "PCB Con 118",

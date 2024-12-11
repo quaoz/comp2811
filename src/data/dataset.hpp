@@ -6,10 +6,10 @@
 
 #include "sample.hpp"
 
-class QuakeDataset {
+class WaterQalDataset {
  public:
-  QuakeDataset() {}
-  QuakeDataset(const std::string& filename) { loadData(filename); }
+  WaterQalDataset() {}
+  WaterQalDataset(const std::string& filename) { loadData(filename); }
 
   void loadData(const std::string&);
 

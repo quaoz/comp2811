@@ -3,7 +3,7 @@
 #include <QLegendMarker>
 #include <QtWidgets>
 
-FluorinatedPage::FluorinatedPage(QuakeWindow* window, QWidget* parent)
+FluorinatedPage::FluorinatedPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
   card = new OverviewCard("Fluorinated Compounds Overview", 4, window);
 
@@ -87,7 +87,7 @@ FluorinatedPage::FluorinatedPage(QuakeWindow* window, QWidget* parent)
           &FluorinatedPage::onDataPointClicked);
 }
 
-void FluorinatedPage::update(QuakeDataset* model) {
+void FluorinatedPage::update(WaterQalDataset* model) {
   this->model = model;
   locationComboBox->clear();
 

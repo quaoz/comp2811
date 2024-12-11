@@ -45,7 +45,7 @@
         };
 
         packages.default = pkgs.stdenv.mkDerivation {
-          name = "quaketool";
+          name = "waterqaltool";
           version = "1.0";
 
           src = ./.;

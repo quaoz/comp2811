@@ -17,7 +17,7 @@
 
 using namespace std;
 
-void QuakeDataset::loadData(const string& filename) {
+void WaterQalDataset::loadData(const string& filename) {
   csv::CSVReader reader(filename);
 
   data.clear();
@@ -124,7 +124,7 @@ struct sampleCmp {
   }
 };
 
-std::vector<Sample> QuakeDataset::getLocationSamples(
+std::vector<Sample> WaterQalDataset::getLocationSamples(
   const std::string& location) const {
   auto it = locationsMap.find(location);
   if (it != locationsMap.end()) {
@@ -134,7 +134,7 @@ std::vector<Sample> QuakeDataset::getLocationSamples(
   }
 }
 
-std::vector<Sample> QuakeDataset::getLocationSamples(
+std::vector<Sample> WaterQalDataset::getLocationSamples(
   const std::set<std::string>& locations) const {
   vector<Sample> samples = {};
 
@@ -149,7 +149,7 @@ std::vector<Sample> QuakeDataset::getLocationSamples(
   return samples;
 }
 
-std::vector<Sample> QuakeDataset::getPollutantSamples(
+std::vector<Sample> WaterQalDataset::getPollutantSamples(
   const std::string& pollutant) const {
   auto it = pollutantsMap.find(pollutant);
   if (it != pollutantsMap.end()) {
@@ -159,7 +159,7 @@ std::vector<Sample> QuakeDataset::getPollutantSamples(
   }
 }
 
-std::vector<Sample> QuakeDataset::getPollutantSamples(
+std::vector<Sample> WaterQalDataset::getPollutantSamples(
   const std::set<std::string>& pollutants) const {
   vector<Sample> samples = {};
 
@@ -174,6 +174,6 @@ std::vector<Sample> QuakeDataset::getPollutantSamples(
   return samples;
 }
 
-void QuakeDataset::checkDataExists() const {
+void WaterQalDataset::checkDataExists() const {
   if (size() == 0) { throw std::runtime_error("Dataset is empty!"); }
 }

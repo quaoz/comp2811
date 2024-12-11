@@ -3,7 +3,7 @@
 #include <QLegendMarker>
 #include <QtWidgets>
 
-PollutantPage::PollutantPage(QuakeWindow* window, QWidget* parent)
+PollutantPage::PollutantPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
   card = new OverviewCard("Pollutants Overview", 1, window);
 
@@ -83,7 +83,7 @@ PollutantPage::PollutantPage(QuakeWindow* window, QWidget* parent)
           &PollutantPage::onDataPointClicked);
 }
 
-void PollutantPage::update(QuakeDataset* model) {
+void PollutantPage::update(WaterQalDataset* model) {
   this->model = model;
   pollutantComboBox->clear();
   locationComboBox->clear();

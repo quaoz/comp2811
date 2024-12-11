@@ -3,7 +3,7 @@
 #include <QtWidgets>
 #include <vector>
 
-LitterPage::LitterPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
+LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
   card = new OverviewCard("Environmental Litter Overview", 3, window);
 
   locationSeries = new QPieSeries();
@@ -31,7 +31,7 @@ LitterPage::LitterPage(QuakeWindow* window, QWidget* parent) : QWidget(parent) {
   setLayout(layout);
 }
 
-void LitterPage::update(QuakeDataset* model) {
+void LitterPage::update(WaterQalDataset* model) {
   locationSeries->clear();
   waterBodySeries->clear();
 
