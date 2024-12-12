@@ -80,10 +80,6 @@ void ComplianceDashboard::setupUI() {
   scrollArea->setWidgetResizable(true);
   scrollArea->setMinimumHeight(100);
 
-  // Footer Section
-  QLabel *footerLabel = new QLabel(
-    tr("Help & Resources: [User Guide] [Credits] [Data Sources]"), this);
-
   // Layout Setup
   mainLayout = new QVBoxLayout(this);
   mainLayout->addLayout(filterLayout);
@@ -91,7 +87,6 @@ void ComplianceDashboard::setupUI() {
   mainLayout->addLayout(summaryCardsLayout);
   mainLayout->addWidget(complianceTable);
   mainLayout->addWidget(scrollArea);
-  mainLayout->addWidget(footerLabel);
   setLayout(mainLayout);
 }
 

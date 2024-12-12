@@ -2,6 +2,7 @@
 
 #include <QCursor>
 #include <QDateTime>
+#include <QLabel>
 #include <QLegendMarker>
 #include <QToolTip>
 #include <QVBoxLayout>
@@ -64,8 +65,11 @@ TimeSeries::TimeSeries(const QString& title, QWidget* parent)
   yellowSeries->attachAxis(axisY);
   greenSeries->attachAxis(axisY);
 
+  QLabel* dataPointHint = new QLabel("Click on a datapoint for more info.");
+
   QVBoxLayout* layout = new QVBoxLayout(this);
   layout->addWidget(chartView);
+  layout->addWidget(dataPointHint);
   setLayout(layout);
 
   connect(redSeries, &QScatterSeries::clicked, this,
