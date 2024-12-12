@@ -61,6 +61,7 @@ class WaterQalWindow : public QMainWindow {
  private slots:
   void onStartDateChanged(const QDateTime& dateTime);
   void onEndDateChanged(const QDateTime& dateTime);
+  void resetDateRange();
 
   void setDataLocation();
   void openCSV();

@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QtConcurrent/QtConcurrent>
 #include <algorithm>
+#include <iostream>
 #include <map>
 #include <numeric>
 #include <queue>
@@ -33,7 +34,7 @@ void WaterQalDataset::loadData(const string& filename) {
 
   auto t1 = high_resolution_clock::now();
 
-  map<string, vector<Sample>, greater<string>> dateSampleMap;
+  map<string, vector<Sample>> dateSampleMap;
   for (const auto& row : reader) {
     SamplingPoint const samplingPoint{
       row["sample.samplingPoint"].get<string>(),
@@ -113,8 +114,8 @@ void WaterQalDataset::loadData(const string& filename) {
 
   synchronizer.waitForFinished();
 
-  minDate = data.at(data.size() - 1).getSampleDateTime();
-  maxDate = data.at(0).getSampleDateTime();
+  minDate = data.at(0).getSampleDateTime();
+  maxDate = data.at(data.size() - 1).getSampleDateTime();
   startDate = minDate;
   endDate = maxDate;
 
@@ -126,6 +127,14 @@ void WaterQalDataset::loadData(const string& filename) {
 struct sampleCmp {
   bool operator()(const Sample& a, const Sample& b) const {
     return a.getSampleDateTime() > b.getSampleDateTime();
+  }
+
+  bool operator()(const Sample& sample, const std::string& date) const {
+    return sample.getSampleDateTime() < date;
+  }
+
+  bool operator()(const std::string& date, const Sample& sample) const {
+    return date < sample.getSampleDateTime();
   }
 };
 
@@ -139,21 +148,6 @@ std::vector<Sample> WaterQalDataset::getLocationSamples(
   }
 }
 
-std::vector<Sample> WaterQalDataset::getLocationSamples(
-  const std::set<std::string>& locations) const {
-  vector<Sample> samples = {};
-
-  for (const auto& location : locations) {
-    auto current = getLocationSamples(location);
-    vector<Sample> temp;
-    set_union(samples.begin(), samples.end(), current.begin(), current.end(),
-              back_inserter(temp), sampleCmp());
-    samples.swap(temp);
-  }
-
-  return this->mask(samples);
-}
-
 std::vector<Sample> WaterQalDataset::getPollutantSamples(
   const std::string& pollutant) const {
   auto it = pollutantsMap.find(pollutant);
@@ -164,13 +158,30 @@ std::vector<Sample> WaterQalDataset::getPollutantSamples(
   }
 }
 
+std::vector<Sample> WaterQalDataset::getLocationSamples(
+  const std::set<std::string>& locations) const {
+  std::vector<Sample> samples;
+
+  for (const auto& location : locations) {
+    auto current = getLocationSamples(location);
+    std::vector<Sample> temp;
+
+    set_union(samples.begin(), samples.end(), current.begin(), current.end(),
+              back_inserter(temp), sampleCmp());
+    samples.swap(temp);
+  }
+
+  return this->mask(samples);
+}
+
 std::vector<Sample> WaterQalDataset::getPollutantSamples(
   const std::set<std::string>& pollutants) const {
-  vector<Sample> samples = {};
+  vector<Sample> samples;
 
   for (const auto& pollutant : pollutants) {
     auto current = getPollutantSamples(pollutant);
     vector<Sample> temp;
+
     set_union(samples.begin(), samples.end(), current.begin(), current.end(),
               back_inserter(temp), sampleCmp());
     samples.swap(temp);
@@ -193,15 +204,16 @@ void WaterQalDataset::resetDataMask() {
 }
 
 std::vector<Sample> WaterQalDataset::mask(std::vector<Sample> samples) const {
-  std::vector<Sample> maskedSamples;
+  if (samples.empty()) { return samples; }
 
-  for (const auto& sample : samples) {
-    if (sample.getSampleDateTime() >= startDate &&
-        sample.getSampleDateTime() <= endDate) {
-      maskedSamples.push_back(sample);
-    }
-  }
+  std::vector<Sample> maskedSamples = {};
 
+  auto lower =
+    std::lower_bound(samples.begin(), samples.end(), startDate, sampleCmp());
+  auto upper =
+    std::upper_bound(samples.begin(), samples.end(), endDate, sampleCmp());
+
+  maskedSamples.insert(maskedSamples.end(), lower, upper);
   return maskedSamples;
 }
 

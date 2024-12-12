@@ -171,7 +171,7 @@ void ComplianceDashboard::filterComplianceData() {
     if (selectedLocation.toStdString() != "All Locations") {
       samples = model->getLocationSamples(selectedLocation.toStdString());
     } else {
-      // TODO: handle other case
+      samples = model->getSamples();
     }
   }
 

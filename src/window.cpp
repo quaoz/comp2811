@@ -36,9 +36,9 @@ WaterQalWindow::WaterQalWindow() : QMainWindow() {
 void WaterQalWindow::update() {
   if (model.size() != 0) {
     auto minDate = QDateTime::fromString(
-      model.at(model.size() - 1).getSampleDateTime().c_str(), Qt::ISODate);
-    auto maxDate = QDateTime::fromString(
       model.at(0).getSampleDateTime().c_str(), Qt::ISODate);
+    auto maxDate = QDateTime::fromString(
+      model.at(model.size() - 1).getSampleDateTime().c_str(), Qt::ISODate);
 
     startTime->setDateTimeRange(minDate, maxDate);
     endTime->setDateTimeRange(minDate, maxDate);
@@ -177,8 +177,8 @@ void WaterQalWindow::createToolBar() {
           &WaterQalWindow::onStartDateChanged);
   connect(endTime, &QDateTimeEdit::dateTimeChanged, this,
           &WaterQalWindow::onEndDateChanged);
-  connect(resetDate, &QPushButton::clicked, &model,
-          &WaterQalDataset::resetDataMask);
+  connect(resetDate, &QPushButton::clicked, this,
+          &WaterQalWindow::resetDateRange);
 }
 
 void WaterQalWindow::onStartDateChanged(const QDateTime& dateTime) {
@@ -194,6 +194,20 @@ void WaterQalWindow::onEndDateChanged(const QDateTime& dateTime) {
     model.setDataMask(startTime->dateTime().toString(Qt::ISODate).toStdString(),
                       dateTime.toString(Qt::ISODate).toStdString());
     emit model.dataChanged();
+  }
+}
+
+void WaterQalWindow::resetDateRange() {
+  if (model.size() != 0) {
+    auto minDate = QDateTime::fromString(
+      model.at(0).getSampleDateTime().c_str(), Qt::ISODate);
+    auto maxDate = QDateTime::fromString(
+      model.at(model.size() - 1).getSampleDateTime().c_str(), Qt::ISODate);
+
+    startTime->setDateTime(minDate);
+    endTime->setDateTime(maxDate);
+
+    model.resetDataMask();
   }
 }
 
