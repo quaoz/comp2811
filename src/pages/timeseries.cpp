@@ -15,18 +15,6 @@ TimeSeries::TimeSeries(const QString& title, QWidget* parent)
   yellowSeries = new QScatterSeries();
   greenSeries = new QScatterSeries();
 
-  redSeries->setBrush(Qt::red);
-  redSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
-  redSeries->setMarkerSize(10.0);
-
-  yellowSeries->setBrush(Qt::yellow);
-  yellowSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
-  yellowSeries->setMarkerSize(10.0);
-
-  greenSeries->setBrush(Qt::green);
-  greenSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
-  greenSeries->setMarkerSize(10.0);
-
   QChart* chart = new QChart();
   chart->addSeries(series);
   chart->addSeries(redSeries);
@@ -43,6 +31,18 @@ TimeSeries::TimeSeries(const QString& title, QWidget* parent)
 
   chart->setAnimationOptions(QChart::AnimationOption::AllAnimations);
   chart->setTheme(QChart::ChartThemeBlueCerulean);
+
+  redSeries->setBrush(QColor(255, 16, 16));
+  redSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
+  redSeries->setMarkerSize(10.0);
+
+  yellowSeries->setBrush(QColor(255, 128, 64));
+  yellowSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
+  yellowSeries->setMarkerSize(10.0);
+
+  greenSeries->setBrush(QColor(32, 192, 32));
+  greenSeries->setMarkerShape(QScatterSeries::MarkerShapeCircle);
+  greenSeries->setMarkerSize(10.0);
 
   chartView = new QChartView(chart);
   chartView->setRenderHint(QPainter::Antialiasing);
