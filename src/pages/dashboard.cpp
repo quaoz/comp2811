@@ -6,7 +6,6 @@
 
 #include "card.hpp"
 
-// TODO: card waffle, mean median + other stats, location filter
 MainDashboardPage::MainDashboardPage(OverviewCard* pollutantCard,
                                      OverviewCard* popsCard,
                                      OverviewCard* litterCard,

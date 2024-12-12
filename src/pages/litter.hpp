@@ -17,6 +17,7 @@ class LitterPage : public QWidget {
   OverviewCard* getCard() const { return card; }
 
  private:
+  void showTooltip(QPieSlice* slice);
   QPieSeries* locationSeries;
   QPieSeries* waterBodySeries;
   OverviewCard* card;

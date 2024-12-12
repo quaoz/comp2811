@@ -27,44 +27,13 @@ ComplianceDashboard::ComplianceDashboard(QWidget *parent) : QWidget(parent) {
 }
 
 void ComplianceDashboard::setupUI() {
-  // Header Section
-  QHBoxLayout *headerLayout = new QHBoxLayout();
-  QLabel *appTitle = new QLabel(tr("Water Quality Monitor"), this);
-  appTitle->setStyleSheet("font-size: 24px; font-weight: bold;");
-
-  QPushButton *homeButton = new QPushButton(tr("Home"), this);
-  QPushButton *pollutantsButton =
-    new QPushButton(tr("Pollutants Overview"), this);
-  QPushButton *complianceButton =
-    new QPushButton(tr("Compliance Dashboard"), this);
-
-  languageSelector = new QComboBox(this);
-  languageSelector->addItem(tr("English", "en"));
-  languageSelector->addItem(tr("French", "fr"));
-  languageSelector->addItem(tr("German", "de"));
-
-  connect(languageSelector, &QComboBox::currentTextChanged, this,
-          &ComplianceDashboard::changeLanguage);
-
-  headerLayout->addWidget(appTitle);
-  headerLayout->addStretch();
-  headerLayout->addWidget(homeButton);
-  headerLayout->addWidget(pollutantsButton);
-  headerLayout->addWidget(complianceButton);
-  headerLayout->addWidget(languageSelector);
-
   // Filters Section
   QHBoxLayout *filterLayout = new QHBoxLayout();
   QLabel *filterLabel = new QLabel(tr("Filters:"));
   locationFilter = new QComboBox(this);
   pollutantFilter = new QComboBox(this);
-  timeRangeFilter = new QComboBox(this);
   colorFilter = new QComboBox(this);
 
-  locationFilter->addItem(tr("All Locations"));
-  pollutantFilter->addItem(tr("All Pollutants"));
-  timeRangeFilter->addItem(tr("Last Month"));
-  timeRangeFilter->addItem(tr("Last Year"));
   colorFilter->addItem(tr("All Statuses"));  // Default filter for colors
   colorFilter->addItem(tr("Compliant"));
   colorFilter->addItem(tr("Non-Compliant"));
@@ -74,15 +43,12 @@ void ComplianceDashboard::setupUI() {
           &ComplianceDashboard::filterComplianceData);
   connect(pollutantFilter, &QComboBox::currentTextChanged, this,
           &ComplianceDashboard::filterComplianceData);
-  connect(timeRangeFilter, &QComboBox::currentTextChanged, this,
-          &ComplianceDashboard::filterComplianceData);
   connect(colorFilter, &QComboBox::currentTextChanged, this,
           &ComplianceDashboard::filterComplianceData);  // Connect color filter
 
   filterLayout->addWidget(filterLabel);
   filterLayout->addWidget(locationFilter);
   filterLayout->addWidget(pollutantFilter);
-  filterLayout->addWidget(timeRangeFilter);
   filterLayout->addWidget(colorFilter);  // Add to filter layout
 
   // Summary Cards Section
@@ -96,6 +62,11 @@ void ComplianceDashboard::setupUI() {
     {"Location", "Pollutant", "Compliance Status", "Details"});
   complianceTable->horizontalHeader()->setSectionResizeMode(
     QHeaderView::Stretch);
+  // Set minimum size for the table
+  complianceTable->setMinimumSize(600, 400);
+  complianceTable->setSizePolicy(QSizePolicy::Expanding,
+                                 QSizePolicy::Expanding);
+
   connect(complianceTable, &QTableWidget::cellClicked, this,
           &ComplianceDashboard::showDetails);
 
@@ -104,17 +75,10 @@ void ComplianceDashboard::setupUI() {
     new QLabel(tr("Summary of Non-Compliant Sites: None"), this);
   nonCompliantSummary->setStyleSheet("font-weight: bold; margin-top: 10px;");
 
-  // Export and Report Buttons
-  QHBoxLayout *buttonLayout = new QHBoxLayout();
-  exportButton = new QPushButton(tr("Export to CSV"), this);
-  generateReportButton = new QPushButton(tr("Generate Report"), this);
-  buttonLayout->addWidget(exportButton);
-  buttonLayout->addWidget(generateReportButton);
-
-  connect(exportButton, &QPushButton::clicked, this,
-          &ComplianceDashboard::exportToCSV);
-  connect(generateReportButton, &QPushButton::clicked, this,
-          &ComplianceDashboard::generateReport);
+  QScrollArea *scrollArea = new QScrollArea(this);
+  scrollArea->setWidget(nonCompliantSummary);
+  scrollArea->setWidgetResizable(true);
+  scrollArea->setMinimumHeight(100);
 
   // Footer Section
   QLabel *footerLabel = new QLabel(
@@ -122,14 +86,11 @@ void ComplianceDashboard::setupUI() {
 
   // Layout Setup
   mainLayout = new QVBoxLayout(this);
-  mainLayout->addLayout(headerLayout);
   mainLayout->addLayout(filterLayout);
   mainLayout->addWidget(summaryLabel);
   mainLayout->addLayout(summaryCardsLayout);
   mainLayout->addWidget(complianceTable);
-  mainLayout->addWidget(
-    nonCompliantSummary);  // Add the non-compliant summary here
-  mainLayout->addLayout(buttonLayout);
+  mainLayout->addWidget(scrollArea);
   mainLayout->addWidget(footerLabel);
   setLayout(mainLayout);
 }
@@ -139,12 +100,11 @@ void ComplianceDashboard::update(WaterQalDataset *model) {
   locationFilter->clear();
   pollutantFilter->clear();
 
+  locationFilter->addItem(tr("All Locations"));
   for (const auto &location : model->getLocations()) {
     locationFilter->addItem(QString::fromStdString(location));
   }
-  locationFilter->addItem(tr("All Locations"));
 
-  // pollutantFilter->addItem("All Pollutants");
   for (const auto &pollutants : model->getPollutants()) {
     pollutantFilter->addItem(QString::fromStdString(pollutants));
   }
@@ -184,20 +144,11 @@ void ComplianceDashboard::filterComplianceData() {
            selectedPollutant.toStdString())) {
       // Apply color filter
       QString status = options[rand() % 3];
-      ;
-      bool matchesColor = false;
-      if (selectedColor == "All Statuses") {
-        matchesColor = true;
-      } else if (selectedColor == "Compliant" && status == "Compliant") {
-        matchesColor = true;
-      } else if (selectedColor == "Non-Compliant" &&
-                 status == "Non-Compliant") {
-        matchesColor = true;
-      } else if (selectedColor == "Near Limit" && status == "Near Limit") {
-        matchesColor = true;
-      }
 
-      if (!matchesColor) {
+      if (!((selectedColor == "All Statuses") ||
+            (selectedColor == "Compliant" && status == "Compliant") ||
+            (selectedColor == "Non-Compliant" && status == "Non-Compliant") ||
+            (selectedColor == "Near Limit" && status == "Near Limit"))) {
         continue;  // Skip rows that don't match the color filter
       }
 
@@ -249,24 +200,4 @@ void ComplianceDashboard::showDetails(int row) {
   QMessageBox::information(this, tr("Details"),
                            tr("Location: %1\nPollutant: %2\nStatus: %3")
                              .arg(location, pollutant, status));
-}
-
-void ComplianceDashboard::changeLanguage(const QString &language) {
-  if (translator.load(":/translations_" + language)) {
-    QApplication::installTranslator(&translator);
-  } else {
-    QMessageBox::warning(this, tr("Language Error"),
-                         tr("Failed to load language: %1").arg(language));
-  }
-}
-
-void ComplianceDashboard::exportToCSV() {
-  QMessageBox::information(this, tr("Export to CSV"),
-                           tr("Export functionality not implemented yet."));
-}
-
-void ComplianceDashboard::generateReport() {
-  QMessageBox::information(
-    this, tr("Generate Report"),
-    tr("Report generation functionality not implemented yet."));
 }

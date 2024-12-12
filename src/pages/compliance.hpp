@@ -36,9 +36,6 @@ class ComplianceDashboard : public QWidget {
  private slots:
   void filterComplianceData();
   void showDetails(int row);
-  void changeLanguage(const QString &language);
-  void exportToCSV();
-  void generateReport();
 
  private:
   void setupUI();
@@ -50,14 +47,9 @@ class ComplianceDashboard : public QWidget {
   QTableWidget *complianceTable;
   QComboBox *locationFilter;
   QComboBox *pollutantFilter;
-  QComboBox *timeRangeFilter;
   QComboBox *languageSelector;
-  QPushButton *exportButton;
-  QPushButton *generateReportButton;
   QComboBox *colorFilter;  // Filter by compliance status color
   QLabel
     *nonCompliantSummary;  // Label to display summary of non-compliant sites
   WaterQalDataset *model;
-
-  QTranslator translator;
 };

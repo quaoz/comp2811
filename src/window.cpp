@@ -27,7 +27,7 @@ WaterQalWindow::WaterQalWindow() : QMainWindow() {
   createTabBar();
 
   setMinimumWidth(MIN_WIDTH);
-  setWindowTitle(tr("WaterQal Tool"));  // TODO change no more waterqal tool
+  setWindowTitle(tr("WaterQal Tool"));
 
   connect(&model, &WaterQalDataset::dataChanged, this,
           &WaterQalWindow::pageUpdate);

@@ -3,10 +3,6 @@
 #include <QtWidgets>
 #include <vector>
 
-// TODO filters and tooltips
-// TODO translation
-// TODO contrast
-
 LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
   card = new OverviewCard(
@@ -28,6 +24,7 @@ LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
 
   locationChart->setAnimationOptions(QChart::AnimationOption::AllAnimations);
   locationChart->setTheme(QChart::ChartThemeBlueCerulean);
+  locationChart->setMinimumHeight(600);
 
   QChartView* locationChartView = new QChartView(locationChart);
   locationChartView->setRenderHint(QPainter::Antialiasing);
@@ -39,19 +36,38 @@ LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
 
   waterBodyChart->setAnimationOptions(QChart::AnimationOption::AllAnimations);
   waterBodyChart->setTheme(QChart::ChartThemeBlueCerulean);
+  waterBodyChart->setMinimumHeight(600);
 
   QChartView* waterBodyChartView = new QChartView(waterBodyChart);
   waterBodyChartView->setRenderHint(QPainter::Antialiasing);
 
+  QScrollArea* locationScrollArea = new QScrollArea(this);
+  locationScrollArea->setWidget(locationChartView);
+  locationScrollArea->setWidgetResizable(true);
+  locationScrollArea->setMinimumHeight(300);
+
+  QScrollArea* waterBodyScrollArea = new QScrollArea(this);
+  waterBodyScrollArea->setWidget(waterBodyChartView);
+  waterBodyScrollArea->setWidgetResizable(true);
+  waterBodyScrollArea->setMinimumHeight(300);
+
   QPushButton* actionButton = new QPushButton("View more", this);
 
+  QWidget* charts = new QWidget(this);
+  QHBoxLayout* chartLayout = new QHBoxLayout(charts);
+  chartLayout->addWidget(locationScrollArea);
+  chartLayout->addWidget(waterBodyScrollArea);
+  charts->setLayout(chartLayout);
+
   QVBoxLayout* layout = new QVBoxLayout(this);
-  layout->addWidget(locationChartView);
-  layout->addWidget(waterBodyChartView);
+  layout->addWidget(charts);
   layout->addWidget(actionButton);
   setLayout(layout);
 
   connect(actionButton, &QPushButton::clicked, card, &OverviewCard::showPopUp);
+  connect(locationSeries, &QPieSeries::hovered, this, &LitterPage::showTooltip);
+  connect(waterBodySeries, &QPieSeries::hovered, this,
+          &LitterPage::showTooltip);
 }
 
 void LitterPage::update(WaterQalDataset* model) {
@@ -76,4 +92,10 @@ void LitterPage::update(WaterQalDataset* model) {
   }
 
   card->updateCard(samples.size(), locationSeries->slices().size());
+}
+
+void LitterPage::showTooltip(QPieSlice* slice) {
+  QToolTip::showText(QCursor::pos(),
+                     QString("%1: %2").arg(slice->label()).arg(slice->value()),
+                     this);
 }

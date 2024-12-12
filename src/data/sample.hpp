@@ -73,9 +73,7 @@ class Sample {
   double getResult() const { return result; };
   std::string getResultInterpretation() const { return resultInterpretation; };
   std::string getSampledMaterialType() const { return sampledMaterialType; };
-  std::string isComplianceSample() const {
-    return compliance;
-  };  // TODO: should be bool
+  std::string isComplianceSample() const { return compliance; };
   std::string getPurpose() const { return purpose; };
 
  private:

@@ -2,6 +2,7 @@
 
 #include <QLegendMarker>
 #include <QtWidgets>
+#include <set>
 
 PollutantPage::PollutantPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
@@ -42,19 +43,24 @@ void PollutantPage::update(WaterQalDataset* model) {
   pollutantComboBox->clear();
   locationComboBox->clear();
 
-  for (const auto& pollutant : model->getPollutants()) {
-    pollutantComboBox->addItem(QString::fromStdString(pollutant));
+  std::vector<Sample> samples = model->getSamples();
+  std::set<std::string> locations;
+  std::set<std::string> pollutants;
+  for (const auto& sample : samples) {
+    locations.insert(sample.getSamplingPoint().getLabel());
+    pollutants.insert(sample.getDeterminand().getLabel());
   }
 
   locationComboBox->addItem("All Locations");
-  for (const auto& location : model->getLocations()) {
+  for (const auto& location : locations) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
 
-  // TODO: doesnt filter pollutants or locations
-  std::vector<Sample> samples = model->getSamples();
-  card->updateCard(samples.size(), model->getLocations().size());
+  for (const auto& pollutant : pollutants) {
+    pollutantComboBox->addItem(QString::fromStdString(pollutant));
+  }
 
+  card->updateCard(samples.size(), locations.size());
   filter();
 }
 
