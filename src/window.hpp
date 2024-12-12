@@ -37,15 +37,17 @@ class WaterQalWindow : public QMainWindow {
   void addFileMenu();
   void addHelpMenu();
   void createTabBar();
+  void pageUpdate();
   void update();
 
-  WaterQalDataset model;    // data model used by table
-  QString dataLocation;     // location of CSV data files
-  QComboBox* period;        // selector for waterqal feed time period
-  QPushButton* loadButton;  // button to load a new CSV file
-  QLabel* fileInfo;         // status bar info on current file
+  WaterQalDataset model;
+
+  QString dataLocation;
+  QComboBox* period;
+  QPushButton* loadButton;
+  QLabel* fileInfo;
   QTabWidget* tabWidget;
-  // WaterTable* table;
+
   LitterPage* litterPage;
   PollutantPage* pollutantPage;
   ComplianceDashboard* compliancePage;
@@ -53,7 +55,13 @@ class WaterQalWindow : public QMainWindow {
   FluorinatedPage* fluorinatedPage;
   MainDashboardPage* mainDashboardPage;
 
+  QDateTimeEdit* startTime;
+  QDateTimeEdit* endTime;
+
  private slots:
+  void onStartDateChanged(const QDateTime& dateTime);
+  void onEndDateChanged(const QDateTime& dateTime);
+
   void setDataLocation();
   void openCSV();
   void about();

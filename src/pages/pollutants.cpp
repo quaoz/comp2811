@@ -7,9 +7,10 @@ PollutantPage::PollutantPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
   card = new OverviewCard(
     tr("Pollutants Overview"),
-    tr("There are a large number of chemical and physical pollutants which can be "
-    "found in bodies of water. Pollutants can harm the environment and pose "
-    "healthrisks."),
+    tr("There are a large number of chemical and physical pollutants which can "
+       "be "
+       "found in bodies of water. Pollutants can harm the environment and pose "
+       "healthrisks."),
     "Number of locations: %1", 1, window);
 
   chart = new TimeSeries(tr("Pollutants Overview"), this);
@@ -50,7 +51,7 @@ void PollutantPage::update(WaterQalDataset* model) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
 
-  //TODO: doesnt filter pollutants or locations
+  // TODO: doesnt filter pollutants or locations
   std::vector<Sample> samples = model->getSamples();
   card->updateCard(samples.size(), model->getLocations().size());
 

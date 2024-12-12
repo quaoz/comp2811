@@ -6,6 +6,7 @@
 #include <QtWidgets>
 #include <iostream>
 
+#include "data/dataset.hpp"
 #include "pages/card.hpp"
 #include "pages/compliance.hpp"
 #include "pages/dashboard.hpp"
@@ -28,10 +29,27 @@ WaterQalWindow::WaterQalWindow() : QMainWindow() {
   setMinimumWidth(MIN_WIDTH);
   setWindowTitle(tr("WaterQal Tool"));  // TODO change no more waterqal tool
 
-  connect(&model, &WaterQalDataset::dataChanged, this, &WaterQalWindow::update);
+  connect(&model, &WaterQalDataset::dataChanged, this,
+          &WaterQalWindow::pageUpdate);
 }
 
 void WaterQalWindow::update() {
+  if (model.size() != 0) {
+    auto minDate = QDateTime::fromString(
+      model.at(model.size() - 1).getSampleDateTime().c_str(), Qt::ISODate);
+    auto maxDate = QDateTime::fromString(
+      model.at(0).getSampleDateTime().c_str(), Qt::ISODate);
+
+    startTime->setDateTimeRange(minDate, maxDate);
+    endTime->setDateTimeRange(minDate, maxDate);
+    startTime->setDateTime(minDate);
+    endTime->setDateTime(maxDate);
+  }
+
+  pageUpdate();
+}
+
+void WaterQalWindow::pageUpdate() {
   using std::chrono::duration;
   using std::chrono::duration_cast;
   using std::chrono::high_resolution_clock;
@@ -58,7 +76,6 @@ void WaterQalWindow::update() {
   litterPage->update(&model);
   fluorinatedPage->update(&model);
   compliancePage->update(&model);
-  mainDashboardPage->update(&model);
 
   auto t2 = high_resolution_clock::now();
   duration<double, std::milli> ms_double = t2 - t1;
@@ -83,7 +100,6 @@ void WaterQalWindow::createTabBar() {
   tabWidget->addTab(litterPage, tr("Environmental Litter Indicators"));
   tabWidget->addTab(fluorinatedPage, tr("Fluorinated Compounds"));
   tabWidget->addTab(compliancePage, tr("Compliance Dashboard"));
-
 
   update();
   setCentralWidget(tabWidget);
@@ -129,6 +145,7 @@ void WaterQalWindow::createButtons() {
 
 void WaterQalWindow::createToolBar() {
   QToolBar* toolBar = new QToolBar();
+
   QLabel* periodLabel = new QLabel(tr("Period"));
   periodLabel->setAlignment(Qt::AlignVCenter);
   toolBar->addWidget(periodLabel);
@@ -137,7 +154,47 @@ void WaterQalWindow::createToolBar() {
   toolBar->addSeparator();
   toolBar->addWidget(loadButton);
 
+  QLabel* dateStartLabel = new QLabel(tr("Date Range Start"));
+  QLabel* dateEndLabel = new QLabel(tr("Date Range End"));
+
+  startTime = new QDateTimeEdit();
+  endTime = new QDateTimeEdit();
+  startTime->setCalendarPopup(true);
+  endTime->setCalendarPopup(true);
+
+  QPushButton* resetDate = new QPushButton(tr("Reset Date Range"));
+
+  toolBar->addSeparator();
+  toolBar->addWidget(dateStartLabel);
+  toolBar->addWidget(startTime);
+  toolBar->addWidget(dateEndLabel);
+  toolBar->addWidget(endTime);
+  toolBar->addWidget(resetDate);
+
   addToolBar(Qt::LeftToolBarArea, toolBar);
+
+  connect(startTime, &QDateTimeEdit::dateTimeChanged, this,
+          &WaterQalWindow::onStartDateChanged);
+  connect(endTime, &QDateTimeEdit::dateTimeChanged, this,
+          &WaterQalWindow::onEndDateChanged);
+  connect(resetDate, &QPushButton::clicked, &model,
+          &WaterQalDataset::resetDataMask);
+}
+
+void WaterQalWindow::onStartDateChanged(const QDateTime& dateTime) {
+  if (model.size() != 0) {
+    model.setDataMask(dateTime.toString(Qt::ISODate).toStdString(),
+                      endTime->dateTime().toString(Qt::ISODate).toStdString());
+    emit model.dataChanged();
+  }
+}
+
+void WaterQalWindow::onEndDateChanged(const QDateTime& dateTime) {
+  if (model.size() != 0) {
+    model.setDataMask(startTime->dateTime().toString(Qt::ISODate).toStdString(),
+                      dateTime.toString(Qt::ISODate).toStdString());
+    emit model.dataChanged();
+  }
 }
 
 void WaterQalWindow::createStatusBar() {
@@ -184,7 +241,7 @@ void WaterQalWindow::openCSV() {
   if (dataLocation == "") {
     QMessageBox::critical(this, tr("Data Location Error"),
                           tr("Data location has not been set!\n\n"
-                          "You can specify this via the File menu."));
+                             "You can specify this via the File menu."));
     return;
   }
 
@@ -207,6 +264,6 @@ void WaterQalWindow::about() {
   QMessageBox::about(
     this, tr("About WaterQua Tool"),
     tr("WaterQal Tool displays and analyzes water quality data loaded from"
-    "a CSV file produced by the Environment Agency Water Quality "
-    "Archive.\n\n"));
+       "a CSV file produced by the Environment Agency Water Quality "
+       "Archive.\n\n"));
 }

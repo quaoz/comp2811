@@ -8,11 +8,12 @@ FluorinatedPage::FluorinatedPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
   card = new OverviewCard(
     tr("Fluorinated Compounds Overview"),
-    tr("Fluorinated compounds are chemicals containing fluorine atoms that are "
-    "highly stable and resistant to degradation. These compounds are used in "
-    "various products like non-stick coatings and fire-fighting foams, but "
-    "they persist in the environment and can contaminate water, soil, and "
-    "wildlife, posing health risks."),
+    tr(
+      "Fluorinated compounds are chemicals containing fluorine atoms that are "
+      "highly stable and resistant to degradation. These compounds are used in "
+      "various products like non-stick coatings and fire-fighting foams, but "
+      "they persist in the environment and can contaminate water, soil, and "
+      "wildlife, posing health risks."),
     "Number of locations: %1", 4, window);
 
   chart = new TimeSeries(tr("Fluorinated Compounds"), this);

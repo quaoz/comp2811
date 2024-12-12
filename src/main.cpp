@@ -1,6 +1,7 @@
-#include <QtWidgets>
-#include <QTranslator>
 #include <QLocale>
+#include <QTranslator>
+#include <QtWidgets>
+
 #include "window.hpp"
 
 int main(int argc, char* argv[]) {
