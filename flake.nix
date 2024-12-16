@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
     systems.url = "github:nix-systems/default";
     flake-utils = {
       url = "github:numtide/flake-utils";
@@ -11,29 +12,40 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     flake-utils,
+    pre-commit-hooks,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
       in {
+        checks = {
+          pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              flake-checker.enable = true;
+
+              #clang-format.enable = true;
+              cmake-format.enable = true;
+
+              #typos.enable = true;
+              convco.enable = true;
+            };
+          };
+        };
+
         devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            just
-            cmake
-            qt6.qtbase
-            qt6.qtcharts
-            qt6.qtwebview
-            qt6.qtlocation
-            qt6.qtpositioning
-            qt6.qtmultimedia
-          ];
+          inherit (self.checks.${system}.pre-commit-check) shellHook;
+          buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
+
+          inputsFrom = [self.packages.${system}.default];
         };
 
         packages.default = pkgs.stdenv.mkDerivation {
-          name = "quaketool";
+          name = "waterqaltool";
           version = "1.0";
 
           src = ./.;
@@ -50,6 +62,7 @@
             qt6.qtlocation
             qt6.qtpositioning
             qt6.qtmultimedia
+            qt6.qttools
           ];
         };
       }

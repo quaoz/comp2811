@@ -1,0 +1,2 @@
+[files]
+extend-exclude = ["*.ts", "data/*", "src/data/csv.hpp"]

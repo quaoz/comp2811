@@ -4,6 +4,9 @@
 
 #include <string>
 
+/**
+ * Represents a sampling point
+ */
 class SamplingPoint {
  public:
   SamplingPoint(const std::string &id, const std::string &notation,
@@ -27,6 +30,9 @@ class SamplingPoint {
   int northing;          // sample.samplingPoint.northing
 };
 
+/**
+ * Represents a determinand
+ */
 class Determinand {
  public:
   Determinand(const std::string &label, const std::string &definition,
@@ -47,13 +53,16 @@ class Determinand {
   std::string unitLabel;   // determinand.unit.label
 };
 
+/**
+ * Represents a sample
+ */
 class Sample {
  public:
   Sample(const std::string &id, const SamplingPoint &samplingPoint,
          const std::string &sampleDateTime, const Determinand &determinand,
          const std::string &resultQualifier, const double result,
          const std::string &resultInterpretation,
-         const std::string &sampledMaterialType, const std::string &compliant,
+         const std::string &sampledMaterialType, const std::string &compliance,
          const std::string &purpose)
     : id(id),
       samplingPoint(samplingPoint),
@@ -63,7 +72,7 @@ class Sample {
       result(result),
       resultInterpretation(resultInterpretation),
       sampledMaterialType(sampledMaterialType),
-      compliant(compliant),
+      compliance(compliance),
       purpose(purpose){};
   std::string getID() const { return id; };
   SamplingPoint getSamplingPoint() const { return samplingPoint; };
@@ -73,9 +82,7 @@ class Sample {
   double getResult() const { return result; };
   std::string getResultInterpretation() const { return resultInterpretation; };
   std::string getSampledMaterialType() const { return sampledMaterialType; };
-  std::string isComplianceSample() const {
-    return compliant;
-  };  // TODO: should be bool
+  std::string isComplianceSample() const { return compliance; };
   std::string getPurpose() const { return purpose; };
 
  private:
@@ -87,6 +94,6 @@ class Sample {
   double result;                     // result
   std::string resultInterpretation;  // codedResultInterpretation.interpretation
   std::string sampledMaterialType;   // sample.sampledMaterialType.label
-  std::string compliant;             // sample.isComplianceSample
+  std::string compliance;            // sample.isComplianceSample
   std::string purpose;               // sample.purpose.label
 };
