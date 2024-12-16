@@ -11,10 +11,9 @@ POPsPage::POPsPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
     tr("Persistent Organic Pollutants"),
     tr("Polychlorinated biphenyls (PCBs) are a group of manmade chemical that "
        "persist in the environment and accumulate in living organisms. PCBs "
-       "were "
-       "used widely in electrical equipment and bind strongly to soil and "
+       "were used widely in electrical equipment and bind strongly to soil and "
        "sediment, causing pollution to the environment."),
-    "Number of locations: %1", 2, window);
+    tr("Number of locations: %1"), 2, window);
 
   chart = new TimeSeries(tr("Persistent Organic Pollutants"));
 
@@ -29,7 +28,7 @@ POPsPage::POPsPage(WaterQalWindow* window, QWidget* parent) : QWidget(parent) {
   options->addWidget(pbcsComboBox);
   options->addWidget(locationComboBox);
 
-  QPushButton* actionButton = new QPushButton("View more", this);
+  QPushButton* actionButton = new QPushButton(tr("View more"), this);
 
   QVBoxLayout* layout = new QVBoxLayout(this);
   layout->addLayout(options);

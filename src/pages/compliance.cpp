@@ -59,7 +59,7 @@ void ComplianceDashboard::setupUI() {
   complianceTable = new QTableWidget(this);
   complianceTable->setColumnCount(4);
   complianceTable->setHorizontalHeaderLabels(
-    {"Location", "Pollutant", "Compliance Status", "Details"});
+    {tr("Location"), tr("Pollutant"), tr("Compliance Status"), tr("Details")});
   complianceTable->horizontalHeader()->setSectionResizeMode(
     QHeaderView::Stretch);
   // Set minimum size for the table
@@ -95,7 +95,7 @@ void ComplianceDashboard::update(WaterQalDataset *model) {
   locationFilter->clear();
   pollutantFilter->clear();
 
-  locationFilter->addItem(tr("All Locations"));
+  locationFilter->addItem("All Locations");
   for (const auto &location : model->getLocations()) {
     locationFilter->addItem(QString::fromStdString(location));
   }
@@ -103,7 +103,7 @@ void ComplianceDashboard::update(WaterQalDataset *model) {
   for (const auto &pollutants : model->getPollutants()) {
     pollutantFilter->addItem(QString::fromStdString(pollutants));
   }
-  pollutantFilter->addItem(tr("All Pollutants"));
+  pollutantFilter->addItem("All Pollutants");
 
   filterComplianceData();
 }

@@ -4,6 +4,9 @@
 
 #include <string>
 
+/**
+ * Represents a sampling point
+ */
 class SamplingPoint {
  public:
   SamplingPoint(const std::string &id, const std::string &notation,
@@ -27,6 +30,9 @@ class SamplingPoint {
   int northing;          // sample.samplingPoint.northing
 };
 
+/**
+ * Represents a determinand
+ */
 class Determinand {
  public:
   Determinand(const std::string &label, const std::string &definition,
@@ -47,6 +53,9 @@ class Determinand {
   std::string unitLabel;   // determinand.unit.label
 };
 
+/**
+ * Represents a sample
+ */
 class Sample {
  public:
   Sample(const std::string &id, const SamplingPoint &samplingPoint,

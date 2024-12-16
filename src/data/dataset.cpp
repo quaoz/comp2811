@@ -73,9 +73,20 @@ void WaterQalDataset::loadData(const string& filename) {
 
   /* Data sorting:
    *
-   * ordered map mapping each dateTime to a vector of samples constructed
-   * dateTimes extracted from hashmap keys, appended to priority queue
-   * pq drained, for each value corresponding vector from hashmap added to data
+   * As many pages require the ability to filter by location and pollutant type
+   * it is more efficient to construct several hash map on data load to avoid
+   * having to filter the full dataset ever time it is necessary to filter by
+   * location or pollutant. Additionally it is necessary for the charts that the
+   * data is ordered from earliest to latest so the entier data set and all
+   * vectors constructed from it are ordered from earliest date to latest date.
+   *
+   * data          : vec of samples ordered from earliest date to latest date
+   *
+   * pollutants    : ordered set of all pollutants
+   * locations     : ordered set of all locations
+   *
+   * pollutantsMap : map of pollutant to a vec of samples
+   * locationsMap  : map of location to a vec of samples
    *
    */
 
@@ -208,10 +219,10 @@ std::vector<Sample> WaterQalDataset::mask(std::vector<Sample> samples) const {
 
   std::vector<Sample> maskedSamples = {};
 
+  // find bounds
   auto lower =
     std::lower_bound(samples.begin(), samples.end(), startDate, sampleCmp());
-  auto upper =
-    std::upper_bound(samples.begin(), samples.end(), endDate, sampleCmp());
+  auto upper = std::upper_bound(lower, samples.end(), endDate, sampleCmp());
 
   maskedSamples.insert(maskedSamples.end(), lower, upper);
   return maskedSamples;

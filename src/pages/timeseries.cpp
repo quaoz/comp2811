@@ -25,10 +25,10 @@ TimeSeries::TimeSeries(const QString& title, QWidget* parent)
 
   chart->legend()->setVisible(true);
   chart->legend()->setAlignment(Qt::AlignBottom);
-  chart->legend()->markers()[0]->setLabel("Sample Data");
-  chart->legend()->markers()[1]->setLabel("Above Limit");
-  chart->legend()->markers()[2]->setLabel("Near Limit");
-  chart->legend()->markers()[3]->setLabel("Below Limit");
+  chart->legend()->markers()[0]->setLabel(tr("Sample Data"));
+  chart->legend()->markers()[1]->setLabel(tr("Above Limit"));
+  chart->legend()->markers()[2]->setLabel(tr("Near Limit"));
+  chart->legend()->markers()[3]->setLabel(tr("Below Limit"));
 
   chart->setAnimationOptions(QChart::AnimationOption::AllAnimations);
   chart->setTheme(QChart::ChartThemeBlueCerulean);
@@ -50,7 +50,7 @@ TimeSeries::TimeSeries(const QString& title, QWidget* parent)
 
   axisX = new QDateTimeAxis;
   axisX->setFormat("dd MMM");
-  axisX->setTitleText("Date");
+  axisX->setTitleText(tr("Date"));
   chartView->chart()->addAxis(axisX, Qt::AlignBottom);
   series->attachAxis(axisX);
   redSeries->attachAxis(axisX);
@@ -58,14 +58,14 @@ TimeSeries::TimeSeries(const QString& title, QWidget* parent)
   greenSeries->attachAxis(axisX);
 
   axisY = new QValueAxis;
-  axisY->setTitleText("Sample Quantity");
+  axisY->setTitleText(tr("Sample Quantity"));
   chartView->chart()->addAxis(axisY, Qt::AlignLeft);
   series->attachAxis(axisY);
   redSeries->attachAxis(axisY);
   yellowSeries->attachAxis(axisY);
   greenSeries->attachAxis(axisY);
 
-  QLabel* dataPointHint = new QLabel("Click on a datapoint for more info.");
+  QLabel* dataPointHint = new QLabel(tr("Click on a datapoint for more info."));
 
   QVBoxLayout* layout = new QVBoxLayout(this);
   layout->addWidget(chartView);
@@ -88,8 +88,8 @@ void TimeSeries::updateChart(const std::vector<Sample>& samples,
   yellowSeries->clear();
   greenSeries->clear();
 
-  chartView->chart()->setTitle(QString::fromStdString(
-    selectedCompound.toStdString() + " at " + selectedLocation.toStdString()));
+  chartView->chart()->setTitle(
+    QString(tr("%1 at %2")).arg(selectedCompound).arg(selectedLocation));
 
   double max = 0;
   double redBoundary;
@@ -142,18 +142,18 @@ void TimeSeries::onDataPointClicked(const QPointF& point) {
   QString complianceLevel;
 
   if (redSeries->points().contains(point)) {
-    complianceLevel = "Not Compliant";
+    complianceLevel = tr("Not Compliant");
   } else if (yellowSeries->points().contains(point)) {
-    complianceLevel = "Near Limit";
+    complianceLevel = tr("Near Limit");
   } else if (greenSeries->points().contains(point)) {
-    complianceLevel = "Compliant";
+    complianceLevel = tr("Compliant");
   } else {
-    complianceLevel = "Unknown";
+    complianceLevel = tr("Unknown");
   }
 
   // Construct popup message
   QString popupText =
-    QString("Date: %1\nValue: %2\nCompliance: %3")
+    QString(tr("Date: %1\nValue: %2\nCompliance: %3"))
       .arg(QDateTime::fromMSecsSinceEpoch(point.x()).toString(Qt::ISODate))
       .arg(point.y())
       .arg(complianceLevel);

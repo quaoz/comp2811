@@ -9,10 +9,9 @@ PollutantPage::PollutantPage(WaterQalWindow* window, QWidget* parent)
   card = new OverviewCard(
     tr("Pollutants Overview"),
     tr("There are a large number of chemical and physical pollutants which can "
-       "be "
-       "found in bodies of water. Pollutants can harm the environment and pose "
-       "healthrisks."),
-    "Number of locations: %1", 1, window);
+       "be found in bodies of water. Pollutants can harm the environment and "
+       "pose healthrisks."),
+    tr("Number of locations: %1"), 1, window);
 
   chart = new TimeSeries(tr("Pollutants Overview"), this);
 
@@ -23,7 +22,7 @@ PollutantPage::PollutantPage(WaterQalWindow* window, QWidget* parent)
   options->addWidget(pollutantComboBox);
   options->addWidget(locationComboBox);
 
-  QPushButton* actionButton = new QPushButton("View more", this);
+  QPushButton* actionButton = new QPushButton(tr("View more"), this);
 
   QVBoxLayout* layout = new QVBoxLayout(this);
   layout->addLayout(options);
@@ -51,7 +50,7 @@ void PollutantPage::update(WaterQalDataset* model) {
     pollutants.insert(sample.getDeterminand().getLabel());
   }
 
-  locationComboBox->addItem("All Locations");
+  locationComboBox->addItem(tr("All Locations"));
   for (const auto& location : locations) {
     locationComboBox->addItem(QString::fromStdString(location));
   }

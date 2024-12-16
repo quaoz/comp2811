@@ -56,21 +56,6 @@ void WaterQalWindow::pageUpdate() {
   using std::chrono::milliseconds;
   auto t1 = high_resolution_clock::now();
 
-  // QFutureSynchronizer<void> synchronizer;
-
-  // synchronizer.addFuture(
-  //   QtConcurrent::run([this]() { pollutantPage->update(&model); }));
-  // synchronizer.addFuture(
-  //   QtConcurrent::run([this]() { popsPage->update(&model); }));
-  // synchronizer.addFuture(
-  //   QtConcurrent::run([this]() { litterPage->update(&model); }));
-  // synchronizer.addFuture(
-  //   QtConcurrent::run([this]() { fluorinatedPage->update(&model); }));
-  // synchronizer.addFuture(
-  //   QtConcurrent::run([this]() { compliancePage->update(&model); }));
-
-  // synchronizer.waitForFinished();
-
   pollutantPage->update(&model);
   popsPage->update(&model);
   litterPage->update(&model);
@@ -140,7 +125,7 @@ void WaterQalWindow::createFileSelectors() {
 
 void WaterQalWindow::createButtons() {
   loadButton = new QPushButton(tr("Load"));
-  connect(loadButton, SIGNAL(clicked()), this, SLOT(openCSV()));
+  connect(loadButton, &QPushButton::clicked, this, &WaterQalWindow::openCSV);
 }
 
 void WaterQalWindow::createToolBar() {
@@ -252,14 +237,14 @@ void WaterQalWindow::setDataLocation() {
 }
 
 void WaterQalWindow::openCSV() {
-  if (dataLocation == "") {
+  if (dataLocation.isEmpty()) {
     QMessageBox::critical(this, tr("Data Location Error"),
                           tr("Data location has not been set!\n\n"
                              "You can specify this via the File menu."));
     return;
   }
 
-  auto filename = QString("Y-2024.csv");
+  auto filename = QString("Y-%1.csv").arg(period->currentText());
 
   auto path = dataLocation + "/" + filename;
 
@@ -279,5 +264,5 @@ void WaterQalWindow::about() {
     this, tr("About WaterQua Tool"),
     tr("WaterQal Tool displays and analyzes water quality data loaded from"
        "a CSV file produced by the Environment Agency Water Quality "
-       "Archive.\n\n"));
+       "Archive.\n"));
 }

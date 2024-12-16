@@ -6,13 +6,14 @@
 LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
   : QWidget(parent) {
   card = new OverviewCard(
-    "Environmental Litter Overview",
-    "Littering is the careless disposal of trash. Waste like plastics and "
-    "chemicals enters rivers, lakes, and oceans, harming aquatic life and "
-    "ecosystems. Some compounds that cannot decompose persist for many years, "
-    "and toxic substances can contaminate groundwater, affecting drinking "
-    "water and agriculture.",
-    "Number of locations: %1", 3, window);
+    tr("Environmental Litter Overview"),
+    tr("Littering is the careless disposal of trash. Waste like plastics and "
+       "chemicals enters rivers, lakes, and oceans, harming aquatic life and "
+       "ecosystems. Some compounds that cannot decompose persist for many "
+       "years, "
+       "and toxic substances can contaminate groundwater, affecting drinking "
+       "water and agriculture."),
+    tr("Number of locations: %1"), 3, window);
 
   locationSeries = new QPieSeries();
   waterBodySeries = new QPieSeries();
@@ -51,7 +52,7 @@ LitterPage::LitterPage(WaterQalWindow* window, QWidget* parent)
   waterBodyScrollArea->setWidgetResizable(true);
   waterBodyScrollArea->setMinimumHeight(300);
 
-  QPushButton* actionButton = new QPushButton("View more", this);
+  QPushButton* actionButton = new QPushButton(tr("View more"), this);
 
   QWidget* charts = new QWidget(this);
   QHBoxLayout* chartLayout = new QHBoxLayout(charts);

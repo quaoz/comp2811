@@ -8,14 +8,14 @@
 CardPopUp::CardPopUp(const QString& title, const QString& description,
                      const QString& secondaryText, QWidget* parent)
   : secondaryText(secondaryText), QDialog(parent) {
-  setWindowTitle("Persistent Organic Pollutants Overview");
+  setWindowTitle(title);
 
   QLabel* descriptionLabel = new QLabel(description);
   descriptionLabel->setStyleSheet("font-size: 14px; color: gray;");
   descriptionLabel->setAlignment(Qt::AlignCenter);
   descriptionLabel->setWordWrap(true);
 
-  countLabel = new QLabel(QString("Number of samples: 0"));
+  countLabel = new QLabel(QString(tr("Number of samples: 0")));
   countLabel->setAlignment(Qt::AlignCenter);
 
   secondaryLabel = new QLabel(secondaryText.arg(0));
@@ -30,7 +30,7 @@ CardPopUp::CardPopUp(const QString& title, const QString& description,
 }
 
 void CardPopUp::updatePopUp(int sampleCount, int secondary) {
-  countLabel->setText(QString("Number of samples: %1").arg(sampleCount));
+  countLabel->setText(QString(tr("Number of samples: %1")).arg(sampleCount));
   secondaryLabel->setText(secondaryText.arg(secondary));
 }
 
@@ -71,13 +71,13 @@ OverviewCard::OverviewCard(const QString& title, const QString& description,
   descriptionLabel->setAlignment(Qt::AlignCenter);
   descriptionLabel->setWordWrap(true);
 
-  countLabel = new QLabel(QString("Number of samples: 0"));
+  countLabel = new QLabel(QString(tr("Number of samples: 0")));
   countLabel->setAlignment(Qt::AlignCenter);
 
   secondaryLabel = new QLabel(secondaryText.arg(0));
   secondaryLabel->setAlignment(Qt::AlignCenter);
 
-  QPushButton* actionButton = new QPushButton("View more", this);
+  QPushButton* actionButton = new QPushButton(tr("View more"), this);
   connect(actionButton, &QPushButton::clicked, this, &OverviewCard::switchTab);
 
   // Add widgets to the layout
@@ -91,7 +91,7 @@ OverviewCard::OverviewCard(const QString& title, const QString& description,
 }
 
 void OverviewCard::updateCard(int sampleCount, int secondary) {
-  countLabel->setText(QString("Number of samples: %1").arg(sampleCount));
+  countLabel->setText(QString(tr("Number of samples: %1")).arg(sampleCount));
   secondaryLabel->setText(secondaryText.arg(secondary));
   popUp->updatePopUp(sampleCount, secondary);
 }

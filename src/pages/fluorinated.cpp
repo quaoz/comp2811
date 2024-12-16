@@ -14,7 +14,7 @@ FluorinatedPage::FluorinatedPage(WaterQalWindow* window, QWidget* parent)
       "various products like non-stick coatings and fire-fighting foams, but "
       "they persist in the environment and can contaminate water, soil, and "
       "wildlife, posing health risks."),
-    "Number of locations: %1", 4, window);
+    tr("Number of locations: %1"), 4, window);
 
   chart = new TimeSeries(tr("Fluorinated Compounds"), this);
 
@@ -55,7 +55,7 @@ void FluorinatedPage::update(WaterQalDataset* model) {
     locations.insert(sample.getSamplingPoint().getLabel());
   }
 
-  locationComboBox->addItem(tr("All Locations"));
+  locationComboBox->addItem("All Locations");
   for (const auto& location : locations) {
     locationComboBox->addItem(QString::fromStdString(location));
   }
